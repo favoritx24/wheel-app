@@ -527,8 +527,8 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        // ЖЕСТКИЙ СБРОС ПРИ СБРОСЕ АДМИНОМ ИЛИ ОЧИСТКЕ В БОТЕ
-        if (urlParams.get('reset') === '1' || urlParams.get('spun') === '0') {
+        // ТОЛЬКО ЯВНЫЙ СБРОС АДМИНОМ ЧЕРЕЗ reset=1
+        if (urlParams.get('reset') === '1') {
             clearState();
         }
 
@@ -565,12 +565,8 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
-            const isResetURL = urlParams.get('reset') === '1' || urlParams.get('spun') === '0';
+            const isResetURL = urlParams.get('reset') === '1';
             
-            if (isResetURL) {
-                clearState();
-            }
-
             const saved = isResetURL ? null : loadState();
 
             if (isSpunURL || (saved && saved.isDone)) {
@@ -688,7 +684,7 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            // СИНХРОННАЯ ЗАПИСЬ ДО НАЧАЛА ВРАЩЕНИЯ
+            // МГНОВЕННОЕ ЗАПОМИНАНИЕ ШАГА
             saveState({
                 attempts: attempts,
                 spinStep: spinStep,
