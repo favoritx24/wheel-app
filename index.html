@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>КЭШ-Магнат Колесо</title>
+    <!-- Подключаем скрипт Телеграма (ОБЯЗАТЕЛЬНО) -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container { width: 90%; }
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 10px solid #ffd700;
+            margin: 20px auto;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
+            background: conic-gradient(
+                #ff4136 0deg 60deg, 
+                #2ecc40 60deg 120deg, 
+                #0074d9 120deg 180deg, 
+                #ffdc00 180deg 240deg, 
+                #b10dc9 240deg 300deg, 
+                #ff851b 300deg 360deg
+            );
+        }
+        #wheel::before {
+            content: '';
+            position: absolute;
+            top: -20px; left: 50%;
+            transform: translateX(-50%);
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid gold;
+            z-index: 10;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: black;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+        button:disabled { background: #555; color: #888; }
+        .win-msg { display: none; margin-top: 20px; font-size: 24px; color: #2ecc40; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎡 КЭШ-МАГНАТ</h1>
+        <p>Испытай удачу и забери свой бонус!</p>
+        
+        <div id="wheel"></div>
+        
+        <button id="spinBtn">КРУТИТЬ КОЛЕСО</button>
+        <div id="winMsg" class="win-msg">Вы выиграли: <span id="amount"></span>₽</div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const winMsg = document.getElementById('winMsg');
+        const amountSpan = document.getElementById('amount');
+
+        spinBtn.addEventListener('click', () => {
+            spinBtn.disabled = true;
+            
+            // Генерируем случайный выигрыш
+            const prizes = [1000, 2500, 3000, 5000, 1500, 4000];
+            const win = prizes[Math.floor(Math.random() * prizes.length)];
+            
+            // Анимация вращения (случайные градусы + несколько полных оборотов)
+            const degrees = Math.floor(3000 + Math.random() * 3000);
+            wheel.style.transform = `rotate(${degrees}deg)`;
+
+            setTimeout(() => {
+                amountSpan.innerText = win;
+                winMsg.style.display = 'block';
+                
+                // ВАЖНО: Отправляем данные обратно в бота
+                setTimeout(() => {
+                    tg.sendData(JSON.stringify({win: win}));
+                    // После этой команды Mini App закроется автоматически,
+                    // и бот получит сообщение с этими данными
+                }, 2000);
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
