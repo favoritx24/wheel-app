@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wheel Fix</title>
+    <title>Wheel Pro Sync</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        body { background: #0e0e0e; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
-        .wheel-box { position: relative; width: 320px; height: 320px; margin-top: 20px; }
-        canvas { width: 100%; height: 100%; }
-        .pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 35px solid #00f2ff; z-index: 100; filter: drop-shadow(0 0 5px #00f2ff); }
-        .btn { margin-top: 40px; padding: 15px 50px; background: #00f2ff; color: #000; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
+        body { background: #0a0a0a; color: white; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .wheel-box { position: relative; width: 330px; height: 330px; }
+        canvas { width: 100%; height: 100%; transform: rotate(0deg); }
+        .pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 35px solid #00f2ff; z-index: 100; filter: drop-shadow(0 0 10px #00f2ff); }
+        .btn { margin-top: 40px; padding: 18px 60px; background: #00f2ff; color: #000; border: none; border-radius: 50px; font-weight: 900; font-size: 18px; cursor: pointer; box-shadow: 0 0 25px rgba(0,242,255,0.4); }
         .btn:disabled { background: #333; color: #666; box-shadow: none; }
-        #popup { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; }
-        .card { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 2px solid #00f2ff; text-align: center; width: 80%; max-width: 300px; }
+        #popup { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; text-align: center; }
+        .card { background: #111; padding: 40px; border-radius: 30px; border: 2px solid #00f2ff; width: 85%; max-width: 320px; }
     </style>
 </head>
 <body>
-    <div style="font-size: 24px; font-weight: bold; color: #00f2ff;">КЭШ-МАГНАТ</div>
-    <div style="margin-top: 10px;">ПОПЫТОК: <span id="att">3</span></div>
+
+    <div style="font-size: 28px; font-weight: 900; color: #00f2ff; text-shadow: 0 0 15px rgba(0,242,255,0.3);">КЭШ-МАГНАТ</div>
+    <div style="margin: 15px 0;">ПОПЫТОК: <span id="att" style="color:#00f2ff">3</span></div>
     
     <div class="wheel-box">
         <div class="pointer"></div>
@@ -29,9 +31,9 @@
 
     <div id="popup">
         <div class="card">
-            <h2 id="popStatus">ВЫИГРЫШ!</h2>
-            <h1 id="popValue">---</h1>
-            <button class="btn" id="claim">ЗАБРАТЬ</button>
+            <h2 id="popStatus" style="margin:0; color:#888;">ВЫИГРЫШ!</h2>
+            <h1 id="popValue" style="font-size: 40px; margin: 20px 0;">---</h1>
+            <button class="btn" id="claim" style="margin:0; width:100%;">ЗАБРАТЬ</button>
         </div>
     </div>
 
@@ -39,10 +41,9 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // 10 секторов. Важно: порядок секторов в массиве должен совпадать с их отрисовкой
     const prizes = [
         { n: 'Проигрыш', i: '❌', t: 'loss' },   // 0
-        { n: 'iPhone 15', i: '📱', t: 'item' },  // 1
+        { n: 'iPhone 15', i: '📱', t: 'item' },   // 1
         { n: '+3 Попытки', i: '⚡️', t: 'bonus' }, // 2
         { n: 'Проигрыш', i: '❌', t: 'loss' },   // 3
         { n: 'Проигрыш', i: '❌', t: 'loss' },   // 4
@@ -53,7 +54,6 @@
         { n: 'Проигрыш', i: '❌', t: 'loss' }    // 9
     ];
 
-    // Последовательность шагов:
     const sequence = [0, 1, 2, 3, 4, 5];
     let step = 0;
     let attempts = 3;
@@ -65,27 +65,25 @@
     const spinBtn = document.getElementById('spin');
 
     function draw() {
-        const size = 400; canvas.width = size; canvas.height = size;
-        const center = 200;
+        const size = 500; canvas.width = size; canvas.height = size;
+        const center = size / 2;
         const slice = (Math.PI * 2) / prizes.length;
 
         prizes.forEach((p, i) => {
             ctx.beginPath();
-            ctx.fillStyle = i % 2 === 0 ? '#111' : '#1a1a1a';
+            ctx.fillStyle = i % 2 === 0 ? '#0a0a0a' : '#151515';
             ctx.moveTo(center, center);
-            // Рисуем от -90 градусов (верхняя точка), чтобы i=0 был ровно вверху
-            let startAngle = slice * i - Math.PI / 2;
-            let endAngle = slice * (i + 1) - Math.PI / 2;
-            ctx.arc(center, center, 190, startAngle, endAngle);
+            // Смещение -PI/2 чтобы сектор 0 был вверху
+            ctx.arc(center, center, center - 10, slice * i - Math.PI/2, slice * (i + 1) - Math.PI/2);
             ctx.fill();
             
             ctx.save();
             ctx.translate(center, center);
-            ctx.rotate(slice * i + slice / 2 - Math.PI / 2);
+            ctx.rotate(slice * i + slice / 2 - Math.PI/2);
             ctx.fillStyle = "white";
-            ctx.font = "bold 24px Arial";
+            ctx.font = "bold 32px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(p.i, 140, 10);
+            ctx.fillText(p.i, 180, 15);
             ctx.restore();
         });
     }
@@ -100,22 +98,53 @@
         const winnerIdx = sequence[step] || 0;
         const winner = prizes[winnerIdx];
         
-        // Расчет вращения:
-        // Каждый сектор занимает 36 градусов (360 / 10)
-        // Чтобы индекс i оказался сверху, нужно повернуть на 360 - (i * 36) градусов
         const sectorAngle = 360 / prizes.length;
-        const extraDeg = 360 - (winnerIdx * sectorAngle);
-        const totalRotation = (360 * 10) + extraDeg; // 10 полных оборотов + угол до сектора
+        // Расчет чтобы сектор winnerIdx оказался под указателем (вверху)
+        const rotation = (360 * 10) + (360 - (winnerIdx * sectorAngle));
 
         canvas.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.15, 1)';
-        canvas.style.transform = `rotate(${totalRotation}deg)`;
+        canvas.style.transform = `rotate(${rotation}deg)`;
 
-        setTimeout(() => {
-            finalize(winner);
-        }, 5200);
+        setTimeout(() => finalize(winner), 5200);
     };
 
     function finalize(winner) {
         step++;
         let valText = winner.n;
-        В данный момент модель gemini-3-flash-preview перегружена или недоступна (503), попробуйте позже или смените модель.
+        
+        if(winner.t === 'loss') {
+            document.getElementById('popStatus').innerText = "УПС...";
+            valText = "Пусто";
+        } else if(winner.t === 'bonus') {
+            document.getElementById('popStatus').innerText = "БОНУС!";
+            attempts += 3;
+            document.getElementById('att').innerText = attempts;
+        } else if(winner.t === 'money') {
+            document.getElementById('popStatus').innerText = "ДЕНЬГИ!";
+            const sum = Math.floor(Math.random() * (150 - 30 + 1) + 30) * 100;
+            wonMoney += sum;
+            valText = sum + " руб.";
+        } else {
+            wonItems.push(winner.n);
+        }
+
+        document.getElementById('popValue').innerText = valText;
+        document.getElementById('popup').style.display = 'flex';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }
+
+    document.getElementById('claim').onclick = () => {
+        document.getElementById('popup').style.display = 'none';
+        if(attempts > 0) {
+            spinBtn.disabled = false;
+            canvas.style.transition = 'none';
+            canvas.style.transform = 'rotate(0deg)';
+        } else {
+            const res = { money: wonMoney, items: wonItems.join(", ") };
+            tg.sendData(JSON.stringify(res));
+            setTimeout(() => tg.close(), 100);
+        }
+    };
+</script>
+</body>
+</html>
