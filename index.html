@@ -8,69 +8,62 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #ff0055; --bg: #0d0d0d; }
+        :root { --main: #00e5ff; --bg: #0a0a0a; }
         body {
-            background: var(--bg);
-            color: white;
-            font-family: 'Montserrat', sans-serif;
+            background: var(--bg); color: white; font-family: 'Montserrat', sans-serif;
             margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden;
         }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: var(--accent); margin: 0; }
-        .attempts { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 14px; }
-        
-        /* Колесо */
-        .wheel-box { position: relative; width: 320px; height: 320px; display: none; }
-        canvas { width: 100%; height: 100%; border-radius: 50%; border: 5px solid #222; }
+        .header { text-align: center; margin-bottom: 20px; z-index: 5; }
+        .header h1 { font-size: 28px; font-weight: 900; color: var(--main); margin: 0; text-shadow: 0 0 15px var(--main); }
+        .attempts { font-size: 14px; background: rgba(255,255,255,0.05); padding: 5px 20px; border-radius: 50px; margin-top: 5px; }
+
+        .wheel-container { position: relative; width: 330px; height: 330px; }
+        #canvas { width: 100%; height: 100%; transform: rotate(0deg); }
         .pointer {
             position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid var(--accent); z-index: 10;
+            width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid var(--main); z-index: 10;
         }
-
-        /* Лента */
-        .tape-box { width: 100%; height: 150px; position: relative; overflow: hidden; display: none; background: #111; border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
-        .track { display: flex; position: absolute; left: 0; transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1); }
-        .item { min-width: 120px; height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #222; font-size: 12px; text-align: center; }
-        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: var(--accent); z-index: 10; box-shadow: 0 0 15px var(--accent); }
 
         .btn {
-            margin-top: 30px; padding: 15px 40px; border: none; border-radius: 50px;
-            background: var(--accent); color: white; font-weight: 900; font-size: 16px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 0, 85, 0.4);
+            margin-top: 30px; padding: 15px 50px; border: none; border-radius: 50px;
+            background: var(--main); color: #000; font-weight: 900; font-size: 16px; cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); transition: 0.3s;
         }
-        .btn:disabled { background: #444; box-shadow: none; }
+        .btn:disabled { opacity: 0.3; }
 
         /* Попап */
-        #popup { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; }
-        .win-card { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid var(--accent); width: 80%; }
-        .win-card h2 { margin: 0; font-size: 18px; color: #888; }
-        .win-card h1 { font-size: 32px; margin: 15px 0; color: white; }
+        #popup {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
+        }
+        .card {
+            background: #111; padding: 30px; border-radius: 20px; border: 1px solid var(--main);
+            text-align: center; width: 80%; max-width: 300px;
+        }
+        .card h1 { font-size: 36px; margin: 15px 0; color: var(--main); }
+        .timer { font-size: 12px; color: #555; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>КЭШ-МАГНАТ</h1>
-        <div class="attempts">ПОПЫТОК: <span id="attCount">3</span></div>
+        <div class="attempts">ОСТАЛОСЬ ПОПЫТОК: <span id="count">3</span></div>
     </div>
 
-    <div class="wheel-box" id="wheelUI">
+    <div class="wheel-container">
         <div class="pointer"></div>
-        <canvas id="wheelCanvas"></canvas>
+        <canvas id="canvas"></canvas>
     </div>
 
-    <div class="tape-box" id="tapeUI">
-        <div class="center-line"></div>
-        <div class="track" id="track"></div>
-    </div>
-
-    <button class="btn" id="spinBtn">КРУТИТЬ</button>
+    <button class="btn" id="spinBtn">ИСПЫТАТЬ УДАЧУ</button>
 
     <div id="popup">
-        <div class="win-card">
+        <div class="card">
             <h2 id="popTitle">ВЫИГРЫШ!</h2>
-            <h1 id="popPrize">iPhone 15</h1>
-            <button class="btn" id="claimBtn">ЗАБРАТЬ ПРИЗ</button>
-            <p style="font-size: 10px; color: #444; margin-top: 10px;" id="timer">Закроется через 5с...</p>
+            <h1 id="popValue">iPhone 15</h1>
+            <button class="btn" style="margin-top: 10px;" id="claimBtn">ЗАБРАТЬ</button>
+            <p class="timer" id="timerLabel">Авто-закрытие через 5 сек...</p>
         </div>
     </div>
 
@@ -78,28 +71,28 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // 10 призов для красоты (визуально)
+    // 10 секторов для красоты
     const prizes = [
-        { n: 'Пусто', i: '❌', t: 'loss' },
-        { n: 'iPhone 15', i: '📱', t: 'item' },
+        { n: 'Проигрыш', i: '❌', t: 'loss' },
+        { n: 'iPhone 15 Pro', i: '📱', t: 'item' },
         { n: '+3 Попытки', i: '⚡️', t: 'bonus' },
-        { n: 'Пусто', i: '❌', t: 'loss' },
-        { n: 'Пусто', i: '❌', t: 'loss' },
-        { n: 'Денежный Приз', i: '💰', t: 'money' },
-        { n: 'MacBook Air', i: '💻', t: 'item' },
-        { n: 'Пусто', i: '❌', t: 'loss' },
-        { n: 'AirPods Pro', i: '🎧', t: 'item' },
-        { n: 'Пусто', i: '❌', t: 'loss' }
+        { n: 'Проигрыш', i: '❌', t: 'loss' },
+        { n: 'Проигрыш', i: '❌', t: 'loss' },
+        { n: 'Денежный приз', i: '💰', t: 'money' },
+        { n: 'MacBook M3', i: '💻', t: 'item' },
+        { n: 'Проигрыш', i: '❌', t: 'loss' },
+        { n: 'AirPods Pro 2', i: '🎧', t: 'item' },
+        { n: 'Проигрыш', i: '❌', t: 'loss' }
     ];
 
-    // ПОРЯДОК ВЫПАДЕНИЯ (индексы массива выше)
+    // СТРОГИЙ ПОРЯДОК: 
     // 1. Проигрыш (0)
     // 2. iPhone (1)
     // 3. Бонус (2)
     // 4. Проигрыш (3)
     // 5. Проигрыш (4)
     // 6. Деньги (5)
-    const steps = [0, 1, 2, 3, 4, 5];
+    const winSequence = [0, 1, 2, 3, 4, 5];
     
     let currentStep = 0;
     let attempts = 3;
@@ -107,123 +100,101 @@
     let wonItems = [];
     let isSpinning = false;
 
-    // Режим из параметров URL
-    const mode = new URLSearchParams(window.location.search).get('mode') || 'wheel';
-    if(mode === 'wheel') {
-        document.getElementById('wheelUI').style.display = 'block';
-        drawWheel();
-    } else {
-        document.getElementById('tapeUI').style.display = 'block';
-        initTape();
-    }
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const spinBtn = document.getElementById('spinBtn');
+    const countDisplay = document.getElementById('count');
 
-    function drawWheel() {
-        const canvas = document.getElementById('wheelCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 400; canvas.height = 400;
+    function draw() {
+        const size = 400;
+        canvas.width = size; canvas.height = size;
+        const center = size / 2;
         const slice = (Math.PI * 2) / prizes.length;
+
         prizes.forEach((p, i) => {
             ctx.beginPath();
-            ctx.fillStyle = i % 2 === 0 ? '#111' : '#1a1a1a';
-            ctx.moveTo(200, 200);
-            ctx.arc(200, 200, 190, slice * i, slice * (i + 1));
+            ctx.fillStyle = i % 2 === 0 ? '#0a0a0a' : '#151515';
+            ctx.moveTo(center, center);
+            // Смещаем на -90 градусов, чтобы индекс 0 был сверху
+            ctx.arc(center, center, center - 10, slice * i - Math.PI/2, slice * (i+1) - Math.PI/2);
             ctx.fill();
+            ctx.strokeStyle = "#333";
+            ctx.stroke();
+
             ctx.save();
-            ctx.translate(200, 200);
-            ctx.rotate(slice * i + slice / 2);
+            ctx.translate(center, center);
+            ctx.rotate(slice * i + slice/2 - Math.PI/2);
             ctx.fillStyle = "white";
-            ctx.font = "bold 16px Montserrat";
-            ctx.fillText(p.i, 120, 5);
+            ctx.font = "bold 20px Montserrat";
+            ctx.fillText(p.i, 140, 10);
             ctx.restore();
         });
     }
+    draw();
 
-    function initTape() {
-        const track = document.getElementById('track');
-        for(let i=0; i<60; i++) {
-            const p = prizes[i % prizes.length];
-            const div = document.createElement('div');
-            div.className = 'item';
-            div.innerHTML = `<span style="font-size:30px">${p.i}</span><br>${p.n}`;
-            track.appendChild(div);
-        }
-    }
-
-    document.getElementById('spinBtn').onclick = () => {
+    spinBtn.onclick = () => {
         if(isSpinning || attempts <= 0) return;
+        
         isSpinning = true;
         attempts--;
-        document.getElementById('attCount').innerText = attempts;
-        document.getElementById('spinBtn').disabled = true;
+        countDisplay.innerText = attempts;
+        spinBtn.disabled = true;
 
-        const winnerIdx = steps[currentStep] || 0;
-        const winner = prizes[winnerIdx];
+        const prizeIdx = winSequence[currentStep] || 0;
+        const prize = prizes[prizeIdx];
 
-        if(mode === 'wheel') {
-            const canvas = document.getElementById('wheelCanvas');
-            const deg = 3600 + (360 - (winnerIdx * (360 / prizes.length)));
-            canvas.style.transition = 'transform 5s cubic-bezier(0.1, 0, 0.1, 1)';
-            canvas.style.transform = `rotate(${deg}deg)`;
-            setTimeout(() => finalize(winner), 5200);
-        } else {
-            const track = document.getElementById('track');
-            const offset = (40 + winnerIdx) * 120 - (window.innerWidth / 2) + 60;
-            track.style.transform = `translateX(-${offset}px)`;
-            setTimeout(() => finalize(winner), 5200);
-        }
+        // Математика: вращаем на полный круг + угол до нужного сектора
+        // Поскольку сектор 0 сверху, нам нужно повернуть на 360 - (угол сектора)
+        const rotation = 3600 + (360 - (prizeIdx * (360 / prizes.length)));
+        
+        canvas.style.transition = 'transform 5s cubic-bezier(0.1, 0, 0.1, 1)';
+        canvas.style.transform = `rotate(${rotation}deg)`;
+
+        setTimeout(() => finalize(prize), 5200);
     };
 
-    function finalize(winner) {
+    function finalize(prize) {
         isSpinning = false;
         currentStep++;
 
-        let displayPrize = winner.n;
-
-        if(winner.t === 'loss') {
+        let val = prize.n;
+        if(prize.t === 'loss') {
             document.getElementById('popTitle').innerText = "УПС...";
-            displayPrize = "Ничего не выпало";
-        } else if(winner.t === 'item') {
-            document.getElementById('popTitle').innerText = "ПОЗДРАВЛЯЕМ!";
-            wonItems.push(winner.n);
-        } else if(winner.t === 'bonus') {
-            document.getElementById('popTitle').innerText = "БОНУС!";
+            val = "Ничего не выпало";
+        } else if(prize.t === 'item') {
+            wonItems.push(prize.n);
+        } else if(prize.t === 'bonus') {
             attempts += 3;
-            document.getElementById('attCount').innerText = attempts;
-        } else if(winner.t === 'money') {
-            document.getElementById('popTitle').innerText = "ДЕНЕЖНЫЙ ПРИЗ!";
-            // Рандом 3000-15000 шаг 100
-            const amount = Math.floor(Math.random() * (150 - 30 + 1) + 30) * 100;
-            totalMoney += amount;
-            displayPrize = amount + " руб.";
+            countDisplay.innerText = attempts;
+        } else if(prize.t === 'money') {
+            const sum = Math.floor(Math.random() * (150 - 30 + 1) + 30) * 100;
+            totalMoney += sum;
+            val = sum + " руб.";
         }
 
-        document.getElementById('popPrize').innerText = displayPrize;
+        document.getElementById('popValue').innerText = val;
         document.getElementById('popup').style.display = 'flex';
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
 
-        let sec = 5;
+        let s = 5;
         const timer = setInterval(() => {
-            sec--;
-            document.getElementById('timer').innerText = `Закроется через ${sec}с...`;
-            if(sec <= 0) { clearInterval(timer); claim(); }
+            s--;
+            document.getElementById('timerLabel').innerText = `Авто-закрытие через ${s} сек...`;
+            if(s <= 0) { clearInterval(timer); closePopup(); }
         }, 1000);
 
-        document.getElementById('claimBtn').onclick = () => { clearInterval(timer); claim(); };
+        document.getElementById('claimBtn').onclick = () => { clearInterval(timer); closePopup(); };
     }
 
-    function claim() {
+    function closePopup() {
         document.getElementById('popup').style.display = 'none';
         if(attempts > 0) {
-            document.getElementById('spinBtn').disabled = false;
-            // Сброс для колеса
-            document.getElementById('wheelCanvas').style.transition = 'none';
-            document.getElementById('wheelCanvas').style.transform = 'rotate(0deg)';
+            spinBtn.disabled = false;
+            canvas.style.transition = 'none';
+            canvas.style.transform = 'rotate(0deg)';
         } else {
-            const finalData = {
-                money: totalMoney,
-                items: wonItems.join(", ")
-            };
-            tg.sendData(JSON.stringify(finalData));
+            const result = { money: totalMoney, items: wonItems.join(", ") };
+            tg.sendData(JSON.stringify(result));
             setTimeout(() => tg.close(), 100);
         }
     }
