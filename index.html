@@ -458,7 +458,7 @@
                 <span class="attempts-label">Доступно попыток:</span>
                 <span class="attempts-count" id="attCounter">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    3
+                    <span id="attNum">3</span>
                 </span>
             </div>
         </div>
@@ -518,9 +518,29 @@
         const userId = tg.initDataUnsafe?.user?.id || 'guest_user';
         const urlParams = new URLSearchParams(window.location.search);
         
-        // Очистка при сбросе админом
+        // --- ФУНКЦИИ МУЛЬТИУРОВНЕВОГО СОХРАНЕНИЯ СОСТОЯНИЯ ---
+        function saveState(stateObj) {
+            const str = JSON.stringify(stateObj);
+            try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
+            try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
+        }
+
+        function loadState() {
+            try {
+                const local = localStorage.getItem('km_state_' + userId);
+                if (local) return JSON.parse(local);
+            } catch(e){}
+            return null;
+        }
+
+        function clearState() {
+            try { localStorage.removeItem('km_state_' + userId); } catch(e){}
+            try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
+        }
+
+        // Если бот передал запрос на сброс админом
         if (urlParams.get('reset') === '1') {
-            localStorage.removeItem('spun_done_' + userId);
+            clearState();
         }
 
         const gameMode = urlParams.get('mode') === 'ribbon' ? 'ribbon' : 'wheel';
@@ -556,14 +576,24 @@
         let sessionPrizes = { money: [], items: [] };
 
         window.addEventListener('DOMContentLoaded', () => {
-            // ПРОВЕРКА: если есть флаг spun=1 из URL или из localStorage
-            const isSpunParam = urlParams.get('spun') === '1';
-            const isSpunLocal = localStorage.getItem('spun_done_' + userId) === 'true';
+            const isSpunURL = urlParams.get('spun') === '1';
+            const saved = loadState();
 
-            if (isSpunParam || isSpunLocal) {
+            // Если бот отметил "отыграно" ИЛИ в сохраненном состоянии игра завершена
+            if (isSpunURL || (saved && saved.isDone)) {
+                if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 renderFinalSummaryModal(true);
                 return;
             }
+
+            // Восстановление неполного прогресса (например, осталась 1 или 2 попытки)
+            if (saved && typeof saved.attempts === 'number') {
+                attempts = saved.attempts;
+                spinStep = saved.spinStep || 0;
+                if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
+            }
+
+            document.getElementById('attNum').innerText = attempts;
 
             if (gameMode === 'ribbon') {
                 document.getElementById('wheelBox').style.display = 'none';
@@ -646,7 +676,7 @@
             isSpinning = true;
             spinStep++;
             attempts--;
-            document.getElementById('attCounter').innerText = attempts;
+            document.getElementById('attNum').innerText = attempts;
             document.getElementById('spinBtn').disabled = true;
 
             let targetSectorId = 0;
@@ -718,8 +748,16 @@
                 sessionPrizes.items.push(prize.name);
             } else if (prize.type === 'bonus') {
                 attempts += 3;
-                document.getElementById('attCounter').innerText = attempts;
+                document.getElementById('attNum').innerText = attempts;
             }
+
+            // СОХРАНЕНИЕ ПРОГРЕССА ПОСЛЕ КАЖДОГО ВРАЩЕНИЯ
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                isDone: attempts === 0
+            });
 
             displayModal(prize);
         }
@@ -750,7 +788,6 @@
             }
 
             if (attempts === 0) {
-                localStorage.setItem('spun_done_' + userId, 'true');
                 btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ПОСМОТРЕТЬ ИТОГ`;
             } else {
                 btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
@@ -782,9 +819,9 @@
             }
         }
 
-        // ЭКРАН РЕЗУЛЬТАТОВ (ОТОБРАЖАЕТСЯ ЕСЛИ УЖЕ ОТЫГРАЛ ИЛИ ВСЕ ПОПЫТКИ КОНЧИЛИСЬ)
+        // БЛОКИРУЮЩИЙ ФИНАЛЬНЫЙ ЭКРАН (БЕЗ ВОЗМОЖНОСТИ КРУТИТЬ СНОВА)
         function renderFinalSummaryModal(isAlreadyDone) {
-            document.getElementById('attCounter').innerText = "0";
+            document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
 
             const modal = document.getElementById('resultModal');
@@ -800,11 +837,11 @@
             const itemsList = sessionPrizes.items.length > 0 ? sessionPrizes.items.join(', ') : 'Не выпадали';
 
             body.innerHTML = `
-                <div class="modal-desc">Все доступные попытки использованы! Ваши награды зарезервированы:</div>
+                <div class="modal-desc">Все попытки использованы! Ваши награды зарезервированы:</div>
                 <div class="prize-summary-box">
                     <div class="prize-summary-row">
                         <span class="prize-label">Баланс к выплате:</span>
-                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован в боте'}</span>
+                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
                     </div>
                     <div class="prize-summary-row">
                         <span class="prize-label">Физические призы:</span>
@@ -812,7 +849,7 @@
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните простейшие условия для получения призов!
+                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
 
