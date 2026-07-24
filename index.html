@@ -518,7 +518,7 @@
         const userId = tg.initDataUnsafe?.user?.id || 'guest_user';
         const urlParams = new URLSearchParams(window.location.search);
         
-        // --- ПРОВЕРКА И ОЧИСТКА ПАМЯТИ ПРИ СБРОСЕ ---
+        // Очистка при сбросе админом
         if (urlParams.get('reset') === '1') {
             localStorage.removeItem('spun_done_' + userId);
         }
@@ -556,7 +556,11 @@
         let sessionPrizes = { money: [], items: [] };
 
         window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('spun_done_' + userId) === 'true') {
+            // ПРОВЕРКА: если есть флаг spun=1 из URL или из localStorage
+            const isSpunParam = urlParams.get('spun') === '1';
+            const isSpunLocal = localStorage.getItem('spun_done_' + userId) === 'true';
+
+            if (isSpunParam || isSpunLocal) {
                 renderFinalSummaryModal(true);
                 return;
             }
@@ -778,6 +782,7 @@
             }
         }
 
+        // ЭКРАН РЕЗУЛЬТАТОВ (ОТОБРАЖАЕТСЯ ЕСЛИ УЖЕ ОТЫГРАЛ ИЛИ ВСЕ ПОПЫТКИ КОНЧИЛИСЬ)
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attCounter').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
@@ -795,11 +800,11 @@
             const itemsList = sessionPrizes.items.length > 0 ? sessionPrizes.items.join(', ') : 'Не выпадали';
 
             body.innerHTML = `
-                <div class="modal-desc">Поздравляем! Попытки завершены. Все ваши награды зарезервированы:</div>
+                <div class="modal-desc">Все доступные попытки использованы! Ваши награды зарезервированы:</div>
                 <div class="prize-summary-box">
                     <div class="prize-summary-row">
                         <span class="prize-label">Баланс к выплате:</span>
-                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
+                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован в боте'}</span>
                     </div>
                     <div class="prize-summary-row">
                         <span class="prize-label">Физические призы:</span>
@@ -807,7 +812,7 @@
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
+                    Перейдите в Telegram-бота и выполните простейшие условия для получения призов!
                 </div>
             `;
 
