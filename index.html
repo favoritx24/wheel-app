@@ -3,207 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fortune Wheel Pro</title>
+    <title>Cyber Winner WebApp</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
         body {
-            background: radial-gradient(circle, #1a1a2e 0%, #16213e 100%);
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(112, 0, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(0, 242, 255, 0.1) 0%, transparent 40%);
             color: white;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             height: 100vh;
-            margin: 0;
             overflow: hidden;
         }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 28px; text-shadow: 0 0 15px #4834d4; margin: 0; }
-        .attempts-badge {
-            background: #4834d4;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+        .header {
+            margin-top: 20px;
+            text-align: center;
+            z-index: 10;
         }
-        .wheel-box {
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .attempts-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+
+        /* --- WHEEL STYLES --- */
+        .game-container {
             position: relative;
+            margin: auto 0;
             width: 320px;
             height: 320px;
-            border: 8px solid #f9ca24;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(249, 202, 36, 0.4);
+            display: none; /* Show based on mode */
         }
+
         #wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
-            background: conic-gradient(
-                #eb4d4b 0 60deg, #f0932b 60deg 120deg, 
-                #f9ca24 120deg 180deg, #6ab04c 180deg 240deg, 
-                #4834d4 240deg 300deg, #be2edd 300deg 360deg
-            );
+            border: 5px solid #1a1a1a;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.1, 0, 0.1, 1);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
-        .pointer {
+
+        .wheel-pointer {
             position: absolute;
-            top: -20px; left: 50%;
+            top: -15px;
+            left: 50%;
             transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid #f9ca24;
-            z-index: 10;
-        }
-        .spin-btn {
-            margin-top: 30px;
-            padding: 15px 50px;
-            font-size: 18px;
-            font-weight: 900;
-            color: #16213e;
-            background: #f9ca24;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(249, 202, 36, 0.4);
-            transition: 0.2s;
-        }
-        .spin-btn:disabled { background: #555; cursor: default; }
-        
-        /* Попап выигрыша */
-        #winPopup {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            width: 30px;
+            height: 40px;
+            background: var(--primary);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
             z-index: 100;
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        /* --- TAPE STYLES --- */
+        .tape-container {
+            width: 100%;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+            background: var(--card-bg);
+            border-top: 2px solid var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            display: none;
+            margin: auto 0;
+        }
+
+        .tape-track {
+            display: flex;
+            position: absolute;
+            left: 0;
+            height: 100%;
+            transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1);
+        }
+
+        .tape-item {
+            min-width: 120px;
+            height: 100%;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            font-size: 12px;
             text-align: center;
         }
-        .win-card {
-            background: #1a1a2e;
-            padding: 30px;
-            border: 2px solid #f9ca24;
-            border-radius: 20px;
-            width: 80%;
+
+        .tape-item img, .tape-item .icon {
+            font-size: 40px;
+            margin-bottom: 5px;
         }
-        .timer { font-size: 12px; color: #888; margin-top: 15px; }
+
+        .tape-center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+            z-index: 5;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* --- UI ELEMENTS --- */
+        .spin-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border: none;
+            padding: 15px 60px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(112, 0, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .spin-btn:disabled { opacity: 0.5; filter: grayscale(1); }
+
+        /* --- POPUP --- */
+        #popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-card {
+            background: #111;
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .popup-card h2 { color: var(--primary); margin: 0; }
+        .popup-card .prize-val { font-size: 32px; margin: 20px 0; font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>КЭШ-МАГНАТ</h1>
-        <div class="attempts-badge">ОСТАЛОСЬ ПОПЫТОК: <span id="attCount">3</span></div>
+<div class="header">
+    <h1>Neo System</h1>
+    <div class="attempts-box">ACCESS: <span id="attCount">3</span> SPINS</div>
+</div>
+
+<!-- Wheel UI -->
+<div class="game-container" id="wheelUI">
+    <div class="wheel-pointer"></div>
+    <canvas id="wheelCanvas"></canvas>
+</div>
+
+<!-- Tape UI -->
+<div class="tape-container" id="tapeUI">
+    <div class="tape-center-line"></div>
+    <div class="tape-track" id="tapeTrack"></div>
+</div>
+
+<button class="spin-btn" id="spinBtn">INITIALIZE SPIN</button>
+
+<div id="popup">
+    <div class="popup-card">
+        <h2 id="winStatus">WINNER!</h2>
+        <div class="prize-val" id="prizeDisplay">5000₽</div>
+        <button class="spin-btn" style="padding: 12px 30px; margin: 0;" onclick="closeWinPopup()">CLAIM</button>
+        <p style="font-size: 10px; color: #555; margin-top: 15px;" id="timerLabel">Closing in 5s...</p>
     </div>
+</div>
 
-    <div class="wheel-box">
-        <div class="pointer"></div>
-        <div id="wheel"></div>
-    </div>
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    <button class="spin-btn" id="spinBtn">ИСПЫТАТЬ УДАЧУ</button>
+    // Get Data from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode') || 'wheel';
+    const prizes = JSON.parse(urlParams.get('prizes') || '[]');
+    
+    let attempts = 3;
+    let results = { money: [], items: [] };
+    let isSpinning = false;
 
-    <div id="winPopup">
-        <div class="win-card">
-            <h2 style="color: #f9ca24">ВЫ ВЫИГРАЛИ!</h2>
-            <h1 id="prizeName">5000₽</h1>
-            <button class="spin-btn" id="claimBtn">ЗАБРАТЬ ПРИЗ</button>
-            <div class="timer" id="timerText">Закроется автоматически через 5с...</div>
-        </div>
-    </div>
+    const spinBtn = document.getElementById('spinBtn');
+    const attCount = document.getElementById('attCount');
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+    // Init UI
+    if (mode === 'wheel') {
+        document.getElementById('wheelUI').style.display = 'block';
+        drawWheel();
+    } else {
+        document.getElementById('tapeUI').style.display = 'block';
+        initTape();
+    }
 
-        let attempts = 3;
-        let sessionPrizes = { money: [], items: [] };
+    function drawWheel() {
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 320;
+        canvas.height = 320;
+        const centerX = 160;
+        const centerY = 160;
+        const rad = 155;
         
-        const prizes = [
-            { t: 'money', v: 3500, n: '3500₽' },
-            { t: 'item', v: 'iPhone 15 Pro', n: 'iPhone 15 Pro' },
-            { t: 'money', v: 5200, n: '5200₽' },
-            { t: 'item', v: 'Телевизор Samsung', n: 'Телевизор 4K' },
-            { t: 'money', v: 7000, n: '7000₽' },
-            { t: 'item', v: 'AirPods Pro 2', n: 'AirPods Pro' }
-        ];
+        const slice = (Math.PI * 2) / prizes.length;
 
-        const wheel = document.getElementById('wheel');
-        const spinBtn = document.getElementById('spinBtn');
-        const attCount = document.getElementById('attCount');
-        const winPopup = document.getElementById('winPopup');
-        const prizeName = document.getElementById('prizeName');
-        const claimBtn = document.getElementById('claimBtn');
+        prizes.forEach((p, i) => {
+            ctx.beginPath();
+            ctx.fillStyle = i % 2 === 0 ? '#0a0a0a' : '#151515';
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, rad, slice * i, slice * (i + 1));
+            ctx.fill();
+            ctx.strokeStyle = '#333';
+            ctx.stroke();
 
-        spinBtn.addEventListener('click', () => {
-            if (attempts <= 0) return;
-            
-            spinBtn.disabled = true;
-            attempts--;
-            attCount.innerText = attempts;
-
-            const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
-            const deg = 3600 + (prizes.indexOf(randomPrize) * 60) + 30; 
-            
-            wheel.style.transform = `rotate(${deg}deg)`;
-
-            setTimeout(() => {
-                // Сохраняем выигрыш
-                if (randomPrize.t === 'money') sessionPrizes.money.push(randomPrize.v);
-                else sessionPrizes.items.push(randomPrize.v);
-
-                // Если это была последняя попытка - показываем финал
-                if (attempts === 0) {
-                    showFinalWin();
-                } else {
-                    // Просто уведомление и сброс колеса
-                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                    setTimeout(() => {
-                        wheel.style.transition = 'none';
-                        wheel.style.transform = 'rotate(0deg)';
-                        setTimeout(() => {
-                            wheel.style.transition = 'transform 4s cubic-bezier(0.15, 0, 0.15, 1)';
-                            spinBtn.disabled = false;
-                        }, 50);
-                    }, 1500);
-                }
-            }, 4500);
+            // Text/Icons
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(slice * i + slice / 2);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Inter';
+            ctx.fillText(p.i + " " + p.n.substring(0, 8), 60, 5);
+            ctx.restore();
         });
+    }
 
-        function showFinalWin() {
-            const totalMoney = sessionPrizes.money.reduce((a, b) => a + b, 0);
-            const totalItems = sessionPrizes.items.join(' и ');
-            prizeName.innerHTML = `${totalMoney}₽ <br> ${totalItems}`;
-            
-            winPopup.style.display = 'flex';
-            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+    function initTape() {
+        const track = document.getElementById('tapeTrack');
+        // Create long strip
+        for(let i=0; i<60; i++) {
+            const p = prizes[i % prizes.length];
+            const div = document.createElement('div');
+            div.className = 'tape-item';
+            div.innerHTML = `<div class="icon">${p.i}</div><div>${p.n}</div>`;
+            track.appendChild(div);
+        }
+    }
 
-            let timeLeft = 5;
-            const timer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('timerText').innerText = `Закроется автоматически через ${timeLeft}с...`;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    sendResult();
-                }
-            }, 1000);
+    spinBtn.onclick = () => {
+        if (isSpinning || attempts <= 0) return;
+        startSpin();
+    };
 
-            claimBtn.onclick = () => {
-                clearInterval(timer);
-                sendResult();
-            };
+    function startSpin() {
+        isSpinning = true;
+        attempts--;
+        attCount.innerText = attempts;
+        spinBtn.disabled = true;
+
+        const winnerIndex = Math.floor(Math.random() * prizes.length);
+        const winner = prizes[winnerIndex];
+
+        if (mode === 'wheel') {
+            const deg = 3600 + (360 - (winnerIndex * (360 / prizes.length)));
+            const wheel = document.getElementById('wheelCanvas');
+            wheel.style.transition = 'transform 4s cubic-bezier(0.1, 0, 0.1, 1)';
+            wheel.style.transform = `rotate(${deg}deg)`;
+            setTimeout(() => finalizeSpin(winner), 4500);
+        } else {
+            const itemWidth = 120;
+            const offset = (winnerIndex + 40) * itemWidth - (window.innerWidth / 2) + (itemWidth / 2);
+            const track = document.getElementById('tapeTrack');
+            track.style.transition = 'transform 5s cubic-bezier(0.1, 0, 0.1, 1)';
+            track.style.transform = `translateX(-${offset}px)`;
+            setTimeout(() => finalizeSpin(winner), 5500);
+        }
+    }
+
+    function finalizeSpin(winner) {
+        isSpinning = false;
+        
+        // Handle logic
+        if (winner.t === 'money') results.money.push(parseInt(winner.v));
+        else if (winner.t === 'item') results.items.push(winner.n);
+        else if (winner.t === 'bonus') {
+            attempts += 3;
+            attCount.innerText = attempts;
         }
 
-        function sendResult() {
-            tg.sendData(JSON.stringify(sessionPrizes));
+        // Show Single Win Popup
+        showPopup(winner);
+
+        // Reset
+        if (attempts > 0) {
+            spinBtn.disabled = false;
+            // Reset animations for next spin
+            if (mode === 'wheel') {
+                document.getElementById('wheelCanvas').style.transition = 'none';
+                document.getElementById('wheelCanvas').style.transform = 'rotate(0deg)';
+            }
         }
-    </script>
+    }
+
+    let popupTimer;
+    function showPopup(winner) {
+        const p = document.getElementById('popup');
+        const display = document.getElementById('prizeDisplay');
+        const status = document.getElementById('winStatus');
+        
+        display.innerText = (winner.t === 'loss' ? '💩' : winner.i) + ' ' + winner.n;
+        status.innerText = winner.t === 'loss' ? 'УПС...' : 'ВЫИГРАНО!';
+        
+        p.style.display = 'flex';
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+        let timeLeft = 5;
+        popupTimer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timerLabel').innerText = `Closing in ${timeLeft}s...`;
+            if (timeLeft <= 0) closeWinPopup();
+        }, 1000);
+    }
+
+    function closeWinPopup() {
+        clearInterval(popupTimer);
+        document.getElementById('popup').style.display = 'none';
+        if (attempts <= 0) {
+            sendDataAndClose();
+        }
+    }
+
+    function sendDataAndClose() {
+        tg.sendData(JSON.stringify(results));
+        setTimeout(() => tg.close(), 100);
+    }
+</script>
 </body>
 </html>
