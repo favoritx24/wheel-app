@@ -511,12 +511,13 @@
         function saveState(stateObj) {
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
+            try { localStorage.setItem('km_state_global', str); } catch(e){}
             try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
         }
 
         function loadState() {
             try {
-                const local = localStorage.getItem('km_state_' + userId);
+                const local = localStorage.getItem('km_state_' + userId) || localStorage.getItem('km_state_global');
                 if (local) return JSON.parse(local);
             } catch(e){}
             return null;
@@ -524,6 +525,7 @@
 
         function clearState() {
             try { localStorage.removeItem('km_state_' + userId); } catch(e){}
+            try { localStorage.removeItem('km_state_global'); } catch(e){}
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
@@ -569,7 +571,7 @@
             
             const saved = isResetURL ? null : loadState();
 
-            if (isSpunURL || (saved && saved.isDone)) {
+            if (isSpunURL || (saved && (saved.isDone || saved.attempts === 0))) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 renderFinalSummaryModal(true);
                 return;
