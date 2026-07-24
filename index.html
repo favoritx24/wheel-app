@@ -533,7 +533,7 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        // ОЧИСТКА ПАМЯТИ ТОЛЬКО ПРИ ФЛАГЕ RESET=1
+        // ОЧИСТКА ПАМЯТИ ПРИ ФЛАГЕ RESET=1
         if (urlParams.get('reset') === '1') {
             clearState();
         }
@@ -573,15 +573,20 @@
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
             
+            if (isResetURL) {
+                clearState();
+            }
+
             const saved = isResetURL ? null : loadState();
 
-            if (isSpunURL || (saved && (saved.isDone || saved.attempts === 0))) {
+            // ПОКАЗЫВАЕМ ИТОГ ТОЛЬКО ЕСЛИ В URL СТРОГО СТОИТ spun=1
+            if (isSpunURL) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 renderFinalSummaryModal(true);
                 return;
             }
 
-            if (saved && typeof saved.attempts === 'number') {
+            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0 && !isResetURL) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
                 if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
@@ -690,7 +695,6 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            // МГНОВЕННОЕ МУЛЬТИУРОВНЕВОЕ СОХРАНЕНИЕ
             saveState({
                 attempts: attempts,
                 spinStep: spinStep,
@@ -833,8 +837,8 @@
             iconBox.innerHTML = SVGS.trophy;
             title.innerText = "ВЫИГРЫШ ЗАФИКСИРОВАН!";
 
-            const totalMoney = sessionPrizes.money.reduce((a, b) => a + b, 0);
-            const itemsList = sessionPrizes.items.length > 0 ? sessionPrizes.items.join(', ') : 'Не выпадали';
+            const totalMoney = (sessionPrizes && sessionPrizes.money) ? sessionPrizes.money.reduce((a, b) => a + b, 0) : 0;
+            const itemsList = (sessionPrizes && sessionPrizes.items && sessionPrizes.items.length > 0) ? sessionPrizes.items.join(', ') : 'Не выпадали';
 
             body.innerHTML = `
                 <div class="modal-desc">Все попытки использованы! Ваши награды зарезервированы:</div>
@@ -859,9 +863,10 @@
                 saveState({ attempts: 0, isDone: true, sessionPrizes: sessionPrizes });
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
-                } catch(e) {
-                    tg.close();
-                }
+                } catch(e){}
+                setTimeout(() => {
+                    try { tg.close(); } catch(e){}
+                }, 150);
             };
 
             modal.classList.add('active');
