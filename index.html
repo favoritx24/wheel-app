@@ -42,7 +42,6 @@
             position: relative;
         }
 
-        /* Премиальный анимированный Mesh-фон */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -90,7 +89,6 @@
             padding: 16px 20px 24px 20px;
         }
 
-        /* Шапка */
         .header-block {
             text-align: center;
             width: 100%;
@@ -156,7 +154,6 @@
             gap: 4px;
         }
 
-        /* Игровая арена */
         .game-stage {
             position: relative;
             width: 100%;
@@ -166,7 +163,6 @@
             flex-grow: 1;
         }
 
-        /* КОЛЕСО ФОРТУНЫ */
         .wheel-wrapper {
             position: relative;
             width: 320px;
@@ -206,7 +202,6 @@
             will-change: transform;
         }
 
-        /* ГОРИЗОНТАЛЬНАЯ ЛЕНТА */
         .ribbon-wrapper {
             display: none;
             position: relative;
@@ -271,7 +266,6 @@
             line-height: 1.1;
         }
 
-        /* Кнопка действия */
         .btn-glow {
             width: 100%;
             padding: 18px 0;
@@ -310,7 +304,6 @@
             box-shadow: none;
         }
 
-        /* МОДАЛЬНЫЕ ОКНА И ФИНАЛЬНЫЙ ЭКРАН */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -465,7 +458,6 @@
 
         <!-- Игровая Сцена -->
         <div class="game-stage">
-            <!-- Колесо -->
             <div class="wheel-wrapper" id="wheelBox">
                 <div class="wheel-halo"></div>
                 <svg class="pointer-marker" viewBox="0 0 28 34" fill="none">
@@ -480,21 +472,18 @@
                 <canvas id="wheelCanvas" width="640" height="640"></canvas>
             </div>
 
-            <!-- Лента -->
             <div class="ribbon-wrapper" id="ribbonBox">
                 <div class="ribbon-pointer-line"></div>
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
         </div>
 
-        <!-- Кнопка Вращения -->
         <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             ИСПЫТАТЬ УДАЧУ
         </button>
     </div>
 
-    <!-- Модалка Результата / Финальный Экран -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-card">
             <div class="modal-icon-badge" id="modalIconBox"></div>
@@ -513,12 +502,12 @@
 
     <script>
         const tg = window.Telegram.WebApp;
+        tg.ready();
         tg.expand();
 
         const userId = tg.initDataUnsafe?.user?.id || 'guest_user';
         const urlParams = new URLSearchParams(window.location.search);
         
-        // --- МИНУТНОЕ И СИНХРОННОЕ СОХРАНЕНИЕ В ПАМЯТЬ ---
         function saveState(stateObj) {
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
@@ -538,7 +527,8 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        if (urlParams.get('reset') === '1') {
+        // ЖЕСТКИЙ СБРОС ПРИ СБРОСЕ АДМИНОМ ИЛИ ОЧИСТКЕ В БОТЕ
+        if (urlParams.get('reset') === '1' || urlParams.get('spun') === '0') {
             clearState();
         }
 
@@ -575,7 +565,13 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
-            const saved = loadState();
+            const isResetURL = urlParams.get('reset') === '1' || urlParams.get('spun') === '0';
+            
+            if (isResetURL) {
+                clearState();
+            }
+
+            const saved = isResetURL ? null : loadState();
 
             if (isSpunURL || (saved && saved.isDone)) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
@@ -692,6 +688,14 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
+            // СИНХРОННАЯ ЗАПИСЬ ДО НАЧАЛА ВРАЩЕНИЯ
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                isDone: attempts === 0
+            });
+
             if (gameMode === 'wheel') {
                 runWheelAnimation(targetSectorId, targetSector);
             } else {
@@ -747,7 +751,6 @@
                 document.getElementById('attNum').innerText = attempts;
             }
 
-            // МГНОВЕННОЕ МУЛЬТИУРОВНЕВОЕ СОХРАНЕНИЕ ПОСЛЕ КАЖДОГО ВРАЩЕНИЯ
             saveState({
                 attempts: attempts,
                 spinStep: spinStep,
@@ -851,12 +854,11 @@
             btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
             
             btn.onclick = () => {
-                // МГНОВЕННАЯ ПЕРЕДАЧА И ЗАКРЫТИЕ
                 saveState({ attempts: 0, isDone: true, sessionPrizes: sessionPrizes });
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
                 } catch(e){}
-                setTimeout(() => tg.close(), 150);
+                setTimeout(() => tg.close(), 100);
             };
 
             modal.classList.add('active');
