@@ -527,7 +527,7 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        // ТОЛЬКО ЯВНЫЙ СБРОС АДМИНОМ ЧЕРЕЗ reset=1
+        // ОЧИСТКА ПАМЯТИ ТОЛЬКО ПРИ ФЛАГЕ RESET=1
         if (urlParams.get('reset') === '1') {
             clearState();
         }
@@ -684,7 +684,7 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            // МГНОВЕННОЕ ЗАПОМИНАНИЕ ШАГА
+            // МГНОВЕННОЕ МУЛЬТИУРОВНЕВОЕ СОХРАНЕНИЕ
             saveState({
                 attempts: attempts,
                 spinStep: spinStep,
