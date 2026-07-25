@@ -89,7 +89,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 18px 20px 18px;
+            padding: 16px 20px 24px 20px;
         }
 
         .header-block {
@@ -171,13 +171,13 @@
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid var(--border-glass);
             border-radius: 16px;
-            padding: 8px 14px;
+            padding: 10px 14px;
             margin-top: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             backdrop-filter: blur(15px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
         }
 
@@ -189,12 +189,17 @@
         }
 
         .live-prize-val {
-            font-size: 13px;
-            font-weight: 900;
+            font-size: 12px;
+            font-weight: 800;
             color: #2ECC71;
             display: flex;
             align-items: center;
             gap: 6px;
+            text-align: right;
+            max-width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .game-stage {
@@ -206,7 +211,7 @@
             flex-grow: 1;
         }
 
-        /* СУПЕР ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН И АНИМАЦИЯ СИНИХ КОРОБОК С КРАСНЫМ БАНТОМ */
+        /* ДИЗАЙН И АНИМАЦИЯ СИНИХ КОРОБОК С КРАСНЫМ БАНТОМ */
         .boxes-wrapper {
             display: block;
             width: 100%;
@@ -248,7 +253,7 @@
             transform: scale(0.93);
         }
 
-        /* 3D Красный бант и лента */
+        /* 3D Красный бант и ленты */
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
@@ -258,6 +263,7 @@
             box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
             z-index: 2;
             border-radius: 2px;
+            transition: opacity 0.4s ease;
         }
 
         .box-ribbon-h {
@@ -269,6 +275,7 @@
             box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
             z-index: 2;
             border-radius: 2px;
+            transition: opacity 0.4s ease;
         }
 
         .box-bow {
@@ -276,8 +283,8 @@
             top: -12px;
             z-index: 4;
             width: 44px; height: 34px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .box-cover-lid {
@@ -290,32 +297,40 @@
             justify-content: center;
             background: var(--blue-box-grad);
             border: 2px solid rgba(255, 255, 255, 0.15);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ТРЯСКА КОРОБКИ ПРИ НАЖАТИИ (ИНТРИГА) */
+        /* ТРЯСКА КОРОБКИ ПРИ НАЖАТИИ (УВЕЛИЧЕННАЯ ИНТРИГА) */
         .prize-box.shaking {
-            animation: boxShake 1.2s infinite cubic-bezier(.36,.07,.19,.97) both;
+            animation: boxShake 2.5s infinite cubic-bezier(.36,.07,.19,.97) both;
             border-color: var(--neon-gold);
-            box-shadow: 0 0 30px rgba(255, 226, 89, 0.6);
+            box-shadow: 0 0 35px rgba(255, 226, 89, 0.7);
         }
 
         @keyframes boxShake {
-            10%, 90% { transform: translate3d(-2px, 0, 0) rotate(-3deg); }
-            20%, 80% { transform: translate3d(3px, 0, 0) rotate(4deg); }
-            30%, 50%, 70% { transform: translate3d(-5px, 0, 0) rotate(-6deg); }
-            40%, 60% { transform: translate3d(5px, 0, 0) rotate(6deg); }
+            10%, 90% { transform: translate3d(-3px, 0, 0) rotate(-4deg); }
+            20%, 80% { transform: translate3d(4px, 0, 0) rotate(5deg); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0) rotate(-8deg); }
+            40%, 60% { transform: translate3d(6px, 0, 0) rotate(8deg); }
         }
 
-        /* ПОДЪЕМ КРЫШКИ И ВЫЛЕТ ПРИЗА */
+        /* ПОДЪЕМ КРЫШКИ И ИСЧЕЗНОВЕНИЕ КРАСНЫХ ЛЕНТ */
         .prize-box.opening .box-cover-lid {
-            transform: translateY(-80px) rotateX(-50deg) scale(0.6);
+            transform: translateY(-90px) rotateX(-50deg) scale(0.5);
             opacity: 0;
         }
 
         .prize-box.opening .box-bow {
-            transform: translateY(-110px) scale(0.4) rotate(20deg);
+            transform: translateY(-120px) scale(0.3) rotate(25deg);
             opacity: 0;
+        }
+
+        /* СКРЫТИЕ КРАСНОГО КРЕСТА ПОСЛЕ ОТКРЫТИЯ */
+        .prize-box.opening .box-ribbon-v,
+        .prize-box.opening .box-ribbon-h,
+        .prize-box.opened .box-ribbon-v,
+        .prize-box.opened .box-ribbon-h {
+            opacity: 0 !important;
         }
 
         .box-content {
@@ -326,10 +341,10 @@
             align-items: center;
             justify-content: center;
             padding: 8px;
-            z-index: 1;
+            z-index: 5;
             opacity: 0;
             transform: scale(0.2) translateY(20px);
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .prize-box.opened .box-content, .prize-box.opening .box-content {
@@ -347,7 +362,7 @@
             width: 42px;
             height: 42px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
         }
 
         .box-content span {
@@ -380,8 +395,8 @@
         .ribbon-pointer-line { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 4px; height: 100%; background: var(--gold-gradient); z-index: 10; }
         .ribbon-track { display: flex; align-items: center; height: 100%; position: absolute; left: 0; transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1); }
         .ribbon-card { width: 100px; height: 100px; margin: 0 6px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex-shrink: 0; }
-        .ribbon-card img, .ribbon-card svg { width: 32px; height: 32px; object-fit: contain; }
-        .ribbon-card span { font-size: 10px; font-weight: 700; color: #fff; text-align: center; }
+        .ribbon-card img, .ribbon-card svg { width: 34px; height: 34px; object-fit: contain; }
+        .ribbon-card span { font-size: 10px; font-weight: 700; color: #FFF; text-align: center; }
 
         .btn-glow {
             width: 100%;
@@ -413,7 +428,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.92);
+            background: rgba(4, 6, 14, 0.94);
             backdrop-filter: blur(16px);
             z-index: 100;
             display: none;
@@ -621,7 +636,6 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        // Загрузка динамического Лого и Фона из Админки
         const customLogo = urlParams.get('logo');
         const customBg = urlParams.get('bg');
 
@@ -660,7 +674,6 @@
         }
 
         const rawGameMode = urlParams.get('mode');
-        // По умолчанию стоят БОКСЫ!
         const gameMode = (rawGameMode === 'wheel' || rawGameMode === 'ribbon') ? rawGameMode : 'boxes';
 
         const SVGS = {
@@ -717,7 +730,10 @@
                 saved = null;
             }
 
+            // ЕСЛИ ПОПЫТКИ ИСПОЛЬЗОВАНЫ — МГНОВЕННО СКРЫВАЕМ HTML ПРИЛОЖЕНИЯ И ПОКАЗЫВАЕМ ТОЛЬКО ПОПАП
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
+                document.body.style.display = 'none';
+
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
@@ -760,15 +776,17 @@
             }
         });
 
+        /* ОБНОВЛЕННОЕ ТАБЛО ВЫИГРЫШЕЙС КОНКРЕТНЫМИ НАЗВАНИЯМИ ВЕЩЕЙ */
         function updateLivePrizesBar() {
             const barVal = document.getElementById('livePrizesVal');
             let totalMoney = sessionPrizes.money.reduce((a, b) => a + b, 0);
-            let itemsCount = sessionPrizes.items.length;
 
-            if (totalMoney > 0 || itemsCount > 0) {
+            if (totalMoney > 0 || sessionPrizes.items.length > 0) {
                 let textParts = [];
                 if (totalMoney > 0) textParts.push(`${totalMoney} ₽`);
-                if (itemsCount > 0) textParts.push(`${itemsCount} призов`);
+                if (sessionPrizes.items.length > 0) {
+                    textParts.push(sessionPrizes.items.join(', '));
+                }
                 barVal.innerText = textParts.join(' + ');
             } else {
                 barVal.innerText = "🎁 Ожидает открытия...";
@@ -814,7 +832,7 @@
             }
         }
 
-        /* ПОШАГОВАЯ АНИМАЦИЯ ОТКРЫТИЯ КОРОБОК (ИНТРИГА И ЭФФЕКТЫ) */
+        /* УВЕЛИЧЕННАЯ НА 2 СЕКУНДЫ АНИМАЦИЯ И ПОЛНОЕ УДАЛЕНИЕ КРАСНОЙ СЕТКИ */
         function selectBox(boxElement) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('shaking') || boxElement.classList.contains('opening')) return;
 
@@ -842,12 +860,12 @@
 
             saveState({ attempts: attempts, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: attempts === 0 });
 
-            // 1 ЭТАП: Тряска и интрига
+            // 1 ЭТАП: Тряска 2.5 секунды
             boxElement.classList.add('shaking');
             
             let tickInterval = setInterval(() => playTickSound(), 120);
 
-            // 2 ЭТАП: Через 1.2 секунды подъем крышки и появление приза
+            // 2 ЭТАП: Подъем крышки и плавное появление приза
             setTimeout(() => {
                 clearInterval(tickInterval);
                 boxElement.classList.remove('shaking');
@@ -857,14 +875,14 @@
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}</span>`;
 
-                // 3 ЭТАП: Закрепление приза и финал
+                // 3 ЭТАП: Финальная задержка и показ результата
                 setTimeout(() => {
                     boxElement.classList.remove('opening');
                     boxElement.classList.add('opened');
                     finishSpin(targetSector);
-                }, 900);
+                }, 1800);
 
-            }, 1200);
+            }, 2500);
         }
 
         function executeSpin() {
@@ -1023,7 +1041,7 @@
                 confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
             } else if (prize.type === 'item') {
                 title.innerText = "ЦЕННЫЙ ПРИЗ!";
-                body.innerHTML = `<div class="modal-desc">Вы выиграли:<br><strong style="color: #FFE259; font-size: 19px;">${prize.name}</strong></div>`;
+                body.innerHTML = `<div class="modal-desc">Вы выиграли:<br><strong style="color: #FFE259; font-size: 20px;">${prize.name}</strong></div>`;
                 confetti({ particleCount: 110, spread: 75, origin: { y: 0.6 } });
             } else if (prize.type === 'bonus') {
                 title.innerText = "БОНУС!";
