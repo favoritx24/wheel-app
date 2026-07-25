@@ -218,7 +218,6 @@
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Блик на верхней гранях коробки */
         .prize-box::before {
             content: '';
             position: absolute;
@@ -793,7 +792,7 @@
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'iphone', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -947,7 +946,7 @@
             let calculatedCash = 0;
 
             if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1; // iPhone 17 Pro Max
+            else if (spinStep === 2) targetSectorId = 1;
             else if (spinStep === 3) targetSectorId = 2;
             else if (spinStep === 4) targetSectorId = 5;
             else if (spinStep === 5) {
@@ -1224,7 +1223,8 @@
             
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
-                
+
+                // Фиксируем завершение игры в локальном хранилище НАВСЕГДА
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
                 let payload = "";
@@ -1234,7 +1234,9 @@
                     } catch(err) {}
                 }
 
-                try { tg.sendData(JSON.stringify(sessionPrizes)); } catch(err) {}
+                try {
+                    tg.sendData(JSON.stringify(sessionPrizes));
+                } catch(err) {}
 
                 if (botUsername) {
                     try {
@@ -1245,7 +1247,9 @@
                     }
                 }
 
-                try { tg.close(); } catch(err) {}
+                try {
+                    tg.close();
+                } catch(err) {}
             };
 
             modal.classList.add('active');
