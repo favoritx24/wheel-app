@@ -13,7 +13,8 @@
             --card-glass: rgba(10, 15, 30, 0.75);
             --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
             --blue-box-gradient: linear-gradient(135deg, #1b3a4b 0%, #0d2535 100%);
-            --red-ribbon-gradient: linear-gradient(135deg, #ff3333 0%, #990000 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #800000 0%, #ff1a1a 50%, #800000 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #800000 0%, #ff1a1a 50%, #800000 100%);
             --neon-gold: #FFE259;
             --neon-blue: #00d2ff;
             --text-main: #FFFFFF;
@@ -153,7 +154,7 @@
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         .attempts-count {
@@ -189,10 +190,6 @@
             gap: 4px;
         }
 
-        .basket-header span {
-            color: var(--neon-gold);
-        }
-
         .basket-items {
             display: flex;
             flex-wrap: wrap;
@@ -210,8 +207,13 @@
             border-radius: 20px;
             font-size: 10px;
             font-weight: 700;
-            color: #fff;
+            color: #ffffff;
+            white-space: nowrap;
             animation: badgeIn 0.3s ease-out forwards;
+        }
+
+        .basket-badge span {
+            white-space: nowrap;
         }
 
         @keyframes badgeIn {
@@ -295,19 +297,22 @@
             transition: all 0.4s ease;
         }
 
+        /* Премиальная вертикальная лента с золотым шитьем на крышке */
         .box-lid-ribbon {
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
             width: 18%; height: 100%;
             background: var(--red-ribbon-gradient);
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+            border-left: 1px solid var(--neon-gold);
+            border-right: 1px solid var(--neon-gold);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 0 4px rgba(0,0,0,0.3);
         }
 
         /* ОГРОМНЫЙ ШЕЛКОВЫЙ БАНТ */
         .mega-bow {
             position: absolute;
-            top: -20px; left: 50%;
+            top: -12%; left: 50%;
             transform: translateX(-50%);
             width: 44px; height: 34px;
             z-index: 5;
@@ -329,24 +334,30 @@
             transition: all 0.4s ease;
         }
 
+        /* Элитная вертикальная золоченая лента на корпусе */
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
             width: 18%; height: 100%;
             background: var(--red-ribbon-gradient);
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2);
+            border-left: 1.2px solid var(--neon-gold);
+            border-right: 1.2px solid var(--neon-gold);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
         }
 
+        /* Элитная горизонтальная золоченая лента на корпусе */
         .box-ribbon-h {
             position: absolute;
             top: 42%; left: 0;
             width: 100%; height: 18%;
-            background: var(--red-ribbon-gradient);
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2);
+            background: var(--red-ribbon-h-gradient);
+            border-top: 1.2px solid var(--neon-gold);
+            border-bottom: 1.2px solid var(--neon-gold);
+            box-shadow: inset 0 2px 1px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
         }
 
-        /* АНИМАЦИЯ НАПРЯЖЕНИЯ ПРИ ОТКРЫТИИ (4.5 СЕКУНДЫ) */
+        /* АНИМАЦИЯ НАПРЯЖЕНИЯ ПРИ ОТКРЫТИИ (3.5 СЕКУНДЫ) */
         .prize-box.opening .gift-container {
             animation: professionalShake 0.15s infinite alternate ease-in-out;
         }
@@ -437,8 +448,14 @@
             color: #FFFFFF;
             text-align: center;
             margin-top: 3px;
-            line-height: 1;
+            line-height: 1.1;
             text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .box-content span b {
+            white-space: nowrap;
+            display: inline-block;
         }
 
         /* ДРУГИЕ РЕЖИМЫ ИГРЫ (Оставляем как есть) */
@@ -571,7 +588,7 @@
             box-shadow: none;
         }
 
-        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ (СЕРТИФИКАТЫ И БРЕНДЫ) */
+        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ */
         .trust-banner {
             width: 100%;
             background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
@@ -1151,7 +1168,7 @@
                 if (isOpenedBefore) {
                     box.classList.add('opened');
                     const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71;">${isOpenedBefore.cashAmount}₽</b>` : '';
+                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
                     box.innerHTML = `
                         <div class="gift-container">
                             <div class="box-content" style="opacity: 1; transform: scale(1);">
@@ -1180,7 +1197,7 @@
             }
         }
 
-        // Интерактивный клик с нарастанием азарта (4.5 сек)
+        // Интерактивный клик с нарастанием азарта (ровно 3.5 сек)
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
@@ -1219,19 +1236,19 @@
 
             boxElement.classList.add('opening');
 
-            // Нагнетание атмосферы ускоряющимися тиками
-            let delay = 180;
+            // Нагнетание атмосферы ускоряющимися тиками звука под время 3.5 секунды
+            let delay = 160;
             let timerId;
             function playSuspenseSound() {
                 playTickSound(500, 0.05, 0.05);
-                delay = Math.max(50, delay - 8);
+                delay = Math.max(40, delay - 10);
                 if (isSpinning && boxElement.classList.contains('opening')) {
                     timerId = setTimeout(playSuspenseSound, delay);
                 }
             }
             playSuspenseSound();
 
-            // Эффект взрыва крышки ровно через 4.5 секунды
+            // Эффект взрыва крышки ровно через 3.5 секунды (3500 мс)
             setTimeout(() => {
                 clearTimeout(timerId);
                 playTickSound(1300, 0.3, 0.07); // Звук взлетающей крышки
@@ -1241,14 +1258,14 @@
 
                 const contentDiv = boxElement.querySelector('.box-content');
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
-                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71;">${targetSector.cashAmount}₽</b>` : '';
+                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
 
                 setTimeout(() => {
                     finishSpin(targetSector);
                 }, 800);
 
-            }, 4500);
+            }, 3500);
         }
 
         function executeSpin() {
@@ -1363,7 +1380,7 @@
 
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
-                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
+                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px; white-space: nowrap;">${prize.cashAmount} ₽</strong></div>`;
                 confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
             } else if (prize.type === 'item') {
                 title.innerText = "ЦЕННЫЙ ПРИЗ!";
@@ -1436,7 +1453,7 @@
                 <div class="prize-summary-box">
                     <div class="prize-summary-row">
                         <span class="prize-label">Баланс к выплате:</span>
-                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
+                        <span class="prize-val" style="color: #2ECC71; white-space: nowrap;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
                     </div>
                     <div class="prize-summary-row">
                         <span class="prize-label">Физические призы:</span>
