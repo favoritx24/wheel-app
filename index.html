@@ -699,11 +699,7 @@
 
             let saved = isResetURL ? null : loadState();
 
-            if (!isSpunURL && saved && (saved.isDone || saved.attempts <= 0) && !isResetURL) {
-                clearState();
-                saved = null;
-            }
-
+            // Если игра уже полностью завершена (в локальной памяти или по URL) — показываем итог
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 attempts = 0;
@@ -711,6 +707,7 @@
                 return;
             }
 
+            // Если пользователь на середине попыток — восстанавливаем прогресс
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0 && !isResetURL) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
@@ -1058,15 +1055,21 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
-                let sentDataSuccess = false;
+                
+                // Пробуем отправить данные стандартным путем sendData
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
-                    sentDataSuccess = true;
                 } catch(err) {}
 
-                if (!sentDataSuccess && botUsername) {
+                // Гарантированный редирект с передачей выигрыша в бота (работает при любых условиях!)
+                if (botUsername) {
                     try {
-                        tg.openTelegramLink('https://t.me/' + botUsername + '?start=claim');
+                        let payload = "";
+                        if (!isAlreadyDone && sessionPrizes) {
+                            payload = btoa(JSON.stringify(sessionPrizes)).replace(/=/g, '');
+                        }
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        tg.openTelegramLink(deepLink);
                     } catch(err) {}
                 }
 
