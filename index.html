@@ -691,15 +691,17 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
+            const isSpunZeroURL = urlParams.get('spun') === '0';
             const isResetURL = urlParams.get('reset') === '1';
 
-            if (isResetURL) {
+            // Если из бота пришёл явный флаг сброса (reset=1 или spun=0) — полностью чистим локальный кэш
+            if (isResetURL || isSpunZeroURL) {
                 clearState();
             }
 
-            let saved = isResetURL ? null : loadState();
+            let saved = (isResetURL || isSpunZeroURL) ? null : loadState();
 
-            // ПООЧЕРЕДНАЯ ПРОВЕРКА: Если все попытки завершены, ПОКАЗЫВАЕМ ПОП-АП И ЗАКРЫВАЕМ
+            // Если попытки уже завершены (и не было сброса) — показываем предупреждающий поп-ап
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
@@ -716,8 +718,8 @@
                 return;
             }
 
-            // Восстановление на середине
-            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0 && !isResetURL) {
+            // Восстановление сохранённого прогресса
+            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
                 if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
@@ -1071,7 +1073,6 @@
                     sentViaData = true;
                 } catch(err) {}
 
-                // Если sendData не поддерживается кнопкой вызова, перенаправляем по диплинку
                 if (!sentViaData && botUsername) {
                     try {
                         let payload = "";
