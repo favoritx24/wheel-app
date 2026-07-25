@@ -699,15 +699,24 @@
 
             let saved = isResetURL ? null : loadState();
 
-            // Если игра уже полностью завершена (в локальной памяти или по URL) — показываем итог
+            // ПООЧЕРЕДНАЯ ПРОВЕРКА: Если все попытки завершены, ПОКАЗЫВАЕМ ПОП-АП И ЗАКРЫВАЕМ
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
-                attempts = 0;
-                renderFinalSummaryModal(isSpunURL);
+                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
+                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
+                                 "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
+                
+                if (tg.showAlert) {
+                    tg.showAlert(alertTxt, function() {
+                        tg.close();
+                    });
+                } else {
+                    alert(alertTxt);
+                    tg.close();
+                }
                 return;
             }
 
-            // Если пользователь на середине попыток — восстанавливаем прогресс
+            // Восстановление на середине
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0 && !isResetURL) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
@@ -1056,13 +1065,14 @@
                 if (e) e.stopPropagation();
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
                 
-                // Пробуем отправить данные стандартным путем sendData
+                let sentViaData = false;
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
+                    sentViaData = true;
                 } catch(err) {}
 
-                // Гарантированный редирект с передачей выигрыша в бота (работает при любых условиях!)
-                if (botUsername) {
+                // Если sendData не поддерживается кнопкой вызова, перенаправляем по диплинку
+                if (!sentViaData && botUsername) {
                     try {
                         let payload = "";
                         if (!isAlreadyDone && sessionPrizes) {
