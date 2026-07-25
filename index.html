@@ -827,20 +827,22 @@
 
             let saved = loadState();
 
+            // ТОЛЬКО при сбросе через админку (reset=1 или изменении версии v) сбрасываем состояние!
             if (isResetURL || (saved && saved.v && saved.v !== urlVersion)) {
                 clearState();
                 saved = null;
             }
 
+            // Если игра уже полностью завершена (по spun=1 или в локальной памяти), выводим вирусный поп-ап и закрываем
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                document.body.style.display = 'none';
-
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() { tg.close(); });
+                    tg.showAlert(alertTxt, function() {
+                        tg.close();
+                    });
                 } else {
                     alert(alertTxt);
                     tg.close();
@@ -848,6 +850,7 @@
                 return;
             }
 
+            // Восстановление состояния прокруток на середине
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
@@ -1215,7 +1218,7 @@
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните условия для подтверждения и получения призов!
+                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
 
