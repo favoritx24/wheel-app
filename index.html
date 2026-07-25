@@ -698,10 +698,18 @@
 
             let saved = isResetURL ? null : loadState();
 
-            if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
+            // Если в базе бота прогресс равен 0 (нет параметра spun=1),
+            // но в локальном хранилище написано, что игра окончена,
+            // значит, был произведен сброс в админке. Очищаем локальную память!
+            if (!isSpunURL && saved && (saved.isDone || saved.attempts <= 0)) {
+                clearState();
+                saved = null;
+            }
+
+            if (isSpunURL) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 attempts = 0;
-                renderFinalSummaryModal(isSpunURL);
+                renderFinalSummaryModal(true);
                 return;
             }
 
@@ -709,6 +717,10 @@
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
                 if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
+            } else {
+                attempts = 3;
+                spinStep = 0;
+                sessionPrizes = { money: [], items: [] };
             }
 
             document.getElementById('attNum').innerText = attempts;
