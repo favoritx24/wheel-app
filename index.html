@@ -641,10 +641,6 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        if (urlParams.get('reset') === '1') {
-            clearState();
-        }
-
         const rawGameMode = urlParams.get('mode');
         const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'wheel';
 
@@ -700,9 +696,16 @@
                 clearState();
             }
 
-            const saved = isResetURL ? null : loadState();
+            let saved = isResetURL ? null : loadState();
 
-            if (isSpunURL || (saved && (saved.isDone || saved.attempts === 0))) {
+            // ЕСЛИ В URL НЕТ spun=1, НО ЛОКАЛЬНАЯ ПАМЯТЬ СЧИТАЕТ ИГРУ ЗАВЕРШЕННОЙ —
+            // ЭТО ЗНАЧИТ, ЧТО БАЗА ДАННЫХ БОТА БЫЛА СБРОШЕНА. ОЧИЩАЕМ УСТАРЕВШИЙ КЕШ!
+            if (!isSpunURL && saved && (saved.isDone || saved.attempts <= 0)) {
+                clearState();
+                saved = null;
+            }
+
+            if (isSpunURL) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 renderFinalSummaryModal(true);
                 return;
