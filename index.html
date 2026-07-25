@@ -687,7 +687,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         
-        // Гарантированное считывание юзернейма бота
+        // Гарантированное получение юзернейма бота с фоллбэком из Telegram WebApp API
         let botUsername = urlParams.get('b') || '';
         if (!botUsername && tg.initDataUnsafe && tg.initDataUnsafe.bot && tg.initDataUnsafe.bot.username) {
             botUsername = tg.initDataUnsafe.bot.username;
@@ -1207,10 +1207,10 @@
                     } catch(err) {}
                 }
 
-                // 1. Попытка отправить через sendData (для Reply-меню)
+                // 1. Для случаев открытия из нижней клавиатуры
                 try { tg.sendData(JSON.stringify(sessionPrizes)); } catch(err) {}
 
-                // 2. Определение Юзернейма бота
+                // 2. Получение юзернейма бота (с резервным источником)
                 let targetBot = botUsername;
                 if (!targetBot && tg.initDataUnsafe && tg.initDataUnsafe.bot && tg.initDataUnsafe.bot.username) {
                     targetBot = tg.initDataUnsafe.bot.username;
@@ -1226,10 +1226,10 @@
                     }
                 }
 
-                // 4. Задержка закрытия, чтобы клиент Telegram успел запустить диплинк
+                // 4. Задержка 500мс, чтобы Telegram успел отправить команду перед закрытием окна
                 setTimeout(() => {
                     try { tg.close(); } catch(err) {}
-                }, 350);
+                }, 500);
             };
 
             modal.classList.add('active');
