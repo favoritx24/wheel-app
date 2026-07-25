@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>КЭШ-МАГНАТ | VIP CLUB</title>
+    <title>КЭШ-МАГНАТ | BOXES VIP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -687,7 +687,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         
-        // Надежное извлечение юзернейма бота
         let botUsername = urlParams.get('b') || '';
         if (!botUsername && tg.initDataUnsafe && tg.initDataUnsafe.bot) {
             botUsername = tg.initDataUnsafe.bot.username || '';
@@ -1207,10 +1206,10 @@
                     } catch(err) {}
                 }
 
-                // Резервная отправка через sendData
+                // 1. Попытка отправки через sendData (работает в Reply-меню)
                 try { tg.sendData(JSON.stringify(sessionPrizes)); } catch(err) {}
 
-                // Формирование точного диплинка перенаправления
+                // 2. Получение Юзернейма бота с фоллбэками
                 let targetBot = botUsername;
                 if (!targetBot && tg.initDataUnsafe && tg.initDataUnsafe.bot) {
                     targetBot = tg.initDataUnsafe.bot.username;
@@ -1225,9 +1224,10 @@
                     }
                 }
 
+                // 3. Важная задержка закрытия Mini App для 100% срабатывания перехода
                 setTimeout(() => {
                     try { tg.close(); } catch(err) {}
-                }, 350);
+                }, 800);
             };
 
             modal.classList.add('active');
