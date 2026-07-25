@@ -266,7 +266,7 @@
             line-height: 1.1;
         }
 
-        /* ДИЗАЙН ПРИЗОВЫХ БОКСОВ (GOOGLE/APPLE LEVEL) */
+        /* ДИЗАЙН ПРИЗОВЫХ БОКСОВ */
         .boxes-wrapper {
             display: none;
             width: 100%;
@@ -321,9 +321,8 @@
         }
 
         .box-cover svg {
-            width: 36px;
-            height: 36px;
-            filter: drop-shadow(0 4px 10px rgba(255, 226, 89, 0.5));
+            width: 32px; height: 32px;
+            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.5));
         }
 
         .prize-box.opening .box-cover {
@@ -367,9 +366,8 @@
             font-weight: 800;
             color: #FFFFFF;
             text-align: center;
-            margin-top: 3px;
+            margin-top: 2px;
             line-height: 1;
-            text-transform: uppercase;
         }
 
         .btn-glow {
@@ -615,8 +613,8 @@
         tg.ready();
         tg.expand();
 
-        const userId = tg.initDataUnsafe?.user?.id || 'guest_user';
         const urlParams = new URLSearchParams(window.location.search);
+        const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         
         function saveState(stateObj) {
             const str = JSON.stringify(stateObj);
@@ -697,14 +695,14 @@
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
-            
+
             if (isResetURL) {
                 clearState();
             }
 
             const saved = isResetURL ? null : loadState();
 
-            if (isSpunURL) {
+            if (isSpunURL || (saved && (saved.isDone || saved.attempts === 0))) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 renderFinalSummaryModal(true);
                 return;
@@ -727,7 +725,7 @@
                 document.getElementById('wheelBox').style.display = 'none';
                 document.getElementById('ribbonBox').style.display = 'none';
                 document.getElementById('boxesBox').style.display = 'block';
-                document.getElementById('spinBtn').style.display = 'none'; // В боксах клик идет прямо по боксу
+                document.getElementById('spinBtn').style.display = 'none';
                 buildBoxesGrid();
             } else {
                 renderWheel();
@@ -843,7 +841,6 @@
 
             saveState({ attempts: attempts, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: attempts === 0 });
 
-            // АНИМАЦИЯ ОТКРЫТИЯ БОКСА
             boxElement.classList.add('opening');
             playTickSound();
 
@@ -1054,10 +1051,9 @@
                 saveState({ attempts: 0, isDone: true, sessionPrizes: sessionPrizes });
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
-                } catch(e){}
-                setTimeout(() => {
-                    try { tg.close(); } catch(e){}
-                }, 150);
+                } catch(e) {
+                    try { tg.close(); } catch(err){}
+                }
             };
 
             modal.classList.add('active');
