@@ -597,7 +597,7 @@
             <div class="modal-icon-badge" id="modalIconBox"></div>
             <h2 class="modal-title" id="modalTitle">ВЫИГРЫШ!</h2>
             <div id="modalBody"></div>
-            <button class="modal-action-btn" id="modalBtn" onclick="handleModalAction()">
+            <button class="modal-action-btn" id="modalBtn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 ПРОДОЛЖИТЬ
             </button>
@@ -698,16 +698,10 @@
 
             let saved = isResetURL ? null : loadState();
 
-            // ЕСЛИ В URL НЕТ spun=1, НО ЛОКАЛЬНАЯ ПАМЯТЬ СЧИТАЕТ ИГРУ ЗАВЕРШЕННОЙ —
-            // ЭТО ЗНАЧИТ, ЧТО БАЗА ДАННЫХ БОТА БЫЛА СБРОШЕНА. ОЧИЩАЕМ УСТАРЕВШИЙ КЕШ!
-            if (!isSpunURL && saved && (saved.isDone || saved.attempts <= 0)) {
-                clearState();
-                saved = null;
-            }
-
-            if (isSpunURL) {
+            if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
-                renderFinalSummaryModal(true);
+                attempts = 0;
+                renderFinalSummaryModal(isSpunURL);
                 return;
             }
 
@@ -987,6 +981,7 @@
                 btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
             }
 
+            btn.onclick = handleModalAction;
             modal.classList.add('active');
         }
 
@@ -1050,13 +1045,15 @@
 
             btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
             
-            btn.onclick = () => {
-                saveState({ attempts: 0, isDone: true, sessionPrizes: sessionPrizes });
+            btn.onclick = (e) => {
+                if (e) e.stopPropagation();
+                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
-                } catch(e) {
-                    try { tg.close(); } catch(err){}
-                }
+                } catch(err) {}
+                try {
+                    tg.close();
+                } catch(err) {}
             };
 
             modal.classList.add('active');
