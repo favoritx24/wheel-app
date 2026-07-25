@@ -698,18 +698,10 @@
 
             let saved = isResetURL ? null : loadState();
 
-            // Если в базе бота прогресс равен 0 (нет параметра spun=1),
-            // но в локальном хранилище написано, что игра окончена,
-            // значит, был произведен сброс в админке. Очищаем локальную память!
-            if (!isSpunURL && saved && (saved.isDone || saved.attempts <= 0)) {
-                clearState();
-                saved = null;
-            }
-
-            if (isSpunURL) {
+            if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
                 attempts = 0;
-                renderFinalSummaryModal(true);
+                renderFinalSummaryModal(isSpunURL);
                 return;
             }
 
