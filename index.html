@@ -615,7 +615,8 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        
+        const botUsername = urlParams.get('b') || '';
+
         function saveState(stateObj) {
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
@@ -697,6 +698,11 @@
             }
 
             let saved = isResetURL ? null : loadState();
+
+            if (!isSpunURL && saved && (saved.isDone || saved.attempts <= 0) && !isResetURL) {
+                clearState();
+                saved = null;
+            }
 
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 if (saved && saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
@@ -1052,9 +1058,18 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
+                let sentDataSuccess = false;
                 try {
                     tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
+                    sentDataSuccess = true;
                 } catch(err) {}
+
+                if (!sentDataSuccess && botUsername) {
+                    try {
+                        tg.openTelegramLink('https://t.me/' + botUsername + '?start=claim');
+                    } catch(err) {}
+                }
+
                 try {
                     tg.close();
                 } catch(err) {}
