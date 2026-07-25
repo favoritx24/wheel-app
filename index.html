@@ -10,15 +10,14 @@
     <style>
         :root {
             --bg-dark: #030712;
-            --card-glass: rgba(15, 23, 42, 0.75);
             --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
-            --blue-box-grad: linear-gradient(145deg, #1e3a8a 0%, #0f172a 100%);
-            --red-ribbon-grad: linear-gradient(135deg, #ff2a5f 0%, #dc2626 100%);
+            --blue-box-grad: radial-gradient(circle at 50% 30%, #2563eb 0%, #1e3a8a 55%, #0f172a 100%);
+            --red-ribbon-grad: linear-gradient(135deg, #ff2a5f 0%, #dc2626 50%, #991b1b 100%);
             --neon-gold: #FFE259;
             --neon-blue: #38bdf8;
             --text-main: #FFFFFF;
             --text-muted: #94A3B8;
-            --border-glass: rgba(56, 189, 248, 0.25);
+            --border-glass: rgba(56, 189, 248, 0.3);
             --border-subtle: rgba(255, 255, 255, 0.08);
         }
 
@@ -97,6 +96,13 @@
             width: 100%;
         }
 
+        .brand-logo-svg {
+            max-width: 260px;
+            height: auto;
+            filter: drop-shadow(0 4px 20px rgba(255, 226, 89, 0.4));
+            margin-bottom: 2px;
+        }
+
         .brand-logo-img {
             max-height: 48px;
             max-width: 240px;
@@ -105,47 +111,16 @@
             margin-bottom: 6px;
         }
 
-        .brand-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--border-glass);
-            padding: 8px 18px;
-            border-radius: 40px;
-            backdrop-filter: blur(20px);
-            margin-bottom: 6px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        .brand-title {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .brand-title svg {
-            width: 22px; height: 22px;
-            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.8));
-        }
-
         .attempts-pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--card-glass);
+            background: rgba(15, 23, 42, 0.8);
             border: 1px solid var(--border-subtle);
             padding: 6px 18px;
             border-radius: 30px;
             backdrop-filter: blur(15px);
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .attempts-label {
@@ -177,7 +152,7 @@
             align-items: center;
             justify-content: space-between;
             backdrop-filter: blur(15px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
         }
 
@@ -195,8 +170,6 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            text-align: right;
-            max-width: 220px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -211,7 +184,7 @@
             flex-grow: 1;
         }
 
-        /* ДИЗАЙН И АНИМАЦИЯ СИНИХ КОРОБОК С КРАСНЫМ БАНТОМ */
+        /* НАПОЛНЕННЫЕ ДИЗАЙНЕРСКИЕ СИНИЕ КОРОБКИ С БОЛЬШИМ 3D БАНТОМ */
         .boxes-wrapper {
             display: block;
             width: 100%;
@@ -223,7 +196,7 @@
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 14px;
             width: 100%;
         }
 
@@ -231,36 +204,46 @@
             position: relative;
             aspect-ratio: 1;
             background: var(--blue-box-grad);
-            border: 2px solid rgba(56, 189, 248, 0.4);
-            border-radius: 20px;
+            border: 2px solid rgba(56, 189, 248, 0.5);
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             overflow: visible;
             backdrop-filter: blur(12px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 2px 3px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75), inset 0 2px 4px rgba(255, 255, 255, 0.35);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        /* Текстурный узор закрытой коробки */
+        .box-pattern-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 20px;
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 10px, transparent 0, transparent 20px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
         .prize-box:hover {
-            transform: translateY(-3px) scale(1.02);
-            border-color: var(--neon-blue);
-            box-shadow: 0 14px 30px rgba(56, 189, 248, 0.3);
+            transform: translateY(-4px) scale(1.03);
+            border-color: var(--neon-gold);
+            box-shadow: 0 16px 35px rgba(56, 189, 248, 0.45);
         }
 
         .prize-box:active {
             transform: scale(0.93);
         }
 
-        /* 3D Красный бант и ленты */
+        /* Красные ленты на коробке */
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 18px; height: 100%;
+            width: 20px; height: 100%;
             background: var(--red-ribbon-grad);
-            box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
             z-index: 2;
             border-radius: 2px;
             transition: opacity 0.4s ease;
@@ -270,41 +253,43 @@
             position: absolute;
             top: 50%; left: 0;
             transform: translateY(-50%);
-            width: 100%; height: 18px;
+            width: 100%; height: 20px;
             background: var(--red-ribbon-grad);
-            box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
             z-index: 2;
             border-radius: 2px;
             transition: opacity 0.4s ease;
         }
 
+        /* Роскошный пропорциональный 3D Бант */
         .box-bow {
             position: absolute;
-            top: -12px;
+            top: -22px;
             z-index: 4;
-            width: 44px; height: 34px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+            width: 76px; height: 56px;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
         }
 
         .box-cover-lid {
             position: absolute;
             top: -2px; left: -2px; right: -2px; bottom: -2px;
-            border-radius: 20px;
+            border-radius: 22px;
             z-index: 3;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--blue-box-grad);
-            border: 2px solid rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.25);
             transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ТРЯСКА КОРОБКИ ПРИ НАЖАТИИ (УВЕЛИЧЕННАЯ ИНТРИГА) */
+        /* ТРЯСКА КОРОБКИ ПРИ НАЖАТИИ */
         .prize-box.shaking {
             animation: boxShake 2.5s infinite cubic-bezier(.36,.07,.19,.97) both;
             border-color: var(--neon-gold);
-            box-shadow: 0 0 35px rgba(255, 226, 89, 0.7);
+            box-shadow: 0 0 35px rgba(255, 226, 89, 0.8);
         }
 
         @keyframes boxShake {
@@ -325,7 +310,7 @@
             opacity: 0;
         }
 
-        /* СКРЫТИЕ КРАСНОГО КРЕСТА ПОСЛЕ ОТКРЫТИЯ */
+        /* ПОЛНОЕ УДАЛЕНИЕ КРАСНЫХ ЛЕНТ ПОСЛЕ ОТКРЫТИЯ */
         .prize-box.opening .box-ribbon-v,
         .prize-box.opening .box-ribbon-h,
         .prize-box.opened .box-ribbon-v,
@@ -359,8 +344,8 @@
         }
 
         .box-content img, .box-content svg {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             object-fit: contain;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
         }
@@ -389,7 +374,7 @@
         #wheelCanvas { width: 310px; height: 310px; border-radius: 50%; transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1); }
 
         .ribbon-wrapper {
-            display: none; position: relative; width: 100%; height: 130px; background: var(--card-glass);
+            display: none; position: relative; width: 100%; height: 130px; background: rgba(15, 23, 42, 0.75);
             border: 2px solid var(--border-glass); border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
         }
         .ribbon-pointer-line { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 4px; height: 100%; background: var(--gold-gradient); z-index: 10; }
@@ -553,15 +538,30 @@
     </div>
 
     <div class="app-container">
-        <!-- Шапка С Логотипом -->
+        <!-- Шапка С Эксклюзивным SVG Логотипом "КЭШ-МАГНАТ" -->
         <div class="header-block">
             <div id="logoContainer">
-                <div class="brand-badge">
-                    <div class="brand-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        КЭШ-МАГНАТ
-                    </div>
-                </div>
+                <svg class="brand-logo-svg" viewBox="0 0 320 60" fill="none">
+                    <rect x="10" y="5" width="300" height="50" rx="25" fill="url(#bgL)" stroke="url(#brL)" stroke-width="1.5"/>
+                    <path d="M35 20 L40 38 L45 28 L50 38 L55 20" stroke="#FFE259" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="45" cy="16" r="3" fill="#FFA751"/>
+                    <text x="70" y="38" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="21" fill="url(#txtG)" letter-spacing="2">КЭШ-МАГНАТ</text>
+                    <path d="M280 22 L285 30 L293 31 L287 37 L289 45 L281 41 L273 45 L275 37 L269 31 L277 30 Z" fill="#FFE259"/>
+                    <defs>
+                        <linearGradient id="bgL" x1="0" y1="0" x2="320" y2="60">
+                            <stop stop-color="#0f172a" stop-opacity="0.9"/>
+                            <stop offset="1" stop-color="#1e293b" stop-opacity="0.9"/>
+                        </linearGradient>
+                        <linearGradient id="brL" x1="0" y1="0" x2="320" y2="60">
+                            <stop stop-color="#FFE259" stop-opacity="0.6"/>
+                            <stop offset="1" stop-color="#FFA751" stop-opacity="0.2"/>
+                        </linearGradient>
+                        <linearGradient id="txtG" x1="70" y1="0" x2="250" y2="0" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FFE259"/>
+                            <stop offset="1" stop-color="#FFA751"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
             </div>
             
             <div class="attempts-pill">
@@ -574,7 +574,10 @@
 
             <div class="live-prizes-bar" id="livePrizesBar">
                 <span class="live-prize-tag">Ваш багаж:</span>
-                <span class="live-prize-val" id="livePrizesVal">🎁 Ожидает открытия...</span>
+                <span class="live-prize-val" id="livePrizesVal">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                    Ожидает открытия...
+                </span>
             </div>
         </div>
 
@@ -678,19 +681,43 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
             watch: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 3h6v4H9zM9 17h6v4H9z"/></svg>`,
             laptop: `<svg viewBox="0 0 24 24" fill="none" stroke="#2F80ED" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>`,
             trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`,
-            redBow: `<svg class="box-bow" viewBox="0 0 50 40" fill="none"><path d="M25 18C20 8 5 5 8 18C10 26 25 22 25 22Z" fill="url(#bowG)"/><path d="M25 18C30 8 45 5 42 18C40 26 25 22 25 22Z" fill="url(#bowG)"/><circle cx="25" cy="20" r="5" fill="#dc2626"/><defs><linearGradient id="bowG" x1="0" y1="0" x2="50" y2="40"><stop stop-color="#ff4b72"/><stop offset="1" stop-color="#991b1b"/></linearGradient></defs></svg>`
+            /* Большой и реалистичный 3D Красный Бант */
+            redBow: `<svg class="box-bow" viewBox="0 0 100 70" fill="none">
+                <path d="M35 35 L15 65 L30 60 L45 38 Z" fill="url(#tailG)"/>
+                <path d="M65 35 L85 65 L70 60 L55 38 Z" fill="url(#tailG)"/>
+                <path d="M50 30 C30 5 5 15 10 32 C15 45 40 35 50 30 Z" fill="url(#bowGrad)"/>
+                <path d="M50 30 C70 5 95 15 90 32 C85 45 60 35 50 30 Z" fill="url(#bowGrad)"/>
+                <path d="M48 28 C35 12 18 20 22 30 C25 35 42 32 48 28 Z" fill="#ff4b72" opacity="0.6"/>
+                <path d="M52 28 C65 12 82 20 78 30 C75 35 58 32 52 28 Z" fill="#ff4b72" opacity="0.6"/>
+                <rect x="42" y="22" width="16" height="16" rx="5" fill="url(#knotG)" stroke="#dc2626" stroke-width="1.5"/>
+                <defs>
+                    <linearGradient id="bowGrad" x1="0" y1="0" x2="100" y2="70">
+                        <stop stop-color="#ff3366"/>
+                        <stop offset="0.5" stop-color="#dc2626"/>
+                        <stop offset="1" stop-color="#881337"/>
+                    </linearGradient>
+                    <linearGradient id="tailG" x1="0" y1="0" x2="0" y2="70">
+                        <stop stop-color="#e11d48"/>
+                        <stop offset="1" stop-color="#9f1239"/>
+                    </linearGradient>
+                    <linearGradient id="knotG" x1="42" y1="22" x2="58" y2="38">
+                        <stop stop-color="#fda4af"/>
+                        <stop offset="0.5" stop-color="#e11d48"/>
+                        <stop offset="1" stop-color="#9f1239"/>
+                    </linearGradient>
+                </defs>
+            </svg>`
         };
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -730,12 +757,12 @@
                 saved = null;
             }
 
-            // ЕСЛИ ПОПЫТКИ ИСПОЛЬЗОВАНЫ — МГНОВЕННО СКРЫВАЕМ HTML ПРИЛОЖЕНИЯ И ПОКАЗЫВАЕМ ТОЛЬКО ПОПАП
+            // ЕСЛИ ПОПЫТКИ ИСПОЛЬЗОВАНЫ — МГНОВЕННО СКРЫВАЕМ HTML И ПОКАЗЫВАЕМ ПОПАП
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 document.body.style.display = 'none';
 
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
-                                 "Вы успешно использовали все доступные попытки открытия боксов! Призы зарезервированы.\n\n" +
+                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
                 if (tg.showAlert) {
@@ -776,7 +803,6 @@
             }
         });
 
-        /* ОБНОВЛЕННОЕ ТАБЛО ВЫИГРЫШЕЙС КОНКРЕТНЫМИ НАЗВАНИЯМИ ВЕЩЕЙ */
         function updateLivePrizesBar() {
             const barVal = document.getElementById('livePrizesVal');
             let totalMoney = sessionPrizes.money.reduce((a, b) => a + b, 0);
@@ -787,15 +813,16 @@
                 if (sessionPrizes.items.length > 0) {
                     textParts.push(sessionPrizes.items.join(', '));
                 }
-                barVal.innerText = textParts.join(' + ');
+                barVal.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ${textParts.join(' + ')}`;
             } else {
-                barVal.innerText = "🎁 Ожидает открытия...";
+                barVal.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> Ожидает открытия...`;
             }
         }
 
+        /* ТОЧНЫЙ РАНДОМ ДЕНЕГ: ОТ 5 000 ДО 20 000 С ШАГОМ 150 РУБЛЕЙ */
         function generateCashAmount() {
-            const steps = Math.floor(Math.random() * 101);
-            return 5000 + (steps * 100);
+            const steps = Math.floor(Math.random() * 101); // 0..100
+            return 5000 + (steps * 150);
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -822,6 +849,7 @@
                 box.setAttribute('data-index', i);
                 box.onclick = () => selectBox(box);
                 box.innerHTML = `
+                    <div class="box-pattern-overlay"></div>
                     <div class="box-ribbon-v"></div>
                     <div class="box-ribbon-h"></div>
                     ${SVGS.redBow}
@@ -832,7 +860,6 @@
             }
         }
 
-        /* УВЕЛИЧЕННАЯ НА 2 СЕКУНДЫ АНИМАЦИЯ И ПОЛНОЕ УДАЛЕНИЕ КРАСНОЙ СЕТКИ */
         function selectBox(boxElement) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('shaking') || boxElement.classList.contains('opening')) return;
 
@@ -845,7 +872,7 @@
             let calculatedCash = 0;
 
             if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
+            else if (spinStep === 2) targetSectorId = 1; // iPhone 17 Pro Max
             else if (spinStep === 3) targetSectorId = 2;
             else if (spinStep === 4) targetSectorId = 5;
             else if (spinStep === 5) {
@@ -865,7 +892,7 @@
             
             let tickInterval = setInterval(() => playTickSound(), 120);
 
-            // 2 ЭТАП: Подъем крышки и плавное появление приза
+            // 2 ЭТАП: Подъем крышки и появление приза
             setTimeout(() => {
                 clearInterval(tickInterval);
                 boxElement.classList.remove('shaking');
@@ -875,7 +902,7 @@
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}</span>`;
 
-                // 3 ЭТАП: Финальная задержка и показ результата
+                // 3 ЭТАП: Финал
                 setTimeout(() => {
                     boxElement.classList.remove('opening');
                     boxElement.classList.add('opened');
