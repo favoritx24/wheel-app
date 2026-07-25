@@ -6,7 +6,7 @@
     <title>КЭШ-МАГНАТ | VIP CLUB</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #02040a;
@@ -283,7 +283,7 @@
             transform: scale(0.95);
         }
 
-        /* КРЫШКА КОРОБКИ */
+        /* КРЫШКА КОРОБКИ (Слегка выходит за рамки корпуса) */
         .box-lid-container {
             position: absolute;
             top: 0; left: -2px; right: -2px;
@@ -354,7 +354,7 @@
             background: var(--red-ribbon-h-gradient);
             border-top: 1.2px solid var(--neon-gold);
             border-bottom: 1.2px solid var(--neon-gold);
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
+            box-shadow: inset 0 2px 1px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
         }
 
         /* АНИМАЦИЯ НАПРЯЖЕНИЯ ПРИ ОТКРЫТИИ (3.5 СЕКУНДЫ) */
@@ -443,16 +443,14 @@
         }
 
         .box-content span {
-            font-size: 7.5px;
+            font-size: 8px;
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
             margin-top: 3px;
             line-height: 1.1;
             text-transform: uppercase;
-            display: block;
-            width: 100%;
-            word-break: break-word; /* Автоперенос длинных слов, чтобы текст не вылезал */
+            white-space: nowrap;
         }
 
         .box-content span b {
@@ -460,7 +458,7 @@
             display: inline-block;
         }
 
-        /* ДРУГИЕ РЕЖИМЫ ИГРЫ */
+        /* ДРУГИЕ РЕЖИМЫ ИГРЫ (Оставляем как есть) */
         .wheel-wrapper {
             position: relative;
             width: 320px; height: 320px;
@@ -590,18 +588,18 @@
             box-shadow: none;
         }
 
-        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ (АККУРАТНАЯ ПЛАШКА) */
+        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ */
         .trust-banner {
             width: 100%;
             background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
             border: 1px solid rgba(255, 226, 89, 0.18);
             border-radius: 16px;
-            padding: 12px 14px;
+            padding: 10px 14px;
             text-align: center;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .trust-header {
@@ -622,9 +620,27 @@
         }
 
         .trust-desc {
-            font-size: 10.5px;
+            font-size: 10px;
             color: #94a3b8;
-            line-height: 1.4;
+            line-height: 1.35;
+        }
+
+        .partner-logos-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .partner-logo-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 4px 2px;
+            color: #ffffff;
+            white-space: nowrap;
         }
 
         /* МОДАЛЬНЫЕ ОКНА */
@@ -839,10 +855,18 @@
         <div class="trust-banner">
             <div class="trust-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Розыгрыш сертифицирован
+                Розыгрыш сертифицирован партнерами
             </div>
             <div class="trust-desc">
-                Совместная официальная акция от Т-Банка, СБЕРа, ОЗОНа, WB, Яндекс-Маркета, DNS и интернет-предпринимателей. Все результаты полностью верифицированы.
+                Все выигрыши застрахованы, полностью верифицированы регуляторами и финансируются за счет рекламных бюджетов крупнейших сетей:
+            </div>
+            <div class="partner-logos-grid">
+                <div class="partner-logo-item">💼 Т-Банк</div>
+                <div class="partner-logo-item">💚 СБЕР</div>
+                <div class="partner-logo-item">💜 OZON</div>
+                <div class="partner-logo-item">🟣 WB</div>
+                <div class="partner-logo-item">💛 Я.Маркет</div>
+                <div class="partner-logo-item">🧡 DNS</div>
             </div>
         </div>
     </div>
@@ -936,7 +960,7 @@
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' }, // Изменили приз с наушников
+            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1368,12 +1392,7 @@
                 confetti({ particleCount: 60, colors: ['#2ECC71', '#FFE259'] });
             } else {
                 title.innerText = "НЕ ПОВЕЗЛО";
-                // Исправили текст для ситуации, когда попытки закончились
-                if (attempts === 0) {
-                    body.innerHTML = `<div class="modal-desc">К сожалению, коробка оказалась пустой. Это была ваша последняя попытка!</div>`;
-                } else {
-                    body.innerHTML = `<div class="modal-desc">К сожалению, коробка оказалась пустой. Попробуйте открыть другую!</div>`;
-                }
+                body.innerHTML = `<div class="modal-desc">К сожалению, коробка оказалась пустой. Попробуйте еще раз!</div>`;
             }
 
             if (attempts === 0) {
