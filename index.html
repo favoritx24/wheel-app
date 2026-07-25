@@ -686,13 +686,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        
-        // Гарантированное получение юзернейма бота
-        let botUsername = urlParams.get('b') || '';
-        if (!botUsername && tg.initDataUnsafe && tg.initDataUnsafe.bot && tg.initDataUnsafe.bot.username) {
-            botUsername = tg.initDataUnsafe.bot.username;
-        }
-
+        const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
         const customLogo = urlParams.get('logo');
         const customBg = urlParams.get('bg');
@@ -1189,7 +1183,7 @@
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните условия для подтверждения и получения призов!
+                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
 
@@ -1198,6 +1192,7 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
+                // Фиксируем завершение игры в локальном хранилище НАВСЕГДА
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
                 let payload = "";
@@ -1207,29 +1202,22 @@
                     } catch(err) {}
                 }
 
-                // 1. Попытка отправить через sendData (для вызова из нижнего клавиатурного меню)
-                try { tg.sendData(JSON.stringify(sessionPrizes)); } catch(err) {}
+                try {
+                    tg.sendData(JSON.stringify(sessionPrizes));
+                } catch(err) {}
 
-                // 2. Гарантированное получение Юзернейма бота
-                let targetBot = botUsername;
-                if (!targetBot && tg.initDataUnsafe && tg.initDataUnsafe.bot && tg.initDataUnsafe.bot.username) {
-                    targetBot = tg.initDataUnsafe.bot.username;
-                }
-
-                // 3. Запуск перехода по ссылке
-                if (targetBot) {
-                    const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
+                if (botUsername) {
                     try {
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = deepLink;
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     }
                 }
 
-                // 4. Задержка перед закрытием, чтобы успела сработать отправка команды /start claim в чат
-                setTimeout(() => {
-                    try { tg.close(); } catch(err) {}
-                }, 500);
+                try {
+                    tg.close();
+                } catch(err) {}
             };
 
             modal.classList.add('active');
