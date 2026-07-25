@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>КЭШ-МАГНАТ | BOXES VIP</title>
+    <title>КЭШ-МАГНАТ | VIP CLUB</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #030712;
+            --bg-dark: #050713;
+            --card-glass: rgba(18, 24, 48, 0.72);
             --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
-            --blue-box-grad: radial-gradient(circle at 35% 25%, #3b82f6 0%, #1d4ed8 45%, #1e3a8a 80%, #0f172a 100%);
-            --red-ribbon-grad: linear-gradient(135deg, #ff2a5f 0%, #dc2626 50%, #881337 100%);
+            --purple-gradient: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
             --neon-gold: #FFE259;
-            --neon-blue: #38bdf8;
+            --neon-orange: #FFA751;
             --text-main: #FFFFFF;
             --text-muted: #94A3B8;
-            --border-glass: rgba(56, 189, 248, 0.35);
+            --border-glass: rgba(255, 226, 89, 0.22);
             --border-subtle: rgba(255, 255, 255, 0.08);
         }
 
@@ -40,8 +40,6 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            background-size: cover;
-            background-position: center;
         }
 
         .ambient-canvas {
@@ -55,27 +53,27 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.45;
+            filter: blur(80px);
+            opacity: 0.4;
             animation: orbFloat 12s infinite alternate ease-in-out;
         }
 
         .orb-1 {
-            width: 280px; height: 280px;
-            background: #1d4ed8;
-            top: -50px; left: -50px;
+            width: 260px; height: 260px;
+            background: #8E2DE2;
+            top: -40px; left: -40px;
         }
 
         .orb-2 {
-            width: 320px; height: 320px;
-            background: #e11d48;
-            bottom: -70px; right: -70px;
+            width: 300px; height: 300px;
+            background: #FFA751;
+            bottom: -60px; right: -60px;
             animation-delay: -5s;
         }
 
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(35px, 45px) scale(1.15); }
+            100% { transform: translate(30px, 40px) scale(1.1); }
         }
 
         .app-container {
@@ -88,7 +86,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 18px 18px 18px;
+            padding: 16px 20px 24px 20px;
         }
 
         .header-block {
@@ -96,32 +94,47 @@
             width: 100%;
         }
 
-        .brand-logo-svg {
-            max-width: 260px;
-            height: auto;
-            filter: drop-shadow(0 4px 20px rgba(255, 226, 89, 0.4));
-            margin-bottom: 2px;
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 226, 89, 0.06);
+            border: 1px solid var(--border-glass);
+            padding: 6px 16px;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            margin-bottom: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .brand-logo-img {
-            max-height: 48px;
-            max-width: 240px;
-            object-fit: contain;
-            background: transparent !important;
-            filter: drop-shadow(0 4px 15px rgba(56, 189, 248, 0.4));
-            margin-bottom: 6px;
+        .brand-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-title svg {
+            width: 22px; height: 22px;
+            filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.6));
         }
 
         .attempts-pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(15, 23, 42, 0.85);
+            background: var(--card-glass);
             border: 1px solid var(--border-subtle);
-            padding: 5px 16px;
+            padding: 6px 18px;
             border-radius: 30px;
             backdrop-filter: blur(15px);
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .attempts-label {
@@ -141,195 +154,182 @@
             gap: 4px;
         }
 
-        /* ТАБЛО ВЫИГРЫШЕЙ В РЕАЛЬНОМ ВРЕМЕНИ */
-        .live-prizes-bar {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            padding: 8px 14px;
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .live-prize-tag {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .live-prize-val {
-            font-size: 12px;
-            font-weight: 800;
-            color: #2ECC71;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .game-stage {
             position: relative;
             width: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             flex-grow: 1;
         }
 
-        /* ПРЕМИАЛЬНЫЙ 3D ДИЗАЙН СИНИХ КОРОБОК */
-        .boxes-wrapper {
-            display: block;
+        .wheel-wrapper {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wheel-halo {
+            position: absolute;
+            width: 334px;
+            height: 334px;
+            border-radius: 50%;
+            border: 3px solid var(--neon-gold);
+            box-shadow: 0 0 35px rgba(255, 226, 89, 0.35), inset 0 0 20px rgba(255, 226, 89, 0.25);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .pointer-marker {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 36px;
+            z-index: 10;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+        }
+
+        #wheelCanvas {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1);
+            will-change: transform;
+        }
+
+        .ribbon-wrapper {
+            display: none;
+            position: relative;
             width: 100%;
-            max-width: 360px;
-            padding: 4px 0;
+            height: 136px;
+            background: var(--card-glass);
+            border: 2px solid var(--border-glass);
+            border-radius: 24px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .ribbon-pointer-line {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--gold-gradient);
+            z-index: 10;
+            box-shadow: 0 0 12px var(--neon-gold);
+        }
+
+        .ribbon-track {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            will-change: transform;
+            transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1);
+        }
+
+        .ribbon-card {
+            width: 104px;
+            height: 104px;
+            margin: 0 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .ribbon-card img, .ribbon-card svg {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .ribbon-card span {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        /* ДИЗАЙН ПРИЗОВЫХ БОКСОВ */
+        .boxes-wrapper {
+            display: none;
+            width: 100%;
+            max-width: 350px;
+            padding: 10px 0;
             z-index: 5;
         }
 
         .boxes-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
             width: 100%;
         }
 
         .prize-box {
             position: relative;
             aspect-ratio: 1;
-            background: var(--blue-box-grad);
-            border: 1.5px solid rgba(147, 197, 253, 0.6);
-            border-radius: 22px;
+            background: linear-gradient(145deg, rgba(255, 226, 89, 0.08) 0%, rgba(18, 24, 48, 0.85) 100%);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            overflow: visible;
+            overflow: hidden;
             backdrop-filter: blur(12px);
-            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.45), inset 0 -4px 8px rgba(0, 0, 0, 0.6), 0 14px 30px rgba(0, 0, 0, 0.85), 0 0 15px rgba(37, 99, 235, 0.3);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .prize-box::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 10%; right: 10%; height: 35%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
-            border-radius: 20px 20px 0 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Диагональная текстура шелка */
-        .box-pattern-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 20px;
-            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 8px, transparent 0, transparent 16px);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .prize-box:hover {
-            transform: translateY(-4px) scale(1.03);
-            border-color: var(--neon-blue);
-            box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.6), 0 18px 38px rgba(56, 189, 248, 0.5);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .prize-box:active {
-            transform: scale(0.93);
+            transform: scale(0.92);
         }
 
-        /* Красные ленты на коробке */
-        .box-ribbon-v {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 22px; height: 100%;
-            background: var(--red-ribbon-grad);
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-            z-index: 2;
-            border-radius: 2px;
-            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+        .prize-box.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
-        .box-ribbon-h {
+        .box-cover {
             position: absolute;
-            top: 50%; left: 0;
-            transform: translateY(-50%);
-            width: 100%; height: 22px;
-            background: var(--red-ribbon-grad);
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-            z-index: 2;
-            border-radius: 2px;
-            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
-        }
-
-        /* Настоящий реалистичный пышный 3D Красный Бант */
-        .box-bow {
-            position: absolute;
-            top: -30px;
-            z-index: 4;
-            width: 96px; height: 72px;
-            filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.85));
-            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.4s ease;
-            pointer-events: none;
-        }
-
-        .box-cover-lid {
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            border-radius: 22px;
-            z-index: 3;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: var(--blue-box-grad);
-            border: 2px solid rgba(255, 255, 255, 0.35);
-            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 226, 89, 0.18), rgba(12, 16, 32, 0.95));
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ТРЯСКА КОРОБКИ ПРИ НАЖАТИИ */
-        .prize-box.shaking {
-            animation: boxShake 2.5s infinite cubic-bezier(.36,.07,.19,.97) both;
-            border-color: var(--neon-gold);
-            box-shadow: 0 0 35px rgba(255, 226, 89, 0.85);
+        .box-cover svg {
+            width: 32px; height: 32px;
+            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.5));
         }
 
-        @keyframes boxShake {
-            10%, 90% { transform: translate3d(-3px, 0, 0) rotate(-4deg); }
-            20%, 80% { transform: translate3d(4px, 0, 0) rotate(5deg); }
-            30%, 50%, 70% { transform: translate3d(-6px, 0, 0) rotate(-8deg); }
-            40%, 60% { transform: translate3d(6px, 0, 0) rotate(8deg); }
-        }
-
-        /* ПОДЪЕМ КРЫШКИ */
-        .prize-box.opening .box-cover-lid {
-            transform: translateY(-90px) rotateX(-50deg) scale(0.5);
+        .prize-box.opening .box-cover {
+            transform: translateY(-60px) rotateX(-60deg) scale(0.5);
             opacity: 0;
         }
 
-        /* ПОЛНОЕ И ИДЕАЛЬНОЕ ИСЧЕЗНОВЕНИЕ БАНТА И ЛЕНТ ПРИ ОТКРЫТИИ (НЕ ПЕРЕКРЫВАЮТ ВЫИГРЫШ) */
-        .prize-box.opening .box-bow,
-        .prize-box.opened .box-bow,
-        .prize-box.opening .box-ribbon-v,
-        .prize-box.opened .box-ribbon-v,
-        .prize-box.opening .box-ribbon-h,
-        .prize-box.opened .box-ribbon-h {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            transform: scale(0.1) translateY(-60px) !important;
-        }
-
-        /* ПРИЗ ПОЛНОСТЬЮ НА ПЕРЕДНЕМ ПЛАНЕ (Z-INDEX 50) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -337,114 +337,38 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px;
-            z-index: 50;
+            padding: 6px;
+            z-index: 1;
             opacity: 0;
-            transform: scale(0.2) translateY(20px);
-            transition: all 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: transparent !important;
+            transform: scale(0.3);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .prize-box.opened .box-content, .prize-box.opening .box-content {
             opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: scale(1);
         }
 
         .prize-box.opened {
-            border-color: rgba(255, 226, 89, 0.9);
-            box-shadow: 0 0 30px rgba(255, 226, 89, 0.4), inset 0 0 15px rgba(255, 226, 89, 0.25);
-            background: rgba(255, 226, 89, 0.08);
+            border-color: rgba(255, 226, 89, 0.7);
+            box-shadow: 0 0 25px rgba(255, 226, 89, 0.35), inset 0 0 15px rgba(255, 226, 89, 0.2);
+            background: rgba(255, 226, 89, 0.06);
         }
 
-        /* ОЧИСТКА ЗАГРУЖЕННЫХ PNG ОТ БЕЛЫХ ФОНОВ */
-        .box-content img {
-            max-width: 82%;
-            max-height: 82%;
+        .box-content img, .box-content svg {
+            width: 30px;
+            height: 30px;
             object-fit: contain;
-            background: transparent !important;
-            mix-blend-mode: normal;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.65));
-        }
-
-        .box-content svg {
-            width: 44px;
-            height: 44px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
         }
 
         .box-content span {
-            font-size: 10px;
+            font-size: 8px;
             font-weight: 800;
             color: #FFFFFF;
             text-align: center;
-            margin-top: 4px;
-            line-height: 1.1;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            margin-top: 2px;
+            line-height: 1;
         }
-
-        /* МАРКЕТИНГОВАЯ ПЛАШКА ДОВЕРИЯ (TRUST BANNER) */
-        .trust-banner {
-            width: 100%;
-            max-width: 360px;
-            background: rgba(15, 23, 42, 0.82);
-            border: 1px solid rgba(46, 204, 113, 0.35);
-            border-radius: 16px;
-            padding: 9px 13px;
-            margin-top: 10px;
-            backdrop-filter: blur(14px);
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-        }
-
-        .trust-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 10px;
-            font-weight: 900;
-            color: #2ECC71;
-            letter-spacing: 0.6px;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-        }
-
-        .trust-text {
-            font-size: 9.5px;
-            color: #94A3B8;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        .trust-text b {
-            color: #FFFFFF;
-            font-weight: 800;
-        }
-
-        /* ВСПОМОГАТЕЛЬНЫЕ РЕЖИМЫ (КОЛЕСО / ЛЕНТА) */
-        .wheel-wrapper {
-            display: none;
-            position: relative;
-            width: 310px; height: 310px;
-            justify-content: center; align-items: center;
-        }
-        .wheel-halo {
-            position: absolute; width: 324px; height: 324px; border-radius: 50%;
-            border: 3px solid var(--neon-gold); box-shadow: 0 0 35px rgba(255, 226, 89, 0.35); z-index: 3; pointer-events: none;
-        }
-        .pointer-marker { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 30px; height: 36px; z-index: 10; }
-        #wheelCanvas { width: 310px; height: 310px; border-radius: 50%; transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1); }
-
-        .ribbon-wrapper {
-            display: none; position: relative; width: 100%; height: 130px; background: rgba(15, 23, 42, 0.75);
-            border: 2px solid var(--border-glass); border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
-        }
-        .ribbon-pointer-line { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 4px; height: 100%; background: var(--gold-gradient); z-index: 10; }
-        .ribbon-track { display: flex; align-items: center; height: 100%; position: absolute; left: 0; transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1); }
-        .ribbon-card { width: 100px; height: 100px; margin: 0 6px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex-shrink: 0; }
-        .ribbon-card img, .ribbon-card svg { width: 34px; height: 34px; object-fit: contain; background: transparent !important; }
-        .ribbon-card span { font-size: 10px; font-weight: 700; color: #FFF; text-align: center; }
 
         .btn-glow {
             width: 100%;
@@ -460,7 +384,7 @@
             text-transform: uppercase;
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(255, 167, 81, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -468,15 +392,27 @@
             z-index: 5;
         }
 
-        .btn-glow:active { transform: scale(0.96); }
-        .btn-glow:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-glow svg {
+            width: 20px;
+            height: 20px;
+        }
 
-        /* ОКНА ВЫИГРЫША И РЕЗУЛЬТАТОВ (ПОП-АП) */
+        .btn-glow:active {
+            transform: scale(0.96);
+        }
+
+        .btn-glow:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(4, 6, 14, 0.94);
+            background: rgba(4, 6, 14, 0.92);
             backdrop-filter: blur(16px);
             z-index: 100;
             display: none;
@@ -484,7 +420,7 @@
             justify-content: center;
             padding: 20px;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s ease;
         }
 
         .modal-overlay.active {
@@ -493,16 +429,16 @@
         }
 
         .modal-card {
-            background: linear-gradient(160deg, #0f172a 0%, #030712 100%);
+            background: linear-gradient(160deg, #12182d 0%, #080a15 100%);
             border: 1px solid var(--border-glass);
             border-radius: 28px;
-            padding: 28px 22px;
+            padding: 30px 22px;
             width: 100%;
             max-width: 330px;
             text-align: center;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 226, 89, 0.15);
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .modal-overlay.active .modal-card {
@@ -510,25 +446,29 @@
         }
 
         .modal-icon-badge {
-            width: 84px; height: 84px;
-            margin: 0 auto 16px auto;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 18px auto;
             background: rgba(255, 226, 89, 0.08);
-            border-radius: 26px;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255, 226, 89, 0.3);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 226, 89, 0.25);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .modal-icon-badge svg, .modal-icon-badge img {
-            width: 46px; height: 46px;
+            width: 42px;
+            height: 42px;
             object-fit: contain;
-            background: transparent !important;
         }
 
         .modal-title {
-            font-size: 20px; font-weight: 900;
+            font-size: 20px;
+            font-weight: 900;
             color: var(--neon-gold);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -536,7 +476,7 @@
         .modal-desc {
             font-size: 14px;
             color: var(--text-muted);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             line-height: 1.5;
         }
 
@@ -557,7 +497,10 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .prize-summary-row:last-child { border-bottom: none; }
+        .prize-summary-row:last-child {
+            border-bottom: none;
+        }
+
         .prize-label { color: var(--text-muted); }
         .prize-val { font-weight: 800; color: #FFFFFF; }
 
@@ -578,10 +521,7 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 8px 25px rgba(255, 167, 81, 0.3);
-            transition: all 0.2s ease;
         }
-
-        .modal-action-btn:active { transform: scale(0.96); }
 
         .security-note {
             display: flex;
@@ -604,30 +544,13 @@
     <div class="app-container">
         <!-- Шапка -->
         <div class="header-block">
-            <div id="logoContainer">
-                <svg class="brand-logo-svg" viewBox="0 0 320 60" fill="none">
-                    <rect x="10" y="5" width="300" height="50" rx="25" fill="url(#bgL)" stroke="url(#brL)" stroke-width="1.5"/>
-                    <path d="M35 20 L40 38 L45 28 L50 38 L55 20" stroke="#FFE259" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="45" cy="16" r="3" fill="#FFA751"/>
-                    <text x="70" y="38" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="21" fill="url(#txtG)" letter-spacing="2">КЭШ-МАГНАТ</text>
-                    <path d="M280 22 L285 30 L293 31 L287 37 L289 45 L281 41 L273 45 L275 37 L269 31 L277 30 Z" fill="#FFE259"/>
-                    <defs>
-                        <linearGradient id="bgL" x1="0" y1="0" x2="320" y2="60">
-                            <stop stop-color="#0f172a" stop-opacity="0.9"/>
-                            <stop offset="1" stop-color="#1e293b" stop-opacity="0.9"/>
-                        </linearGradient>
-                        <linearGradient id="brL" x1="0" y1="0" x2="320" y2="60">
-                            <stop stop-color="#FFE259" stop-opacity="0.6"/>
-                            <stop offset="1" stop-color="#FFA751" stop-opacity="0.2"/>
-                        </linearGradient>
-                        <linearGradient id="txtG" x1="70" y1="0" x2="250" y2="0" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#FFE259"/>
-                            <stop offset="1" stop-color="#FFA751"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
+            <div class="brand-badge">
+                <div class="brand-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    КЭШ-МАГНАТ
+                </div>
             </div>
-            
+            <br>
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно попыток:</span>
                 <span class="attempts-count" id="attCounter">
@@ -635,22 +558,10 @@
                     <span id="attNum">3</span>
                 </span>
             </div>
-
-            <div class="live-prizes-bar" id="livePrizesBar">
-                <span class="live-prize-tag">Ваш багаж:</span>
-                <span class="live-prize-val" id="livePrizesVal">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-                    Ожидает открытия...
-                </span>
-            </div>
         </div>
 
         <!-- Игровая Сцена -->
         <div class="game-stage">
-            <div class="boxes-wrapper" id="boxesBox">
-                <div class="boxes-grid" id="boxesGrid"></div>
-            </div>
-
             <div class="wheel-wrapper" id="wheelBox">
                 <div class="wheel-halo"></div>
                 <svg class="pointer-marker" viewBox="0 0 28 34" fill="none">
@@ -662,7 +573,7 @@
                         </linearGradient>
                     </defs>
                 </svg>
-                <canvas id="wheelCanvas" width="620" height="620"></canvas>
+                <canvas id="wheelCanvas" width="640" height="640"></canvas>
             </div>
 
             <div class="ribbon-wrapper" id="ribbonBox">
@@ -670,15 +581,8 @@
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
 
-            <!-- СУПЕР ПРОФЕССИОНАЛЬНАЯ МАРКЕТИНГОВАЯ ПЛАШКА ДОВЕРИЯ -->
-            <div class="trust-banner">
-                <div class="trust-header">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>СЕРТИФИЦИРОВАННЫЙ РОЗЫГРЫШ ПРИЗОВ</span>
-                </div>
-                <div class="trust-text">
-                    Официальный стимулирующий розыгрыш при поддержке <b>Т-Банк</b>, <b>Сбер</b>, <b>OZON</b>, <b>WB</b>, <b>DNS</b>, <b>Яндекс Маркет</b> и интернет-предпринимателей. Все выплаты и доставка призов полностью гарантированы.
-                </div>
+            <div class="boxes-wrapper" id="boxesBox">
+                <div class="boxes-grid" id="boxesGrid"></div>
             </div>
         </div>
 
@@ -714,17 +618,6 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        const customLogo = urlParams.get('logo');
-        const customBg = urlParams.get('bg');
-
-        if (customBg) {
-            document.body.style.backgroundImage = `url('${decodeURIComponent(customBg)}')`;
-        }
-
-        if (customLogo) {
-            document.getElementById('logoContainer').innerHTML = `<img src="${decodeURIComponent(customLogo)}" class="brand-logo-img" alt="Logo">`;
-        }
-
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
@@ -752,47 +645,23 @@
         }
 
         const rawGameMode = urlParams.get('mode');
-        const gameMode = (rawGameMode === 'wheel' || rawGameMode === 'ribbon') ? rawGameMode : 'boxes';
+        const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'wheel';
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
             watch: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 3h6v4H9zM9 17h6v4H9z"/></svg>`,
             laptop: `<svg viewBox="0 0 24 24" fill="none" stroke="#2F80ED" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>`,
             trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`,
-            /* Настоящий пышный 3D Красный Бант */
-            redBow: `<svg class="box-bow" viewBox="0 0 100 70" fill="none">
-                <path d="M35 35 L12 68 L32 60 L46 38 Z" fill="url(#tailG)"/>
-                <path d="M65 35 L88 68 L68 60 L54 38 Z" fill="url(#tailG)"/>
-                <path d="M50 30 C28 2 2 12 8 32 C14 48 40 36 50 30 Z" fill="url(#bowGrad)"/>
-                <path d="M50 30 C72 2 98 12 92 32 C86 48 60 36 50 30 Z" fill="url(#bowGrad)"/>
-                <path d="M48 28 C32 10 16 18 20 30 C24 36 42 32 48 28 Z" fill="#ff4b72" opacity="0.6"/>
-                <path d="M52 28 C68 10 84 18 80 30 C76 36 58 32 52 28 Z" fill="#ff4b72" opacity="0.6"/>
-                <rect x="41" y="21" width="18" height="18" rx="6" fill="url(#knotG)" stroke="#dc2626" stroke-width="1.5"/>
-                <defs>
-                    <linearGradient id="bowGrad" x1="0" y1="0" x2="100" y2="70">
-                        <stop stop-color="#ff3366"/>
-                        <stop offset="0.5" stop-color="#dc2626"/>
-                        <stop offset="1" stop-color="#881337"/>
-                    </linearGradient>
-                    <linearGradient id="tailG" x1="0" y1="0" x2="0" y2="70">
-                        <stop stop-color="#f43f5e"/>
-                        <stop offset="1" stop-color="#881337"/>
-                    </linearGradient>
-                    <linearGradient id="knotG" x1="41" y1="21" x2="59" y2="39">
-                        <stop stop-color="#fda4af"/>
-                        <stop offset="0.5" stop-color="#e11d48"/>
-                        <stop offset="1" stop-color="#881337"/>
-                    </linearGradient>
-                </defs>
-            </svg>`
+            boxCover: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`
         };
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'iphone', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -803,6 +672,7 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
+        // КАСТОМНЫЕ КАРТИНКИ ИЗ АДМИНКИ
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -827,20 +697,22 @@
 
             let saved = loadState();
 
+            // ТОЛЬКО при сбросе через админку (reset=1 или изменении версии v) сбрасываем состояние!
             if (isResetURL || (saved && saved.v && saved.v !== urlVersion)) {
                 clearState();
                 saved = null;
             }
 
+            // Если игра уже полностью завершена (по spun=1 или в локальной памяти), выводим вирусный поп-ап и закрываем
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                document.body.style.display = 'none';
-
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() { tg.close(); });
+                    tg.showAlert(alertTxt, function() {
+                        tg.close();
+                    });
                 } else {
                     alert(alertTxt);
                     tg.close();
@@ -848,6 +720,7 @@
                 return;
             }
 
+            // Восстановление состояния прокруток на середине
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
@@ -859,44 +732,26 @@
             }
 
             document.getElementById('attNum').innerText = attempts;
-            updateLivePrizesBar();
 
-            if (gameMode === 'boxes') {
+            if (gameMode === 'ribbon') {
+                document.getElementById('wheelBox').style.display = 'none';
+                document.getElementById('boxesBox').style.display = 'none';
+                document.getElementById('ribbonBox').style.display = 'block';
+                buildRibbonTrack();
+            } else if (gameMode === 'boxes') {
                 document.getElementById('wheelBox').style.display = 'none';
                 document.getElementById('ribbonBox').style.display = 'none';
                 document.getElementById('boxesBox').style.display = 'block';
                 document.getElementById('spinBtn').style.display = 'none';
                 buildBoxesGrid();
-            } else if (gameMode === 'ribbon') {
-                document.getElementById('wheelBox').style.display = 'none';
-                document.getElementById('boxesBox').style.display = 'none';
-                document.getElementById('ribbonBox').style.display = 'block';
-                buildRibbonTrack();
             } else {
                 renderWheel();
             }
         });
 
-        function updateLivePrizesBar() {
-            const barVal = document.getElementById('livePrizesVal');
-            let totalMoney = sessionPrizes.money.reduce((a, b) => a + b, 0);
-
-            if (totalMoney > 0 || sessionPrizes.items.length > 0) {
-                let textParts = [];
-                if (totalMoney > 0) textParts.push(`${totalMoney} ₽`);
-                if (sessionPrizes.items.length > 0) {
-                    textParts.push(sessionPrizes.items.join(', '));
-                }
-                barVal.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ${textParts.join(' + ')}`;
-            } else {
-                barVal.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> Ожидает открытия...`;
-            }
-        }
-
-        /* ТОЧНЫЙ РАНДОМ ДЕНЕГ: ОТ 5 000 ДО 20 000 С ШАГОМ 150 РУБЛЕЙ */
         function generateCashAmount() {
-            const steps = Math.floor(Math.random() * 101); // 0..100
-            return 5000 + (steps * 150);
+            const steps = Math.floor(Math.random() * 101);
+            return 5000 + (steps * 100);
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -905,29 +760,71 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.frequency.setValueAtTime(840, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        function renderWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const num = SECTORS.length;
+            const arc = (2 * Math.PI) / num;
+
+            ctx.clearRect(0, 0, 640, 640);
+
+            SECTORS.forEach((sec, i) => {
+                const angle = i * arc;
+                
+                ctx.beginPath();
+                ctx.fillStyle = sec.color;
+                ctx.moveTo(320, 320);
+                ctx.arc(320, 320, 310, angle, angle + arc);
+                ctx.fill();
+
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'rgba(255, 226, 89, 0.18)';
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(320, 320);
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "700 20px 'Plus Jakarta Sans'";
+                ctx.fillText(sec.name, 280, 7);
+                ctx.restore();
+            });
+        }
+
+        function buildRibbonTrack() {
+            const track = document.getElementById('ribbonTrack');
+            track.innerHTML = '';
+            for (let r = 0; r < 12; r++) {
+                SECTORS.forEach(sec => {
+                    const cell = document.createElement('div');
+                    cell.className = 'ribbon-card';
+                    const iconContent = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
+                    cell.innerHTML = `${iconContent}<span>${sec.name}</span>`;
+                    track.appendChild(cell);
+                });
+            }
         }
 
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 16; i++) {
                 const box = document.createElement('div');
                 box.className = 'prize-box';
                 box.setAttribute('data-index', i);
                 box.onclick = () => selectBox(box);
                 box.innerHTML = `
-                    <div class="box-pattern-overlay"></div>
-                    <div class="box-ribbon-v"></div>
-                    <div class="box-ribbon-h"></div>
-                    ${SVGS.redBow}
-                    <div class="box-cover-lid"></div>
+                    <div class="box-cover">${SVGS.boxCover}</div>
                     <div class="box-content"></div>
                 `;
                 grid.appendChild(box);
@@ -935,7 +832,7 @@
         }
 
         function selectBox(boxElement) {
-            if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('shaking') || boxElement.classList.contains('opening')) return;
+            if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
             isSpinning = true;
             spinStep++;
@@ -961,29 +858,18 @@
 
             saveState({ attempts: attempts, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: attempts === 0 });
 
-            // 1 ЭТАП: Тряска 2.5 секунды
-            boxElement.classList.add('shaking');
-            
-            let tickInterval = setInterval(() => playTickSound(), 120);
+            boxElement.classList.add('opening');
+            playTickSound();
 
-            // 2 ЭТАП: Подъем крышки и появление приза
+            const contentDiv = boxElement.querySelector('.box-content');
+            const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
+            contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}</span>`;
+
             setTimeout(() => {
-                clearInterval(tickInterval);
-                boxElement.classList.remove('shaking');
-                boxElement.classList.add('opening');
-
-                const contentDiv = boxElement.querySelector('.box-content');
-                const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
-                contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}</span>`;
-
-                // 3 ЭТАП: Финал
-                setTimeout(() => {
-                    boxElement.classList.remove('opening');
-                    boxElement.classList.add('opened');
-                    finishSpin(targetSector);
-                }, 1800);
-
-            }, 2500);
+                boxElement.classList.remove('opening');
+                boxElement.classList.add('opened');
+                finishSpin(targetSector);
+            }, 1000);
         }
 
         function executeSpin() {
@@ -1026,58 +912,16 @@
             }
         }
 
-        function renderWheel() {
-            const canvas = document.getElementById('wheelCanvas');
-            const ctx = canvas.getContext('2d');
-            const num = SECTORS.length;
-            const arc = (2 * Math.PI) / num;
-
-            ctx.clearRect(0, 0, 620, 620);
-
-            SECTORS.forEach((sec, i) => {
-                const angle = i * arc;
-                ctx.beginPath();
-                ctx.fillStyle = sec.color;
-                ctx.moveTo(310, 310);
-                ctx.arc(310, 310, 300, angle, angle + arc);
-                ctx.fill();
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'rgba(255, 226, 89, 0.2)';
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(310, 310);
-                ctx.rotate(angle + arc / 2);
-                ctx.textAlign = "right";
-                ctx.fillStyle = "#FFFFFF";
-                ctx.font = "700 18px 'Plus Jakarta Sans'";
-                ctx.fillText(sec.name, 270, 6);
-                ctx.restore();
-            });
-        }
-
-        function buildRibbonTrack() {
-            const track = document.getElementById('ribbonTrack');
-            track.innerHTML = '';
-            for (let r = 0; r < 12; r++) {
-                SECTORS.forEach(sec => {
-                    const cell = document.createElement('div');
-                    cell.className = 'ribbon-card';
-                    const iconContent = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
-                    cell.innerHTML = `${iconContent}<span>${sec.name}</span>`;
-                    track.appendChild(cell);
-                });
-            }
-        }
-
         function runWheelAnimation(sectorIndex, prizeObj) {
             const canvas = document.getElementById('wheelCanvas');
             const numSectors = SECTORS.length;
             const sectorAngle = 360 / numSectors;
+
             const sectorCenter = (sectorIndex + 0.5) * sectorAngle;
             const targetRotation = 3600 + (270 - sectorCenter);
 
             let audioInterval = setInterval(() => playTickSound(), 110);
+
             canvas.style.transform = `rotate(${targetRotation}deg)`;
 
             setTimeout(() => {
@@ -1088,13 +932,14 @@
 
         function runRibbonAnimation(sectorIndex, prizeObj) {
             const track = document.getElementById('ribbonTrack');
-            const cellPitch = 112;
-            const containerCenter = 160;
+            const cellPitch = 116;
+            const containerCenter = 170;
             
             const targetCellIndex = (8 * SECTORS.length) + sectorIndex;
-            const targetOffset = (targetCellIndex * cellPitch) + (100 / 2) - containerCenter;
+            const targetOffset = (targetCellIndex * cellPitch) + (104 / 2) - containerCenter;
 
             let audioInterval = setInterval(() => playTickSound(), 100);
+
             track.style.transform = `translateX(-${targetOffset}px)`;
 
             setTimeout(() => {
@@ -1114,8 +959,6 @@
                 attempts += 3;
                 document.getElementById('attNum').innerText = attempts;
             }
-
-            updateLivePrizesBar();
 
             saveState({
                 attempts: attempts,
@@ -1138,18 +981,18 @@
 
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
-                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 22px;">${prize.cashAmount} ₽</strong></div>`;
-                confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
+                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
             } else if (prize.type === 'item') {
                 title.innerText = "ЦЕННЫЙ ПРИЗ!";
-                body.innerHTML = `<div class="modal-desc">Вы выиграли:<br><strong style="color: #FFE259; font-size: 20px;">${prize.name}</strong></div>`;
-                confetti({ particleCount: 110, spread: 75, origin: { y: 0.6 } });
+                body.innerHTML = `<div class="modal-desc">Вы выиграли:<br><strong style="color: #FFE259; font-size: 18px;">${prize.name}</strong></div>`;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             } else if (prize.type === 'bonus') {
                 title.innerText = "БОНУС!";
                 body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
             } else {
                 title.innerText = "НЕ ПОВЕЗЛО";
-                body.innerHTML = `<div class="modal-desc">Эта коробка оказалась пустой. Выберите следующую!</div>`;
+                body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
             }
 
             if (attempts === 0) {
@@ -1172,6 +1015,7 @@
                 if (gameMode !== 'boxes') {
                     const canvas = document.getElementById('wheelCanvas');
                     const track = document.getElementById('ribbonTrack');
+                    
                     canvas.style.transition = 'none';
                     canvas.style.transform = 'rotate(0deg)';
                     track.style.transition = 'none';
@@ -1188,7 +1032,7 @@
 
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
-            if (document.getElementById('spinBtn')) document.getElementById('spinBtn').disabled = true;
+            document.getElementById('spinBtn').disabled = true;
 
             const modal = document.getElementById('resultModal');
             const iconBox = document.getElementById('modalIconBox');
@@ -1215,7 +1059,7 @@
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните условия для подтверждения и получения призов!
+                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
 
@@ -1223,7 +1067,7 @@
             
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
-
+                
                 // Фиксируем завершение игры в локальном хранилище НАВСЕГДА
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
