@@ -11,13 +11,13 @@
         :root {
             --bg-dark: #030712;
             --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
-            --blue-box-grad: radial-gradient(circle at 50% 25%, #2563eb 0%, #1d4ed8 45%, #0f172a 100%);
-            --red-ribbon-grad: linear-gradient(135deg, #ff2a5f 0%, #dc2626 50%, #991b1b 100%);
+            --blue-box-grad: radial-gradient(circle at 35% 25%, #3b82f6 0%, #1d4ed8 45%, #1e3a8a 80%, #0f172a 100%);
+            --red-ribbon-grad: linear-gradient(135deg, #ff2a5f 0%, #dc2626 50%, #881337 100%);
             --neon-gold: #FFE259;
             --neon-blue: #38bdf8;
             --text-main: #FFFFFF;
             --text-muted: #94A3B8;
-            --border-glass: rgba(56, 189, 248, 0.3);
+            --border-glass: rgba(56, 189, 248, 0.35);
             --border-subtle: rgba(255, 255, 255, 0.08);
         }
 
@@ -107,6 +107,7 @@
             max-height: 48px;
             max-width: 240px;
             object-fit: contain;
+            background: transparent !important;
             filter: drop-shadow(0 4px 15px rgba(56, 189, 248, 0.4));
             margin-bottom: 6px;
         }
@@ -185,7 +186,7 @@
             flex-grow: 1;
         }
 
-        /* 3D ДИЗАЙН СИНИХ КОРОБОК С РОСКОШНЫМ БАНТОМ */
+        /* ПРЕМИАЛЬНЫЙ 3D ДИЗАЙН СИНИХ КОРОБОК */
         .boxes-wrapper {
             display: block;
             width: 100%;
@@ -205,7 +206,7 @@
             position: relative;
             aspect-ratio: 1;
             background: var(--blue-box-grad);
-            border: 2px solid rgba(56, 189, 248, 0.55);
+            border: 1.5px solid rgba(147, 197, 253, 0.6);
             border-radius: 22px;
             display: flex;
             align-items: center;
@@ -213,8 +214,19 @@
             cursor: pointer;
             overflow: visible;
             backdrop-filter: blur(12px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.45), inset 0 -4px 8px rgba(0, 0, 0, 0.6), 0 14px 30px rgba(0, 0, 0, 0.85), 0 0 15px rgba(37, 99, 235, 0.3);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Блик на верхней гранях коробки */
+        .prize-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 10%; right: 10%; height: 35%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 20px 20px 0 0;
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* Диагональная текстура шелка */
@@ -222,7 +234,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 20px;
-            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0, rgba(255, 255, 255, 0.04) 10px, transparent 0, transparent 20px);
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 8px, transparent 0, transparent 16px);
             z-index: 1;
             pointer-events: none;
         }
@@ -230,7 +242,7 @@
         .prize-box:hover {
             transform: translateY(-4px) scale(1.03);
             border-color: var(--neon-blue);
-            box-shadow: 0 18px 38px rgba(56, 189, 248, 0.45);
+            box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.6), 0 18px 38px rgba(56, 189, 248, 0.5);
         }
 
         .prize-box:active {
@@ -242,34 +254,34 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 20px; height: 100%;
+            width: 22px; height: 100%;
             background: var(--red-ribbon-grad);
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4);
             z-index: 2;
             border-radius: 2px;
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
         }
 
         .box-ribbon-h {
             position: absolute;
             top: 50%; left: 0;
             transform: translateY(-50%);
-            width: 100%; height: 20px;
+            width: 100%; height: 22px;
             background: var(--red-ribbon-grad);
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4);
             z-index: 2;
             border-radius: 2px;
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
         }
 
-        /* Настоящий пышный 3D Красный Бант */
+        /* Настоящий реалистичный пышный 3D Красный Бант */
         .box-bow {
             position: absolute;
-            top: -24px;
+            top: -30px;
             z-index: 4;
-            width: 82px; height: 60px;
-            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.75));
-            transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 96px; height: 72px;
+            filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.85));
+            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.4s ease;
             pointer-events: none;
         }
 
@@ -282,7 +294,7 @@
             align-items: center;
             justify-content: center;
             background: var(--blue-box-grad);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.35);
             transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -300,27 +312,25 @@
             40%, 60% { transform: translate3d(6px, 0, 0) rotate(8deg); }
         }
 
-        /* ПОДЪЕМ КРЫШКИ И ИСЧЕЗНОВЕНИЕ КРАСНЫХ ЛЕНТ */
+        /* ПОДЪЕМ КРЫШКИ */
         .prize-box.opening .box-cover-lid {
             transform: translateY(-90px) rotateX(-50deg) scale(0.5);
             opacity: 0;
         }
 
-        /* ПОЛНОЕ ИСЧЕЗНОВЕНИЕ БАНТА И ЛЕНТ ПРИ ОТКРЫТИИ (НЕ ПЕРЕКРЫВАЮТ ПРИЗ) */
+        /* ПОЛНОЕ И ИДЕАЛЬНОЕ ИСЧЕЗНОВЕНИЕ БАНТА И ЛЕНТ ПРИ ОТКРЫТИИ (НЕ ПЕРЕКРЫВАЮТ ВЫИГРЫШ) */
         .prize-box.opening .box-bow,
-        .prize-box.opened .box-bow {
-            transform: translateY(-120px) scale(0.2) rotate(25deg);
-            opacity: 0 !important;
-        }
-
+        .prize-box.opened .box-bow,
         .prize-box.opening .box-ribbon-v,
-        .prize-box.opening .box-ribbon-h,
         .prize-box.opened .box-ribbon-v,
+        .prize-box.opening .box-ribbon-h,
         .prize-box.opened .box-ribbon-h {
             opacity: 0 !important;
+            visibility: hidden !important;
+            transform: scale(0.1) translateY(-60px) !important;
         }
 
-        /* ПРИЗ ПОЛНОСТЬЮ НА ПЕРЕДНЕМ ПЛАНЕ (Z-INDEX 25) */
+        /* ПРИЗ ПОЛНОСТЬЮ НА ПЕРЕДНЕМ ПЛАНЕ (Z-INDEX 50) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -329,11 +339,11 @@
             align-items: center;
             justify-content: center;
             padding: 8px;
-            z-index: 25;
+            z-index: 50;
             opacity: 0;
             transform: scale(0.2) translateY(20px);
             transition: all 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: transparent;
+            background: transparent !important;
         }
 
         .prize-box.opened .box-content, .prize-box.opening .box-content {
@@ -349,12 +359,12 @@
 
         /* ОЧИСТКА ЗАГРУЖЕННЫХ PNG ОТ БЕЛЫХ ФОНОВ */
         .box-content img {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 82%;
+            max-height: 82%;
             object-fit: contain;
-            background: transparent;
+            background: transparent !important;
             mix-blend-mode: normal;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.65));
         }
 
         .box-content svg {
@@ -371,20 +381,21 @@
             text-align: center;
             margin-top: 4px;
             line-height: 1.1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        /* ПЛАШКА ДОВЕРИЯ (TRUST BANNER) */
+        /* МАРКЕТИНГОВАЯ ПЛАШКА ДОВЕРИЯ (TRUST BANNER) */
         .trust-banner {
             width: 100%;
             max-width: 360px;
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(46, 204, 113, 0.25);
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(46, 204, 113, 0.35);
             border-radius: 16px;
-            padding: 8px 12px;
+            padding: 9px 13px;
             margin-top: 10px;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
         }
 
         .trust-header {
@@ -401,9 +412,9 @@
         }
 
         .trust-text {
-            font-size: 10px;
+            font-size: 9.5px;
             color: #94A3B8;
-            line-height: 1.35;
+            line-height: 1.4;
             font-weight: 500;
         }
 
@@ -433,7 +444,7 @@
         .ribbon-pointer-line { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 4px; height: 100%; background: var(--gold-gradient); z-index: 10; }
         .ribbon-track { display: flex; align-items: center; height: 100%; position: absolute; left: 0; transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1); }
         .ribbon-card { width: 100px; height: 100px; margin: 0 6px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex-shrink: 0; }
-        .ribbon-card img, .ribbon-card svg { width: 34px; height: 34px; object-fit: contain; }
+        .ribbon-card img, .ribbon-card svg { width: 34px; height: 34px; object-fit: contain; background: transparent !important; }
         .ribbon-card span { font-size: 10px; font-weight: 700; color: #FFF; text-align: center; }
 
         .btn-glow {
@@ -461,7 +472,7 @@
         .btn-glow:active { transform: scale(0.96); }
         .btn-glow:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        /* ОКНА ВЫИГРЫША И РЕЗУЛЬТАТОВ (ПЛАВНЫЙ ПОП-АП) */
+        /* ОКНА ВЫИГРЫША И РЕЗУЛЬТАТОВ (ПОП-АП) */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -512,6 +523,7 @@
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 46px; height: 46px;
             object-fit: contain;
+            background: transparent !important;
         }
 
         .modal-title {
@@ -591,7 +603,7 @@
     </div>
 
     <div class="app-container">
-        <!-- Шапка С Эксклюзивным SVG Логотипом "КЭШ-МАГНАТ" -->
+        <!-- Шапка -->
         <div class="header-block">
             <div id="logoContainer">
                 <svg class="brand-logo-svg" viewBox="0 0 320 60" fill="none">
@@ -659,14 +671,14 @@
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
 
-            <!-- ПЛАШКА ДОВЕРИЯ (TRUST BANNER) -->
+            <!-- СУПЕР ПРОФЕССИОНАЛЬНАЯ МАРКЕТИНГОВАЯ ПЛАШКА ДОВЕРИЯ -->
             <div class="trust-banner">
                 <div class="trust-header">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>ОФИЦИАЛЬНЫЙ СЕРТИФИЦИРОВАННЫЙ РОЗЫГРЫШ</span>
+                    <span>СЕРТИФИЦИРОВАННЫЙ РОЗЫГРЫШ ПРИЗОВ</span>
                 </div>
                 <div class="trust-text">
-                    При поддержке <b>Т-Банк</b>, <b>Сбер</b>, <b>OZON</b>, <b>WB</b>, <b>DNS</b> и <b>Яндекс Маркет</b>. Все выплаты и доставка призов гарантированы.
+                    Официальный стимулирующий розыгрыш при поддержке <b>Т-Банк</b>, <b>Сбер</b>, <b>OZON</b>, <b>WB</b>, <b>DNS</b>, <b>Яндекс Маркет</b> и интернет-предпринимателей. Все выплаты и доставка призов полностью гарантированы.
                 </div>
             </div>
         </div>
@@ -751,15 +763,15 @@
             watch: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 3h6v4H9zM9 17h6v4H9z"/></svg>`,
             laptop: `<svg viewBox="0 0 24 24" fill="none" stroke="#2F80ED" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>`,
             trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`,
-            /* Настоящий реалистичный 3D Красный Бант */
+            /* Настоящий пышный 3D Красный Бант */
             redBow: `<svg class="box-bow" viewBox="0 0 100 70" fill="none">
-                <path d="M35 35 L15 65 L30 60 L45 38 Z" fill="url(#tailG)"/>
-                <path d="M65 35 L85 65 L70 60 L55 38 Z" fill="url(#tailG)"/>
-                <path d="M50 30 C30 5 5 15 10 32 C15 45 40 35 50 30 Z" fill="url(#bowGrad)"/>
-                <path d="M50 30 C70 5 95 15 90 32 C85 45 60 35 50 30 Z" fill="url(#bowGrad)"/>
-                <path d="M48 28 C35 12 18 20 22 30 C25 35 42 32 48 28 Z" fill="#ff4b72" opacity="0.6"/>
-                <path d="M52 28 C65 12 82 20 78 30 C75 35 58 32 52 28 Z" fill="#ff4b72" opacity="0.6"/>
-                <rect x="42" y="22" width="16" height="16" rx="5" fill="url(#knotG)" stroke="#dc2626" stroke-width="1.5"/>
+                <path d="M35 35 L12 68 L32 60 L46 38 Z" fill="url(#tailG)"/>
+                <path d="M65 35 L88 68 L68 60 L54 38 Z" fill="url(#tailG)"/>
+                <path d="M50 30 C28 2 2 12 8 32 C14 48 40 36 50 30 Z" fill="url(#bowGrad)"/>
+                <path d="M50 30 C72 2 98 12 92 32 C86 48 60 36 50 30 Z" fill="url(#bowGrad)"/>
+                <path d="M48 28 C32 10 16 18 20 30 C24 36 42 32 48 28 Z" fill="#ff4b72" opacity="0.6"/>
+                <path d="M52 28 C68 10 84 18 80 30 C76 36 58 32 52 28 Z" fill="#ff4b72" opacity="0.6"/>
+                <rect x="41" y="21" width="18" height="18" rx="6" fill="url(#knotG)" stroke="#dc2626" stroke-width="1.5"/>
                 <defs>
                     <linearGradient id="bowGrad" x1="0" y1="0" x2="100" y2="70">
                         <stop stop-color="#ff3366"/>
@@ -767,13 +779,13 @@
                         <stop offset="1" stop-color="#881337"/>
                     </linearGradient>
                     <linearGradient id="tailG" x1="0" y1="0" x2="0" y2="70">
-                        <stop stop-color="#e11d48"/>
-                        <stop offset="1" stop-color="#9f1239"/>
+                        <stop stop-color="#f43f5e"/>
+                        <stop offset="1" stop-color="#881337"/>
                     </linearGradient>
-                    <linearGradient id="knotG" x1="42" y1="22" x2="58" y2="38">
+                    <linearGradient id="knotG" x1="41" y1="21" x2="59" y2="39">
                         <stop stop-color="#fda4af"/>
                         <stop offset="0.5" stop-color="#e11d48"/>
-                        <stop offset="1" stop-color="#9f1239"/>
+                        <stop offset="1" stop-color="#881337"/>
                     </linearGradient>
                 </defs>
             </svg>`
