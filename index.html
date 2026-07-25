@@ -616,10 +616,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         const botUsername = urlParams.get('b') || '';
-        const currentVersion = urlParams.get('v') || '0';
+        const urlVersion = urlParams.get('v') || '0';
 
         function saveState(stateObj) {
-            stateObj.v = currentVersion;
+            stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
             try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
@@ -693,25 +693,18 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
-            const isSpunZeroURL = urlParams.get('spun') === '0';
             const isResetURL = urlParams.get('reset') === '1';
 
             let saved = loadState();
 
-            // Если был произведен сброс в админке или версия сброса изменилась
-            if (isResetURL || (saved && saved.v && saved.v !== currentVersion)) {
+            // ТОЛЬКО при сбросе через админку (reset=1 или изменении версии v) сбрасываем состояние!
+            if (isResetURL || (saved && saved.v && saved.v !== urlVersion)) {
                 clearState();
                 saved = null;
             }
 
-            // Если бот сообщает, что статус пользователя в БД равен spun=0, а локал хранит итоговую версию
-            if (isSpunZeroURL && saved && (saved.isDone || saved.attempts <= 0)) {
-                clearState();
-                saved = null;
-            }
-
-            // Если пользователь уже сыграл И результат сохранен в БД (spun=1)
-            if (isSpunURL && saved && saved.isDone) {
+            // Если игра уже полностью завершена (по spun=1 или в локальной памяти), выводим вирусный поп-ап и закрываем
+            if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
@@ -727,15 +720,7 @@
                 return;
             }
 
-            // Если попытки исчерпаны, но выигрыш еще не зафиксирован в боте
-            if (saved && (saved.isDone || saved.attempts <= 0)) {
-                if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
-                attempts = 0;
-                renderFinalSummaryModal(isSpunURL);
-                return;
-            }
-
-            // Восстановление состояния игры на середине
+            // Восстановление состояния прокруток на середине
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
@@ -1082,23 +1067,28 @@
             
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
-                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
                 
-                let sentViaData = false;
+                // Фиксируем завершение игры в локальном хранилище НАВСЕГДА
+                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
+
+                let payload = "";
+                if (sessionPrizes) {
+                    try {
+                        payload = btoa(unescape(encodeURIComponent(JSON.stringify(sessionPrizes)))).replace(/=/g, '');
+                    } catch(err) {}
+                }
+
                 try {
-                    tg.sendData(JSON.stringify(isAlreadyDone ? { alreadySpun: true } : sessionPrizes));
-                    sentViaData = true;
+                    tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
-                if (!sentViaData && botUsername) {
+                if (botUsername) {
                     try {
-                        let payload = "";
-                        if (!isAlreadyDone && sessionPrizes) {
-                            payload = btoa(JSON.stringify(sessionPrizes)).replace(/=/g, '');
-                        }
                         const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
-                    } catch(err) {}
+                    } catch(err) {
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                    }
                 }
 
                 try {
