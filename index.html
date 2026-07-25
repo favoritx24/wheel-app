@@ -9,17 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #03050d;
-            --card-glass: rgba(10, 16, 38, 0.78);
+            --bg-dark: #02040a;
+            --card-glass: rgba(10, 15, 30, 0.75);
             --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
-            --blue-box-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            --red-ribbon-gradient: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            --blue-box-gradient: linear-gradient(135deg, #1b3a4b 0%, #0d2535 100%);
+            --red-ribbon-gradient: linear-gradient(135deg, #ff3333 0%, #990000 100%);
             --neon-gold: #FFE259;
             --neon-blue: #00d2ff;
             --text-main: #FFFFFF;
-            --text-muted: #94A3B8;
+            --text-muted: #64748b;
             --border-glass: rgba(255, 226, 89, 0.15);
-            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-subtle: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -30,16 +30,20 @@
             padding: 0;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
             background: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            overflow-x: hidden;
             position: relative;
         }
 
@@ -54,21 +58,21 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
+            filter: blur(120px);
             opacity: 0.35;
             animation: orbFloat 14s infinite alternate ease-in-out;
         }
 
         .orb-1 {
-            width: 320px; height: 320px;
-            background: #4A00E0;
-            top: -50px; left: -50px;
+            width: 300px; height: 300px;
+            background: #1e3a8a;
+            top: -20px; left: -20px;
         }
 
         .orb-2 {
             width: 350px; height: 350px;
-            background: #00d2ff;
-            bottom: -80px; right: -80px;
+            background: #0f172a;
+            bottom: -50px; right: -50px;
             animation-delay: -6s;
         }
 
@@ -82,16 +86,15 @@
             z-index: 2;
             width: 100%;
             max-width: 420px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            padding: 16px 16px 20px 16px;
-            gap: 16px;
-            min-height: 100vh;
+            padding: 12px 16px;
         }
 
-        /* ШАПКА И ЛОГОТИП */
+        /* ШАПКА */
         .header-block {
             text-align: center;
             width: 100%;
@@ -102,68 +105,59 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-bottom: 6px;
         }
 
         .brand-logo-glow {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
-            filter: drop-shadow(0 0 12px rgba(255, 226, 89, 0.4));
-            animation: logoPulse 3s infinite alternate;
-        }
-
-        @keyframes logoPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
+            gap: 8px;
+            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.4));
         }
 
         .brand-logo-glow svg {
-            width: 26px; height: 26px;
+            width: 24px; height: 24px;
             fill: url(#goldGrad);
         }
 
         .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 800;
             color: var(--neon-blue);
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-top: 4px;
-            opacity: 0.9;
-            text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+            margin-top: 2px;
+            text-shadow: 0 0 6px rgba(0, 210, 255, 0.4);
         }
 
         .attempts-pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: var(--card-glass);
             border: 1px solid var(--border-glass);
-            padding: 6px 18px;
+            padding: 4px 14px;
             border-radius: 30px;
             backdrop-filter: blur(20px);
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-top: 6px;
         }
 
         .attempts-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
         }
 
         .attempts-count {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 900;
             color: var(--neon-gold);
             display: flex;
@@ -174,25 +168,25 @@
         /* КОРЗИНА ПРИЗОВ */
         .basket-widget {
             width: 100%;
-            background: rgba(10, 16, 38, 0.55);
+            background: rgba(5, 8, 20, 0.8);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 10px 14px;
-            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            padding: 8px 12px;
+            backdrop-filter: blur(15px);
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .basket-header {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--text-muted);
+            font-size: 9px;
+            font-weight: 900;
+            color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .basket-header span {
@@ -202,19 +196,19 @@
         .basket-items {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            min-height: 24px;
+            gap: 4px;
+            min-height: 20px;
         }
 
         .basket-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 4px 10px;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 2px 8px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: #fff;
             animation: badgeIn 0.3s ease-out forwards;
@@ -233,25 +227,25 @@
             justify-content: center;
             align-items: center;
             flex-grow: 1;
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         /* СЕТКА БОКСОВ 4х4 */
         .boxes-wrapper {
             display: none;
             width: 100%;
-            max-width: 360px;
+            max-width: 340px;
             z-index: 5;
         }
 
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 8px;
             width: 100%;
         }
 
-        /* Премиум визуализация синей коробки с красным бантом */
+        /* ПРЕМИАЛЬНАЯ ТРЕХМЕРНАЯ КОРОБКА */
         .prize-box {
             position: relative;
             aspect-ratio: 1;
@@ -267,135 +261,174 @@
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Эффект наведения на коробку */
+        /* 3D Наведение */
         .prize-box:not(.disabled):not(.opened):not(.opening):hover .gift-container {
-            transform: scale(1.08) rotateY(10deg);
-            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
+            transform: translateY(-5px) rotateX(10deg) scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .prize-box:not(.disabled):not(.opened):not(.opening):hover .box-lid-container {
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+            border-color: rgba(0, 210, 255, 0.5);
+        }
+
+        .prize-box:not(.disabled):not(.opened):not(.opening):hover .mega-bow {
+            transform: translateX(-50%) translateY(-2px) scale(1.18);
+            filter: drop-shadow(0 4px 8px rgba(255, 51, 51, 0.8));
         }
 
         .prize-box:active .gift-container {
             transform: scale(0.95);
         }
 
-        /* КОРПУС КОРОБКИ (СИНИЙ С ЛЕНТОЙ И БАНТОМ) */
-        .box-cover-wrapper {
+        /* КРЫШКА КОРОБКИ (Слегка выходит за рамки корпуса) */
+        .box-lid-container {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--blue-box-gradient);
-            border-radius: 12px;
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 
-                        inset 0 2px 4px rgba(255, 255, 255, 0.2),
-                        inset 0 -4px 8px rgba(0,0,0,0.4);
-            overflow: hidden;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Крышка коробки */
-        .box-lid {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 28%;
-            background: linear-gradient(135deg, #254a8e 0%, #3b6fc4 100%);
-            border-bottom: 2px solid rgba(0,0,0,0.3);
-            box-shadow: 0 3px 5px rgba(0,0,0,0.3);
-            border-radius: 12px 12px 0 0;
+            top: 0; left: -2px; right: -2px;
+            height: 24%;
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            border-radius: 6px 6px 3px 3px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             z-index: 4;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: bottom center;
+            transition: all 0.4s ease;
         }
 
-        /* Ленты красные крест-накрест */
-        .ribbon-v, .ribbon-h {
+        .box-lid-ribbon {
             position: absolute;
-            background: var(--red-ribbon-gradient);
-            box-shadow: 0 0 4px rgba(0,0,0,0.2);
-            z-index: 3;
-        }
-        .ribbon-v {
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 16%; height: 100%;
-        }
-        .ribbon-h {
-            top: 40%; left: 0;
-            width: 100%; height: 16%;
+            width: 18%; height: 100%;
+            background: var(--red-ribbon-gradient);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
         }
 
-        /* Бант красный векторный сверху */
-        .box-bow {
+        /* ОГРОМНЫЙ ШЕЛКОВЫЙ БАНТ */
+        .mega-bow {
             position: absolute;
-            top: 8%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 42%; height: 42%;
+            top: -20px; left: 50%;
+            transform: translateX(-50%);
+            width: 44px; height: 34px;
             z-index: 5;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-            transition: all 0.6s ease;
-        }
-
-        /* АНИМАЦИЯ ОТКРЫТИЯ (НАПРЯЖЕНИЕ) */
-        .prize-box.opening .gift-container {
-            animation: suspenseShake 0.12s infinite alternate;
-        }
-
-        .prize-box.opening .box-cover-wrapper {
-            background: linear-gradient(135deg, #1f4585 0%, #00d2ff 100%);
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.8);
-        }
-
-        @keyframes suspenseShake {
-            0% { transform: translate(2px, 1px) rotate(1.5deg) scale(1.05); }
-            100% { transform: translate(-2px, -1px) rotate(-1.5deg) scale(1.05); }
-        }
-
-        /* ФИНАЛ ОТКРЫТИЯ: улетание крышки и исчезновение коробки */
-        .prize-box.opened .box-lid {
-            transform: translateY(-40px) rotate(-15deg);
-            opacity: 0;
-        }
-        .prize-box.opened .box-bow {
-            transform: translate(-50%, -60px) scale(0.5);
-            opacity: 0;
-        }
-        .prize-box.opened .box-cover-wrapper {
-            transform: translateY(15px) scale(0.9);
-            opacity: 0;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.6));
             pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        /* КОРПУС КОРОБКИ */
+        .box-body-container {
+            position: absolute;
+            top: 22%; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #0f1e36 100%);
+            border-radius: 0 0 8px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -4px 8px rgba(0,0,0,0.6);
+            z-index: 2;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .box-ribbon-v {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 18%; height: 100%;
+            background: var(--red-ribbon-gradient);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2);
+        }
+
+        .box-ribbon-h {
+            position: absolute;
+            top: 42%; left: 0;
+            width: 100%; height: 18%;
+            background: var(--red-ribbon-gradient);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2);
+        }
+
+        /* АНИМАЦИЯ НАПРЯЖЕНИЯ ПРИ ОТКРЫТИИ (4.5 СЕКУНДЫ) */
+        .prize-box.opening .gift-container {
+            animation: professionalShake 0.15s infinite alternate ease-in-out;
+        }
+
+        .prize-box.opening .box-lid-container {
+            box-shadow: 0 0 25px rgba(255, 226, 89, 0.8), inset 0 1px 1px rgba(255,255,255,0.3);
+            border-color: rgba(255, 226, 89, 0.8);
+        }
+
+        @keyframes professionalShake {
+            0% { transform: translate(1px, 1px) rotate(0deg) scale(1.04); }
+            20% { transform: translate(-1px, -1px) rotate(-1deg) scale(1.04); }
+            40% { transform: translate(-1.5px, 0px) rotate(1deg) scale(1.04); }
+            60% { transform: translate(1px, 1.5px) rotate(0deg) scale(1.04); }
+            80% { transform: translate(-1px, 1px) rotate(-1deg) scale(1.04); }
+            100% { transform: translate(1px, -1.5px) rotate(1deg) scale(1.04); }
+        }
+
+        /* ЭФФЕКТ СДУВАНИЯ КРЫШКИ И ВЫПАДЕНИЯ ПРИЗА */
+        .prize-box.opened .box-lid-container {
+            animation: lidFlyOff 1.2s cubic-bezier(0.25, 1, 0.50, 1) forwards;
+        }
+
+        .prize-box.opened .mega-bow {
+            animation: bowFlyOff 1.2s cubic-bezier(0.25, 1, 0.50, 1) forwards;
+        }
+
+        .prize-box.opened .box-body-container {
+            animation: bodyFade 0.8s ease forwards;
+        }
+
+        @keyframes lidFlyOff {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-160px) rotate(140deg) scale(0.2); opacity: 0; }
+        }
+
+        @keyframes bowFlyOff {
+            0% { transform: translateX(-50%) translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateX(40px) translateY(-180px) rotate(-120deg) scale(0.2); opacity: 0; }
+        }
+
+        @keyframes bodyFade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.15; transform: scale(0.85); filter: blur(2px); }
         }
 
         /* СОДЕРЖИМОЕ ПРИЗА */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 226, 89, 0.15) 0%, rgba(10, 16, 38, 0.95) 100%);
-            border: 2.5px solid var(--neon-gold);
-            border-radius: 14px;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 226, 89, 0.2) 0%, rgba(5, 8, 20, 0.98) 100%);
+            border: 2px solid var(--neon-gold);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px;
+            padding: 6px;
             z-index: 1;
             opacity: 0;
-            transform: scale(0.4) rotate(-10deg);
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.2);
+            transition: none;
             box-shadow: 0 0 20px rgba(255, 226, 89, 0.4);
         }
 
         .prize-box.opened .box-content {
             opacity: 1;
-            transform: scale(1) rotate(0deg);
+            transform: scale(1);
+            animation: prizeFloat 3s infinite alternate ease-in-out;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes prizeFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-4px) rotate(2deg); }
         }
 
         .box-content img, .box-content svg {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
         }
 
         .box-content span {
@@ -403,13 +436,12 @@
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
-            margin-top: 6px;
-            line-height: 1.1;
+            margin-top: 3px;
+            line-height: 1;
             text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        /* ДРУГИЕ СЦЕНЫ (НА СЛУЧАЙ ПЕРЕКЛЮЧЕНИЯ ИЗ АДМИНКИ) */
+        /* ДРУГИЕ РЕЖИМЫ ИГРЫ (Оставляем как есть) */
         .wheel-wrapper {
             position: relative;
             width: 320px; height: 320px;
@@ -484,8 +516,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px;
-            gap: 6px;
+            padding: 8px; gap: 6px;
             flex-shrink: 0;
         }
 
@@ -505,28 +536,28 @@
         /* КНОПКА ЗАПУСКА */
         .btn-glow {
             width: 100%;
-            padding: 18px 0;
+            padding: 16px 0;
             border: none;
             border-radius: 50px;
             background: var(--gold-gradient);
-            color: #03050d;
+            color: #02040a;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 900;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 167, 81, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 167, 81, 0.35);
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             z-index: 5;
         }
 
         .btn-glow svg {
-            width: 20px; height: 20px;
+            width: 18px; height: 18px;
         }
 
         .btn-glow:active {
@@ -540,19 +571,18 @@
             box-shadow: none;
         }
 
-        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ (ПЛАШКА ПАРТНЕРОВ) */
+        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ (СЕРТИФИКАТЫ И БРЕНДЫ) */
         .trust-banner {
             width: 100%;
-            background: linear-gradient(135deg, rgba(16, 24, 48, 0.85) 0%, rgba(8, 12, 28, 0.95) 100%);
-            border: 1px solid rgba(0, 210, 255, 0.18);
-            border-radius: 20px;
-            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
+            border: 1px solid rgba(255, 226, 89, 0.18);
+            border-radius: 16px;
+            padding: 10px 14px;
             text-align: center;
-            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: auto;
+            gap: 6px;
         }
 
         .trust-header {
@@ -560,45 +590,40 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #00d2ff;
+            font-size: 9px;
+            font-weight: 900;
+            color: var(--neon-gold);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         .trust-header svg {
-            width: 14px; height: 14px;
-            color: #00d2ff;
+            width: 12px; height: 12px;
+            color: var(--neon-gold);
         }
 
         .trust-desc {
-            font-size: 11px;
-            color: var(--text-muted);
-            line-height: 1.4;
+            font-size: 10px;
+            color: #94a3b8;
+            line-height: 1.35;
         }
 
         .partner-logos-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-top: 4px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-top: 2px;
         }
 
         .partner-logo-item {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-            font-size: 9px;
+            border-radius: 6px;
+            font-size: 8px;
             font-weight: 800;
-            color: #FFFFFF;
-            padding: 6px 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
+            padding: 4px 2px;
+            color: #ffffff;
+            white-space: nowrap;
         }
 
         /* МОДАЛЬНЫЕ ОКНА */
@@ -606,7 +631,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(3, 5, 13, 0.94);
+            background: rgba(2, 4, 10, 0.95);
             backdrop-filter: blur(16px);
             z-index: 100;
             display: none;
@@ -623,14 +648,14 @@
         }
 
         .modal-card {
-            background: linear-gradient(160deg, #0d1329 0%, #050711 100%);
+            background: linear-gradient(160deg, #0f172a 0%, #050814 100%);
             border: 1px solid var(--border-glass);
-            border-radius: 28px;
-            padding: 30px 22px;
+            border-radius: 24px;
+            padding: 26px 20px;
             width: 100%;
-            max-width: 330px;
+            max-width: 320px;
             text-align: center;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 226, 89, 0.15);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 226, 89, 0.1);
             transform: scale(0.85);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -640,90 +665,89 @@
         }
 
         .modal-icon-badge {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 18px auto;
-            background: rgba(255, 226, 89, 0.08);
-            border-radius: 24px;
+            width: 76px; height: 76px;
+            margin: 0 auto 16px auto;
+            background: rgba(255, 226, 89, 0.06);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 226, 89, 0.25);
+            border: 1px solid rgba(255, 226, 89, 0.2);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .modal-icon-badge svg, .modal-icon-badge img {
-            width: 42px; height: 42px;
+            width: 40px; height: 40px;
             object-fit: contain;
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
             color: var(--neon-gold);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .modal-desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            line-height: 1.5;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 18px;
+            line-height: 1.45;
         }
 
         .prize-summary-box {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 18px;
+            border-radius: 14px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
         }
 
         .prize-summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .prize-summary-row:last-child {
             border-bottom: none;
         }
 
-        .prize-label { color: var(--text-muted); }
+        .prize-label { color: #94a3b8; }
         .prize-val { font-weight: 800; color: #FFFFFF; }
 
         .modal-action-btn {
             width: 100%;
-            padding: 16px 0;
+            padding: 14px 0;
             border: none;
             border-radius: 50px;
             background: var(--gold-gradient);
-            color: #03050d;
+            color: #02040a;
             font-weight: 900;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 8px 25px rgba(255, 167, 81, 0.3);
+            gap: 6px;
+            box-shadow: 0 6px 20px rgba(255, 167, 81, 0.25);
         }
 
         .security-note {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 14px;
+            gap: 4px;
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 12px;
         }
     </style>
 </head>
@@ -760,7 +784,7 @@
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
                 <span class="attempts-count" id="attCounter">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     <span id="attNum">3</span>
                 </span>
             </div>
@@ -769,7 +793,7 @@
         <!-- Виджет выигранных призов (Корзина) -->
         <div class="basket-widget">
             <div class="basket-header">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 Вы выиграли и можете забрать: (<span id="basketCount">0</span>)
             </div>
             <div class="basket-items" id="basketItems">
@@ -798,7 +822,7 @@
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
 
-            <!-- Игровая Сетка 4х4 (Боксы по умолчанию) -->
+            <!-- Игровая Сетка 4х4 -->
             <div class="boxes-wrapper" id="boxesBox">
                 <div class="boxes-grid" id="boxesGrid"></div>
             </div>
@@ -883,7 +907,7 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        // По умолчанию ставим boxes
+        // По умолчанию режим БОКСЫ
         const rawGameMode = urlParams.get('mode');
         const gameMode = (rawGameMode === 'wheel' || rawGameMode === 'ribbon') ? rawGameMode : 'boxes';
 
@@ -896,19 +920,24 @@
             watch: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 3h6v4H9zM9 17h6v4H9z"/></svg>`,
             laptop: `<svg viewBox="0 0 24 24" fill="none" stroke="#2F80ED" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>`,
             trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`,
-            redBow: `
-            <svg class="box-bow" viewBox="0 0 64 64" fill="none">
-                <circle cx="32" cy="32" r="8" fill="url(#bowRedG)" />
-                <path d="M32 32C32 32 12 14 14 26C16 38 32 32 32 32Z" fill="url(#bowRedG)" stroke="#8b0000" stroke-width="1.5" />
-                <path d="M32 32C32 32 52 14 50 26C48 38 32 32 32 32Z" fill="url(#bowRedG)" stroke="#8b0000" stroke-width="1.5" />
-                <path d="M32 32C32 44 20 60 22 56" stroke="url(#bowRedG)" stroke-width="4" stroke-linecap="round" />
-                <path d="M32 32C32 44 44 60 42 56" stroke="url(#bowRedG)" stroke-width="4" stroke-linecap="round" />
-                <defs>
-                    <linearGradient id="bowRedG" x1="0" y1="0" x2="64" y2="64">
-                        <stop offset="0%" stop-color="#FF4B2B" />
-                        <stop offset="100%" stop-color="#8b0000" />
-                    </linearGradient>
-                </defs>
+            silkBow: `
+            <svg class="mega-bow" viewBox="0 0 100 80" fill="none">
+               <defs>
+                   <radialGradient id="bowGrad" cx="50%" cy="50%" r="50%">
+                       <stop offset="0%" stop-color="#ff4d4d"/>
+                       <stop offset="70%" stop-color="#b30000"/>
+                       <stop offset="100%" stop-color="#660000"/>
+                   </radialGradient>
+                   <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                       <stop offset="0%" stop-color="#ff1a1a"/>
+                       <stop offset="100%" stop-color="#800000"/>
+                   </linearGradient>
+               </defs>
+               <path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/>
+               <path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/>
+               <path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/>
+               <path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/>
+               <circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/>
             </svg>`
         };
 
@@ -943,7 +972,7 @@
         let spinStep = 0;
         let isSpinning = false;
         let sessionPrizes = { money: [], items: [] };
-        let openedBoxesData = {}; // Для хранения открытых коробок и результатов (для перезахода)
+        let openedBoxesData = {}; // Локальная память открытых боксов за сессию
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
@@ -951,13 +980,11 @@
 
             let saved = loadState();
 
-            // ТОЛЬКО при сбросе через админку сбрасываем состояние!
             if (isResetURL || (saved && saved.v && saved.v !== urlVersion)) {
                 clearState();
                 saved = null;
             }
 
-            // Если игра уже завершена, выводим вирусный поп-ап
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
@@ -974,7 +1001,6 @@
                 return;
             }
 
-            // Восстановление состояния
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number') {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
@@ -1038,7 +1064,7 @@
             }
 
             if (totalCount === 0) {
-                container.innerHTML = `<span style="font-size:11px; color: var(--text-muted);">Пока ничего не выиграно. Откройте коробку!</span>`;
+                container.innerHTML = `<span style="font-size:10px; color: #64748b;">Ничего не выиграно. Откройте праздничную коробку!</span>`;
             }
             document.getElementById('basketCount').innerText = totalCount;
         }
@@ -1065,7 +1091,6 @@
             } catch(e){}
         }
 
-        // Рендеринг колеса
         function renderWheel() {
             const canvas = document.getElementById('wheelCanvas');
             const ctx = canvas.getContext('2d');
@@ -1076,6 +1101,7 @@
 
             SECTORS.forEach((sec, i) => {
                 const angle = i * arc;
+                
                 ctx.beginPath();
                 ctx.fillStyle = sec.color;
                 ctx.moveTo(320, 320);
@@ -1097,7 +1123,6 @@
             });
         }
 
-        // Рендеринг ленты
         function buildRibbonTrack() {
             const track = document.getElementById('ribbonTrack');
             track.innerHTML = '';
@@ -1112,7 +1137,7 @@
             }
         }
 
-        // Рендеринг 16 красивых коробок (сетка 4х4) с сохранением состояния
+        // Построение сетки с учетом открытых ранее боксов
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
@@ -1121,7 +1146,6 @@
                 box.className = 'prize-box';
                 box.setAttribute('data-index', i);
                 
-                // Проверяем, была ли данная коробка открыта ранее
                 const isOpenedBefore = openedBoxesData[i];
 
                 if (isOpenedBefore) {
@@ -1140,11 +1164,13 @@
                     box.onclick = () => selectBox(box, i);
                     box.innerHTML = `
                         <div class="gift-container">
-                            <div class="box-lid"></div>
-                            <div class="box-bow">${SVGS.redBow}</div>
-                            <div class="box-cover-wrapper">
-                                <div class="ribbon-v"></div>
-                                <div class="ribbon-h"></div>
+                            <div class="box-lid-container">
+                                <div class="box-lid-ribbon"></div>
+                            </div>
+                            ${SVGS.silkBow}
+                            <div class="box-body-container">
+                                <div class="box-ribbon-v"></div>
+                                <div class="box-ribbon-h"></div>
                             </div>
                             <div class="box-content"></div>
                         </div>
@@ -1154,7 +1180,7 @@
             }
         }
 
-        // Интерактивный клик по коробке (анимация 4.5 секунды)
+        // Интерактивный клик с нарастанием азарта (4.5 сек)
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
@@ -1180,7 +1206,7 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            // Кладем в объект открытых коробок для сохранения состояния
+            // Запоминаем открытую коробку
             openedBoxesData[index] = targetSector;
 
             saveState({
@@ -1193,15 +1219,22 @@
 
             boxElement.classList.add('opening');
 
-            // Аудиосопровождение и вибрация в процессе открытия (ритмичный пульс)
-            let audioInterval = setInterval(() => {
-                playTickSound(600, 0.05, 0.04);
-            }, 180);
+            // Нагнетание атмосферы ускоряющимися тиками
+            let delay = 180;
+            let timerId;
+            function playSuspenseSound() {
+                playTickSound(500, 0.05, 0.05);
+                delay = Math.max(50, delay - 8);
+                if (isSpinning && boxElement.classList.contains('opening')) {
+                    timerId = setTimeout(playSuspenseSound, delay);
+                }
+            }
+            playSuspenseSound();
 
-            // Время удержания в напряжении - 4.5 секунды (4500 мс)
+            // Эффект взрыва крышки ровно через 4.5 секунды
             setTimeout(() => {
-                clearInterval(audioInterval);
-                playTickSound(1200, 0.25, 0.06); // Победный звук открытия
+                clearTimeout(timerId);
+                playTickSound(1300, 0.3, 0.07); // Звук взлетающей крышки
 
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
@@ -1339,10 +1372,10 @@
             } else if (prize.type === 'bonus') {
                 title.innerText = "БОНУС!";
                 body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
-                confetti({ particleCount: 50, colors: ['#2ECC71', '#FFE259'] });
+                confetti({ particleCount: 60, colors: ['#2ECC71', '#FFE259'] });
             } else {
                 title.innerText = "НЕ ПОВЕЗЛО";
-                body.innerHTML = `<div class="modal-desc">К сожалению, коробка пустая. Испытайте удачу еще раз!</div>`;
+                body.innerHTML = `<div class="modal-desc">К сожалению, коробка оказалась пустой. Попробуйте еще раз!</div>`;
             }
 
             if (attempts === 0) {
@@ -1382,7 +1415,9 @@
 
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
-            if (document.getElementById('spinBtn')) document.getElementById('spinBtn').disabled = true;
+            if (document.getElementById('spinBtn')) {
+                document.getElementById('spinBtn').disabled = true;
+            }
 
             const modal = document.getElementById('resultModal');
             const iconBox = document.getElementById('modalIconBox');
@@ -1408,7 +1443,7 @@
                         <span class="prize-val" style="color: #FFE259;">${itemsList}</span>
                     </div>
                 </div>
-                <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
+                <div style="font-size: 11px; color: #64748b; margin-bottom: 14px; line-height: 1.4;">
                     Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
