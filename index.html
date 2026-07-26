@@ -1476,23 +1476,31 @@
                             try { window.location.href = deepLink; } catch(e2) {}
                         }
                     }
+                    // ЗАДЕРЖКА ПЕРЕД ЗАКРЫТИЕМ МИНИ АПП
                     setTimeout(() => {
                         try { tg.close(); } catch(err) {}
-                    }, 1500);
+                    }, 2500);
                 }
 
-                // ЕДИНСТВЕННЫЙ НАДЕЖНЫЙ ПУТЬ:
-                // Если открыто с ReplyKeyboard -> sendData
-                // Если открыто с Инлайн поста или Синей кнопки -> ПРЯМОЙ ДИПЛИНК БЕЗ SENDDATA
+                // ДЛЯ ВСЕХ ТИПОВ ОТКРЫТИЯ ИСПОЛЬЗУЕМ ПРЯМОЙ ДИПЛИНК
+                // sendData используем только если это ReplyKeyboard,
+                // но для надёжности ВСЕГДА делаем диплинк
                 if (srcParam === 'kbd') {
+                    // Пробуем sendData для мгновенной передачи
                     try {
                         if (tg.sendData) {
                             tg.sendData(JSON.stringify(sessionPrizes));
+                            // sendData сам закроет мини апп, но на всякий случай:
+                            setTimeout(() => {
+                                try { tg.close(); } catch(err) {}
+                            }, 3000);
                             return;
                         }
                     } catch(err) {}
+                    // Если sendData не сработал - делаем диплинк
                     redirectToBot();
                 } else {
+                    // Инлайн кнопка или синяя кнопка - только диплинк
                     redirectToBot();
                 }
             };
