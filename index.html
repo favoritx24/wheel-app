@@ -875,8 +875,8 @@
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         
-        // Гарантированное получение username бота
-        const botUsername = urlParams.get('b') || 'cash_magnat_bot';
+        // ТОЧНОЕ ПОЛУЧЕНИЕ ИМЕНИ БОТА
+        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || 'cash_magnat_bot';
         const urlVersion = urlParams.get('v') || '0';
         const srcParam = urlParams.get('src') || 'inline';
 
@@ -1467,23 +1467,19 @@
 
                 const targetBot = urlParams.get('b') || botUsername || 'cash_magnat_bot';
 
-                // 1. Попытка через sendData (если открыто с обычных кнопок клавиатуры)
-                let sentViaData = false;
+                // ЕСЛИ ОТКРЫТО С ОБЫЧНОЙ КЛАВИАТУРЫ -> SENDDATA
                 if (srcParam === 'kbd') {
                     try {
                         if (tg.sendData) {
                             tg.sendData(JSON.stringify(sessionPrizes));
-                            sentViaData = true;
+                            return;
                         }
-                    } catch(err) {
-                        sentViaData = false;
-                    }
+                    } catch(err) {}
                 }
 
-                // 2. Гарантированный DeepLink (для открытий из под ПОСТА и СИНЕЙ КНОПКИ)
-                if (!sentViaData) {
+                // ЕСЛИ ОТКРЫТО С ИНЛАЙН КНОПКИ ИЛИ СИНЕЙ КНОПКИ -> ДИПЛИНК ПЕРЕХОД (НЕ ВЫЗЫВАЯ SENDDATA!)
+                if (targetBot) {
                     const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
-                    
                     try {
                         if (tg.openTelegramLink) {
                             tg.openTelegramLink(deepLink);
@@ -1493,12 +1489,12 @@
                     } catch(err) {
                         try { window.location.href = deepLink; } catch(e2) {}
                     }
-
-                    // ЗАДЕРЖКА ДЛЯ TELEGRAM DESKTOP
-                    setTimeout(() => {
-                        try { tg.close(); } catch(err) {}
-                    }, 800);
                 }
+
+                // ЗАДЕРЖКА ДЛЯ TELEGRAM DESKTOP ПК СЛОТА
+                setTimeout(() => {
+                    try { tg.close(); } catch(err) {}
+                }, 1000);
             };
 
             modal.classList.add('active');
