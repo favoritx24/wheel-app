@@ -210,9 +210,7 @@
             animation: badgeIn 0.3s ease-out forwards;
         }
 
-        .basket-badge span {
-            white-space: nowrap;
-        }
+        .basket-badge span { white-space: nowrap; }
 
         @keyframes badgeIn {
             from { opacity: 0; transform: scale(0.8); }
@@ -273,9 +271,7 @@
             filter: drop-shadow(0 4px 8px rgba(255, 51, 51, 0.8));
         }
 
-        .prize-box:active .gift-container {
-            transform: scale(0.95);
-        }
+        .prize-box:active .gift-container { transform: scale(0.95); }
 
         .box-lid-container {
             position: absolute;
@@ -421,8 +417,7 @@
         }
 
         .box-content img, .box-content svg {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             object-fit: contain;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
         }
@@ -560,13 +555,9 @@
             z-index: 5;
         }
 
-        .btn-glow svg {
-            width: 18px; height: 18px;
-        }
+        .btn-glow svg { width: 18px; height: 18px; }
 
-        .btn-glow:active {
-            transform: scale(0.96);
-        }
+        .btn-glow:active { transform: scale(0.96); }
 
         .btn-glow:disabled {
             opacity: 0.4;
@@ -600,10 +591,7 @@
             letter-spacing: 1.5px;
         }
 
-        .trust-header svg {
-            width: 12px; height: 12px;
-            color: var(--neon-gold);
-        }
+        .trust-header svg { width: 12px; height: 12px; color: var(--neon-gold); }
 
         .trust-desc {
             font-size: 9.5px;
@@ -645,9 +633,7 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
+        .modal-overlay.active .modal-card { transform: scale(1); }
 
         .modal-icon-badge {
             width: 76px; height: 76px;
@@ -699,9 +685,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        .prize-summary-row:last-child {
-            border-bottom: none;
-        }
+        .prize-summary-row:last-child { border-bottom: none; }
 
         .prize-label { color: #94a3b8; }
         .prize-val { font-weight: 800; color: #FFFFFF; }
@@ -763,7 +747,6 @@
                 </div>
                 <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             </div>
-            
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
                 <span class="attempts-count" id="attCounter">
@@ -795,12 +778,10 @@
                 </svg>
                 <canvas id="wheelCanvas" width="640" height="640"></canvas>
             </div>
-
             <div class="ribbon-wrapper" id="ribbonBox">
                 <div class="ribbon-pointer-line"></div>
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
-
             <div class="boxes-wrapper" id="boxesBox">
                 <div class="boxes-grid" id="boxesGrid"></div>
             </div>
@@ -839,27 +820,28 @@
     </div>
 
     <script>
+        // ============================================================
+        // JS ЛОГИКА ТОЧНАЯ КОПИЯ РАБОЧЕГО КОДА (без guest, без srcParam)
+        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
+        const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
-        const srcParam = urlParams.get('src') || 'inline';
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
-            try { localStorage.setItem('km_state_guest', str); } catch(e){}
             try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
         }
 
         function loadState() {
             try {
-                const local = localStorage.getItem('km_state_' + userId) || localStorage.getItem('km_state_guest');
+                const local = localStorage.getItem('km_state_' + userId);
                 if (local) return JSON.parse(local);
             } catch(e){}
             return null;
@@ -877,7 +859,7 @@
         }
 
         const rawGameMode = urlParams.get('mode');
-        const gameMode = (rawGameMode === 'wheel' || rawGameMode === 'ribbon') ? rawGameMode : 'boxes';
+        const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'wheel';
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
@@ -942,7 +924,7 @@
                 return;
             }
 
-            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number') {
+            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
                 if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
@@ -1010,20 +992,18 @@
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTickSound(frequency = 840, duration = 0.04, volume = 0.035) {
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration);
-            } catch(e){}
+        function playTickSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(840, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
         }
 
         function renderWheel() {
@@ -1111,7 +1091,7 @@
 
             let delay = 160, timerId;
             function playSuspenseSound() {
-                playTickSound(500, 0.05, 0.05);
+                playTickSound();
                 delay = Math.max(40, delay - 10);
                 if (isSpinning && boxElement.classList.contains('opening')) timerId = setTimeout(playSuspenseSound, delay);
             }
@@ -1119,7 +1099,6 @@
 
             setTimeout(() => {
                 clearTimeout(timerId);
-                playTickSound(1300, 0.3, 0.07);
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
                 const contentDiv = boxElement.querySelector('.box-content');
@@ -1159,7 +1138,7 @@
             const sectorAngle = 360 / numSectors;
             const sectorCenter = (sectorIndex + 0.5) * sectorAngle;
             const targetRotation = 3600 + (270 - sectorCenter);
-            let audioInterval = setInterval(() => playTickSound(840, 0.04, 0.035), 110);
+            let audioInterval = setInterval(() => playTickSound(), 110);
             canvas.style.transform = `rotate(${targetRotation}deg)`;
             setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
         }
@@ -1169,7 +1148,7 @@
             const cellPitch = 116, containerCenter = 170;
             const targetCellIndex = (8 * SECTORS.length) + sectorIndex;
             const targetOffset = (targetCellIndex * cellPitch) + (104 / 2) - containerCenter;
-            let audioInterval = setInterval(() => playTickSound(840, 0.04, 0.035), 100);
+            let audioInterval = setInterval(() => playTickSound(), 100);
             track.style.transform = `translateX(-${targetOffset}px)`;
             setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
         }
@@ -1268,7 +1247,6 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
-                // Сохраняем состояние
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
                 let payload = "";
@@ -1278,24 +1256,19 @@
                     } catch(err) {}
                 }
 
-                // ВСЕГДА пробуем sendData (сработает для клавиатуры)
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
-                // ВСЕГДА делаем диплинк
                 if (botUsername) {
-                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
-                    // Для клавиатуры - sendData уже отправил данные, диплинк как резерв
-                    // Для инлайн/синей кнопки - sendData молча упал, диплинк основной
                     try {
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = deepLink;
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     }
                 }
 
-                // Закрываем мини апп
                 try {
                     tg.close();
                 } catch(err) {}
