@@ -9,18 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #02040a;
-            --card-glass: rgba(10, 15, 30, 0.75);
+            --bg-dark: #050713;
+            --card-glass: rgba(18, 24, 48, 0.72);
             --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
-            --blue-box-gradient: linear-gradient(135deg, #1b3a4b 0%, #0d2535 100%);
-            --red-ribbon-gradient: linear-gradient(90deg, #800000 0%, #ff1a1a 50%, #800000 100%);
-            --red-ribbon-h-gradient: linear-gradient(180deg, #800000 0%, #ff1a1a 50%, #800000 100%);
+            --purple-gradient: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
             --neon-gold: #FFE259;
-            --neon-blue: #00d2ff;
+            --neon-orange: #FFA751;
             --text-main: #FFFFFF;
-            --text-muted: #64748b;
-            --border-glass: rgba(255, 226, 89, 0.15);
-            --border-subtle: rgba(255, 255, 255, 0.05);
+            --text-muted: #94A3B8;
+            --border-glass: rgba(255, 226, 89, 0.22);
+            --border-subtle: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -31,20 +29,16 @@
             padding: 0;
         }
 
-        html, body {
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+        body {
             background: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        body {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
+            overflow: hidden;
             position: relative;
         }
 
@@ -59,27 +53,27 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.35;
-            animation: orbFloat 14s infinite alternate ease-in-out;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 12s infinite alternate ease-in-out;
         }
 
         .orb-1 {
-            width: 300px; height: 300px;
-            background: #1e3a8a;
-            top: -20px; left: -20px;
+            width: 260px; height: 260px;
+            background: #8E2DE2;
+            top: -40px; left: -40px;
         }
 
         .orb-2 {
-            width: 350px; height: 350px;
-            background: #0f172a;
-            bottom: -50px; right: -50px;
-            animation-delay: -6s;
+            width: 300px; height: 300px;
+            background: #FFA751;
+            bottom: -60px; right: -60px;
+            animation-delay: -5s;
         }
 
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, 50px) scale(1.15); }
+            100% { transform: translate(30px, 40px) scale(1.1); }
         }
 
         .app-container {
@@ -87,29 +81,34 @@
             z-index: 2;
             width: 100%;
             max-width: 420px;
-            height: 100vh;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px;
+            padding: 16px 20px 24px 20px;
         }
 
-        /* ШАПКА */
         .header-block {
             text-align: center;
             width: 100%;
         }
 
-        .brand-logo-container {
-            display: flex;
-            flex-direction: column;
+        .brand-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 226, 89, 0.06);
+            border: 1px solid var(--border-glass);
+            padding: 6px 16px;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            margin-bottom: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .brand-logo-glow {
-            font-size: 24px;
+        .brand-title {
+            font-size: 22px;
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -119,38 +118,27 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.4));
         }
 
-        .brand-logo-glow svg {
-            width: 24px; height: 24px;
-            fill: url(#goldGrad);
-        }
-
-        .brand-subtitle {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--neon-blue);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-top: 2px;
-            text-shadow: 0 0 6px rgba(0, 210, 255, 0.4);
+        .brand-title svg {
+            width: 22px; height: 22px;
+            filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.6));
         }
 
         .attempts-pill {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background: var(--card-glass);
-            border: 1px solid var(--border-glass);
-            padding: 4px 14px;
+            border: 1px solid var(--border-subtle);
+            padding: 6px 18px;
             border-radius: 30px;
-            backdrop-filter: blur(20px);
-            margin-top: 6px;
+            backdrop-filter: blur(15px);
+            margin-top: 4px;
         }
 
         .attempts-label {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -158,7 +146,7 @@
         }
 
         .attempts-count {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 900;
             color: var(--neon-gold);
             display: flex;
@@ -166,62 +154,6 @@
             gap: 4px;
         }
 
-        /* КОРЗИНА ПРИЗОВ */
-        .basket-widget {
-            width: 100%;
-            background: rgba(5, 8, 20, 0.8);
-            border: 1px solid var(--border-subtle);
-            border-radius: 14px;
-            padding: 8px 12px;
-            backdrop-filter: blur(15px);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .basket-header {
-            font-size: 9px;
-            font-weight: 900;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .basket-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            min-height: 20px;
-        }
-
-        .basket-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #ffffff;
-            white-space: nowrap;
-            animation: badgeIn 0.3s ease-out forwards;
-        }
-
-        .basket-badge span {
-            white-space: nowrap;
-        }
-
-        @keyframes badgeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* ИГРОВАЯ СЦЕНА */
         .game-stage {
             position: relative;
             width: 100%;
@@ -229,245 +161,21 @@
             justify-content: center;
             align-items: center;
             flex-grow: 1;
-            margin: 8px 0;
         }
 
-        /* СЕТКА БОКСОВ 4х4 */
-        .boxes-wrapper {
-            display: none;
-            width: 100%;
-            max-width: 340px;
-            z-index: 5;
-        }
-
-        .boxes-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            width: 100%;
-        }
-
-        /* ПРЕМИАЛЬНАЯ ТРЕХМЕРНАЯ КОРОБКА */
-        .prize-box {
-            position: relative;
-            aspect-ratio: 1;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .gift-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* 3D Наведение */
-        .prize-box:not(.disabled):not(.opened):not(.opening):hover .gift-container {
-            transform: translateY(-5px) rotateX(10deg) scale(1.05);
-            filter: brightness(1.1);
-        }
-
-        .prize-box:not(.disabled):not(.opened):not(.opening):hover .box-lid-container {
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
-            border-color: rgba(0, 210, 255, 0.5);
-        }
-
-        .prize-box:not(.disabled):not(.opened):not(.opening):hover .mega-bow {
-            transform: translateX(-50%) translateY(-2px) scale(1.18);
-            filter: drop-shadow(0 4px 8px rgba(255, 51, 51, 0.8));
-        }
-
-        .prize-box:active .gift-container {
-            transform: scale(0.95);
-        }
-
-        /* КРЫШКА КОРОБКИ */
-        .box-lid-container {
-            position: absolute;
-            top: 0; left: -2px; right: -2px;
-            height: 24%;
-            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
-            border-radius: 6px 6px 3px 3px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            z-index: 4;
-            transform-origin: bottom center;
-            transition: all 0.4s ease;
-        }
-
-        .box-lid-ribbon {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 18%; height: 100%;
-            background: var(--red-ribbon-gradient);
-            border-left: 1px solid var(--neon-gold);
-            border-right: 1px solid var(--neon-gold);
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 0 4px rgba(0,0,0,0.3);
-        }
-
-        .mega-bow {
-            position: absolute;
-            top: -12%; left: 50%;
-            transform: translateX(-50%);
-            width: 44px; height: 34px;
-            z-index: 5;
-            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.6));
-            pointer-events: none;
-            transition: all 0.4s ease;
-        }
-
-        /* КОРПУС КОРОБКИ */
-        .box-body-container {
-            position: absolute;
-            top: 22%; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, #1e3c72 0%, #0f1e36 100%);
-            border-radius: 0 0 8px 8px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -4px 8px rgba(0,0,0,0.6);
-            z-index: 2;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .box-ribbon-v {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 18%; height: 100%;
-            background: var(--red-ribbon-gradient);
-            border-left: 1.2px solid var(--neon-gold);
-            border-right: 1.2px solid var(--neon-gold);
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
-        }
-
-        .box-ribbon-h {
-            position: absolute;
-            top: 42%; left: 0;
-            width: 100%; height: 18%;
-            background: var(--red-ribbon-h-gradient);
-            border-top: 1.2px solid var(--neon-gold);
-            border-bottom: 1.2px solid var(--neon-gold);
-            box-shadow: inset 0 2px 1px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
-        }
-
-        /* АНИМАЦИЯ НАПРЯЖЕНИЯ ПРИ ОТКРЫТИИ (3.5 СЕКУНДЫ) */
-        .prize-box.opening .gift-container {
-            animation: professionalShake 0.15s infinite alternate ease-in-out;
-        }
-
-        .prize-box.opening .box-lid-container {
-            box-shadow: 0 0 25px rgba(255, 226, 89, 0.8), inset 0 1px 1px rgba(255,255,255,0.3);
-            border-color: rgba(255, 226, 89, 0.8);
-        }
-
-        @keyframes professionalShake {
-            0% { transform: translate(1px, 1px) rotate(0deg) scale(1.04); }
-            20% { transform: translate(-1px, -1px) rotate(-1deg) scale(1.04); }
-            40% { transform: translate(-1.5px, 0px) rotate(1deg) scale(1.04); }
-            60% { transform: translate(1px, 1.5px) rotate(0deg) scale(1.04); }
-            80% { transform: translate(-1px, 1px) rotate(-1deg) scale(1.04); }
-            100% { transform: translate(1px, -1.5px) rotate(1deg) scale(1.04); }
-        }
-
-        /* ЭФФЕКТ СДУВАНИЯ КРЫШКИ И ВЫПАДЕНИЯ ПРИЗА */
-        .prize-box.opened .box-lid-container {
-            animation: lidFlyOff 1.2s cubic-bezier(0.25, 1, 0.50, 1) forwards;
-        }
-
-        .prize-box.opened .mega-bow {
-            animation: bowFlyOff 1.2s cubic-bezier(0.25, 1, 0.50, 1) forwards;
-        }
-
-        .prize-box.opened .box-body-container {
-            animation: bodyFade 0.8s ease forwards;
-        }
-
-        @keyframes lidFlyOff {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-160px) rotate(140deg) scale(0.2); opacity: 0; }
-        }
-
-        @keyframes bowFlyOff {
-            0% { transform: translateX(-50%) translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateX(40px) translateY(-180px) rotate(-120deg) scale(0.2); opacity: 0; }
-        }
-
-        @keyframes bodyFade {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.15; transform: scale(0.85); filter: blur(2px); }
-        }
-
-        /* СОДЕРЖИМОЕ ПРИЗА */
-        .box-content {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 226, 89, 0.2) 0%, rgba(5, 8, 20, 0.98) 100%);
-            border: 2px solid var(--neon-gold);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-            z-index: 1;
-            opacity: 0;
-            transform: scale(0.2);
-            transition: none;
-            box-shadow: 0 0 20px rgba(255, 226, 89, 0.4);
-        }
-
-        .prize-box.opened .box-content {
-            opacity: 1;
-            transform: scale(1);
-            animation: prizeFloat 3s infinite alternate ease-in-out;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes prizeFloat {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-4px) rotate(2deg); }
-        }
-
-        .box-content img, .box-content svg {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
-        }
-
-        .box-content span {
-            font-size: 7.5px;
-            font-weight: 900;
-            color: #FFFFFF;
-            text-align: center;
-            margin-top: 3px;
-            line-height: 1.05;
-            text-transform: uppercase;
-            white-space: normal;
-            word-wrap: break-word;
-            display: block;
-            width: 100%;
-        }
-
-        .box-content span b {
-            white-space: nowrap;
-            display: inline-block;
-            font-size: 8.5px;
-        }
-
-        /* ДРУГИЕ РЕЖИМЫ ИГРЫ */
         .wheel-wrapper {
             position: relative;
-            width: 320px; height: 320px;
-            display: flex; justify-content: center; align-items: center;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .wheel-halo {
             position: absolute;
-            width: 334px; height: 334px;
+            width: 334px;
+            height: 334px;
             border-radius: 50%;
             border: 3px solid var(--neon-gold);
             box-shadow: 0 0 35px rgba(255, 226, 89, 0.35), inset 0 0 20px rgba(255, 226, 89, 0.25);
@@ -477,15 +185,18 @@
 
         .pointer-marker {
             position: absolute;
-            top: -14px; left: 50%;
+            top: -14px;
+            left: 50%;
             transform: translateX(-50%);
-            width: 30px; height: 36px;
+            width: 30px;
+            height: 36px;
             z-index: 10;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
         }
 
         #wheelCanvas {
-            width: 320px; height: 320px;
+            width: 320px;
+            height: 320px;
             border-radius: 50%;
             transition: transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1);
             will-change: transform;
@@ -494,7 +205,8 @@
         .ribbon-wrapper {
             display: none;
             position: relative;
-            width: 100%; height: 136px;
+            width: 100%;
+            height: 136px;
             background: var(--card-glass);
             border: 2px solid var(--border-glass);
             border-radius: 24px;
@@ -507,7 +219,8 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 4px; height: 100%;
+            width: 4px;
+            height: 100%;
             background: var(--gold-gradient);
             z-index: 10;
             box-shadow: 0 0 12px var(--neon-gold);
@@ -524,7 +237,8 @@
         }
 
         .ribbon-card {
-            width: 104px; height: 104px;
+            width: 104px;
+            height: 104px;
             margin: 0 6px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-subtle);
@@ -533,12 +247,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px; gap: 6px;
+            padding: 8px;
+            gap: 6px;
             flex-shrink: 0;
         }
 
         .ribbon-card img, .ribbon-card svg {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
         }
 
@@ -550,31 +266,135 @@
             line-height: 1.1;
         }
 
-        /* КНОПКА ЗАПУСКА */
+        /* ДИЗАЙН ПРИЗОВЫХ БОКСОВ */
+        .boxes-wrapper {
+            display: none;
+            width: 100%;
+            max-width: 350px;
+            padding: 10px 0;
+            z-index: 5;
+        }
+
+        .boxes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .prize-box {
+            position: relative;
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, rgba(255, 226, 89, 0.08) 0%, rgba(18, 24, 48, 0.85) 100%);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .prize-box:active {
+            transform: scale(0.92);
+        }
+
+        .prize-box.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .box-cover {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 226, 89, 0.18), rgba(12, 16, 32, 0.95));
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .box-cover svg {
+            width: 32px; height: 32px;
+            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.5));
+        }
+
+        .prize-box.opening .box-cover {
+            transform: translateY(-60px) rotateX(-60deg) scale(0.5);
+            opacity: 0;
+        }
+
+        .box-content {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            z-index: 1;
+            opacity: 0;
+            transform: scale(0.3);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .prize-box.opened .box-content, .prize-box.opening .box-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .prize-box.opened {
+            border-color: rgba(255, 226, 89, 0.7);
+            box-shadow: 0 0 25px rgba(255, 226, 89, 0.35), inset 0 0 15px rgba(255, 226, 89, 0.2);
+            background: rgba(255, 226, 89, 0.06);
+        }
+
+        .box-content img, .box-content svg {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .box-content span {
+            font-size: 8px;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-align: center;
+            margin-top: 2px;
+            line-height: 1;
+        }
+
         .btn-glow {
             width: 100%;
-            padding: 16px 0;
+            padding: 18px 0;
             border: none;
             border-radius: 50px;
             background: var(--gold-gradient);
-            color: #02040a;
+            color: #050713;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 167, 81, 0.35);
+            box-shadow: 0 10px 30px rgba(255, 167, 81, 0.4);
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             z-index: 5;
         }
 
         .btn-glow svg {
-            width: 18px; height: 18px;
+            width: 20px;
+            height: 20px;
         }
 
         .btn-glow:active {
@@ -588,50 +408,11 @@
             box-shadow: none;
         }
 
-        /* МАРКЕТИНГОВЫЙ БЛОК ДОВЕРИЯ */
-        .trust-banner {
-            width: 100%;
-            background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
-            border: 1px solid rgba(255, 226, 89, 0.18);
-            border-radius: 16px;
-            padding: 12px 14px;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .trust-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 9px;
-            font-weight: 900;
-            color: var(--neon-gold);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .trust-header svg {
-            width: 12px; height: 12px;
-            color: var(--neon-gold);
-        }
-
-        .trust-desc {
-            font-size: 9.5px;
-            color: #94a3b8;
-            line-height: 1.4;
-            padding: 0 4px;
-        }
-
-        /* МОДАЛЬНЫЕ ОКНА */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(2, 4, 10, 0.95);
+            background: rgba(4, 6, 14, 0.92);
             backdrop-filter: blur(16px);
             z-index: 100;
             display: none;
@@ -648,14 +429,14 @@
         }
 
         .modal-card {
-            background: linear-gradient(160deg, #0f172a 0%, #050814 100%);
+            background: linear-gradient(160deg, #12182d 0%, #080a15 100%);
             border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 26px 20px;
+            border-radius: 28px;
+            padding: 30px 22px;
             width: 100%;
-            max-width: 320px;
+            max-width: 330px;
             text-align: center;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 226, 89, 0.1);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 226, 89, 0.15);
             transform: scale(0.85);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -665,103 +446,95 @@
         }
 
         .modal-icon-badge {
-            width: 76px; height: 76px;
-            margin: 0 auto 16px auto;
-            background: rgba(255, 226, 89, 0.06);
-            border-radius: 20px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 18px auto;
+            background: rgba(255, 226, 89, 0.08);
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 226, 89, 0.2);
+            border: 1px solid rgba(255, 226, 89, 0.25);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .modal-icon-badge svg, .modal-icon-badge img {
-            width: 40px; height: 40px;
+            width: 42px;
+            height: 42px;
             object-fit: contain;
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 900;
             color: var(--neon-gold);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .modal-desc {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 18px;
-            line-height: 1.45;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .prize-summary-box {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-subtle);
-            border-radius: 14px;
-            padding: 10px 14px;
-            margin-bottom: 16px;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
         }
 
         .prize-summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .prize-summary-row:last-child {
             border-bottom: none;
         }
 
-        .prize-label { color: #94a3b8; }
+        .prize-label { color: var(--text-muted); }
         .prize-val { font-weight: 800; color: #FFFFFF; }
 
         .modal-action-btn {
             width: 100%;
-            padding: 14px 0;
+            padding: 16px 0;
             border: none;
             border-radius: 50px;
             background: var(--gold-gradient);
-            color: #02040a;
+            color: #050713;
             font-weight: 900;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            box-shadow: 0 6px 20px rgba(255, 167, 81, 0.25);
+            gap: 8px;
+            box-shadow: 0 8px 25px rgba(255, 167, 81, 0.3);
         }
 
         .security-note {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 12px;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 14px;
         }
     </style>
 </head>
 <body>
-
-    <!-- Вспомогательные векторные градиенты -->
-    <svg style="position: absolute; width: 0; height: 0;">
-        <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFE259" />
-                <stop offset="100%" stop-color="#FFA751" />
-            </linearGradient>
-        </defs>
-    </svg>
 
     <div class="ambient-canvas">
         <div class="orb orb-1"></div>
@@ -771,33 +544,19 @@
     <div class="app-container">
         <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container">
-                <div class="brand-logo-glow">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                    </svg>
+            <div class="brand-badge">
+                <div class="brand-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     КЭШ-МАГНАТ
                 </div>
-                <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             </div>
-            
+            <br>
             <div class="attempts-pill">
-                <span class="attempts-label">Доступно открытий:</span>
+                <span class="attempts-label">Доступно попыток:</span>
                 <span class="attempts-count" id="attCounter">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     <span id="attNum">3</span>
                 </span>
-            </div>
-        </div>
-
-        <!-- Виджет выигранных призов (Корзина) -->
-        <div class="basket-widget">
-            <div class="basket-header">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Вы выиграли и можете забрать: (<span id="basketCount">0</span>)
-            </div>
-            <div class="basket-items" id="basketItems">
-                <!-- Сюда динамически добавляются призы -->
             </div>
         </div>
 
@@ -822,31 +581,17 @@
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
 
-            <!-- Игровая Сетка 4х4 -->
             <div class="boxes-wrapper" id="boxesBox">
                 <div class="boxes-grid" id="boxesGrid"></div>
             </div>
         </div>
 
-        <!-- Главная кнопка -->
         <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            ОТКРЫТЬ КОРОБКУ
+            ИСПЫТАТЬ УДАЧУ
         </button>
-
-        <!-- Маркетинговый блок доверия -->
-        <div class="trust-banner">
-            <div class="trust-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Розыгрыш сертифицирован и гарантирован
-            </div>
-            <div class="trust-desc">
-                Выдача всех наград полностью застрахована, верифицирована регуляторами и на 100% финансируется за счет рекламных бюджетов: Т-Банк, СБЕР, OZON, WB, Я.Маркет, DNS и интернет предприниматели. Гарантия получения.
-            </div>
-        </div>
     </div>
 
-    <!-- Модальное окно результатов -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-card">
             <div class="modal-icon-badge" id="modalIconBox"></div>
@@ -858,7 +603,7 @@
             </button>
             <div class="security-note">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Лицензия № 415-GТ/РФ. Зашифровано и сохранено.
+                Результаты зашифрованы и сохранены
             </div>
         </div>
     </div>
@@ -870,23 +615,19 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        
-        // ТОЧНОЕ ПОЛУЧЕНИЕ ИМЕНИ БОТА
-        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
+        const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
-        const srcParam = urlParams.get('src') || 'inline';
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
-            try { localStorage.setItem('km_state_guest', str); } catch(e){}
             try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
         }
 
         function loadState() {
             try {
-                const local = localStorage.getItem('km_state_' + userId) || localStorage.getItem('km_state_guest');
+                const local = localStorage.getItem('km_state_' + userId);
                 if (local) return JSON.parse(local);
             } catch(e){}
             return null;
@@ -904,7 +645,7 @@
         }
 
         const rawGameMode = urlParams.get('mode');
-        const gameMode = (rawGameMode === 'wheel' || rawGameMode === 'ribbon') ? rawGameMode : 'boxes';
+        const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'wheel';
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
@@ -915,30 +656,12 @@
             watch: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 3h6v4H9zM9 17h6v4H9z"/></svg>`,
             laptop: `<svg viewBox="0 0 24 24" fill="none" stroke="#2F80ED" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>`,
             trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`,
-            silkBow: `
-            <svg class="mega-bow" viewBox="0 0 100 80" fill="none">
-               <defs>
-                   <radialGradient id="bowGrad" cx="50%" cy="50%" r="50%">
-                       <stop offset="0%" stop-color="#ff4d4d"/>
-                       <stop offset="70%" stop-color="#b30000"/>
-                       <stop offset="100%" stop-color="#660000"/>
-                   </radialGradient>
-                   <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                       <stop offset="0%" stop-color="#ff1a1a"/>
-                       <stop offset="100%" stop-color="#800000"/>
-                   </linearGradient>
-               </defs>
-               <path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/>
-               <path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/>
-               <path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/>
-               <path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/>
-               <circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/>
-            </svg>`
+            boxCover: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`
         };
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -966,7 +689,6 @@
         let spinStep = 0;
         let isSpinning = false;
         let sessionPrizes = { money: [], items: [] };
-        let openedBoxesData = {};
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
@@ -995,20 +717,17 @@
                 return;
             }
 
-            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number') {
+            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
                 if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
-                if (saved.openedBoxesData) openedBoxesData = saved.openedBoxesData;
             } else {
                 attempts = 3;
                 spinStep = 0;
                 sessionPrizes = { money: [], items: [] };
-                openedBoxesData = {};
             }
 
             document.getElementById('attNum').innerText = attempts;
-            updateBasketUI();
 
             if (gameMode === 'ribbon') {
                 document.getElementById('wheelBox').style.display = 'none';
@@ -1026,63 +745,24 @@
             }
         });
 
-        function updateBasketUI() {
-            const container = document.getElementById('basketItems');
-            container.innerHTML = '';
-            let totalCount = 0;
-
-            if (sessionPrizes.money && sessionPrizes.money.length > 0) {
-                sessionPrizes.money.forEach(m => {
-                    const badge = document.createElement('div');
-                    badge.className = 'basket-badge';
-                    badge.innerHTML = `${SVGS.cash} <span>${m} ₽</span>`;
-                    container.appendChild(badge);
-                    totalCount++;
-                });
-            }
-
-            if (sessionPrizes.items && sessionPrizes.items.length > 0) {
-                sessionPrizes.items.forEach(it => {
-                    const badge = document.createElement('div');
-                    badge.className = 'basket-badge';
-                    
-                    let iconHtml = SVGS.headphones;
-                    if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
-                    else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                    else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
-
-                    badge.innerHTML = `${iconHtml} <span>${it}</span>`;
-                    container.appendChild(badge);
-                    totalCount++;
-                });
-            }
-
-            if (totalCount === 0) {
-                container.innerHTML = `<span style="font-size:10px; color: #64748b;">Ничего не выиграно. Откройте праздничную коробку!</span>`;
-            }
-            document.getElementById('basketCount').innerText = totalCount;
-        }
-
         function generateCashAmount() {
             const steps = Math.floor(Math.random() * 101);
             return 5000 + (steps * 100);
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTickSound(frequency = 840, duration = 0.04, volume = 0.035) {
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration);
-            } catch(e){}
+        function playTickSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(840, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
         }
 
         function renderWheel() {
@@ -1138,42 +818,16 @@
                 const box = document.createElement('div');
                 box.className = 'prize-box';
                 box.setAttribute('data-index', i);
-                
-                const isOpenedBefore = openedBoxesData[i];
-
-                if (isOpenedBefore) {
-                    box.classList.add('opened');
-                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
-                    box.innerHTML = `
-                        <div class="gift-container">
-                            <div class="box-content" style="opacity: 1; transform: scale(1);">
-                                ${iconContent}
-                                <span>${isOpenedBefore.name}${cashValTxt}</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    box.onclick = () => selectBox(box, i);
-                    box.innerHTML = `
-                        <div class="gift-container">
-                            <div class="box-lid-container">
-                                <div class="box-lid-ribbon"></div>
-                            </div>
-                            ${SVGS.silkBow}
-                            <div class="box-body-container">
-                                <div class="box-ribbon-v"></div>
-                                <div class="box-ribbon-h"></div>
-                            </div>
-                            <div class="box-content"></div>
-                        </div>
-                    `;
-                }
+                box.onclick = () => selectBox(box);
+                box.innerHTML = `
+                    <div class="box-cover">${SVGS.boxCover}</div>
+                    <div class="box-content"></div>
+                `;
                 grid.appendChild(box);
             }
         }
 
-        function selectBox(boxElement, index) {
+        function selectBox(boxElement) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
             isSpinning = true;
@@ -1198,46 +852,20 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            openedBoxesData[index] = targetSector;
-
-            saveState({
-                attempts: attempts,
-                spinStep: spinStep,
-                sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
-            });
+            saveState({ attempts: attempts, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: attempts === 0 });
 
             boxElement.classList.add('opening');
+            playTickSound();
 
-            let delay = 160;
-            let timerId;
-            function playSuspenseSound() {
-                playTickSound(500, 0.05, 0.05);
-                delay = Math.max(40, delay - 10);
-                if (isSpinning && boxElement.classList.contains('opening')) {
-                    timerId = setTimeout(playSuspenseSound, delay);
-                }
-            }
-            playSuspenseSound();
+            const contentDiv = boxElement.querySelector('.box-content');
+            const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
+            contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}</span>`;
 
             setTimeout(() => {
-                clearTimeout(timerId);
-                playTickSound(1300, 0.3, 0.07);
-
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
-
-                const contentDiv = boxElement.querySelector('.box-content');
-                const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
-                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
-                contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
-
-                setTimeout(() => {
-                    finishSpin(targetSector);
-                }, 800);
-
-            }, 3500);
+                finishSpin(targetSector);
+            }, 1000);
         }
 
         function executeSpin() {
@@ -1270,7 +898,6 @@
                 attempts: attempts,
                 spinStep: spinStep,
                 sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
                 isDone: attempts === 0
             });
 
@@ -1289,7 +916,7 @@
             const sectorCenter = (sectorIndex + 0.5) * sectorAngle;
             const targetRotation = 3600 + (270 - sectorCenter);
 
-            let audioInterval = setInterval(() => playTickSound(840, 0.04, 0.035), 110);
+            let audioInterval = setInterval(() => playTickSound(), 110);
 
             canvas.style.transform = `rotate(${targetRotation}deg)`;
 
@@ -1307,7 +934,7 @@
             const targetCellIndex = (8 * SECTORS.length) + sectorIndex;
             const targetOffset = (targetCellIndex * cellPitch) + (104 / 2) - containerCenter;
 
-            let audioInterval = setInterval(() => playTickSound(840, 0.04, 0.035), 100);
+            let audioInterval = setInterval(() => playTickSound(), 100);
 
             track.style.transform = `translateX(-${targetOffset}px)`;
 
@@ -1333,11 +960,9 @@
                 attempts: attempts,
                 spinStep: spinStep,
                 sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
                 isDone: attempts === 0
             });
 
-            updateBasketUI();
             displayModal(prize);
         }
 
@@ -1352,7 +977,7 @@
 
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
-                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px; white-space: nowrap;">${prize.cashAmount} ₽</strong></div>`;
+                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
                 confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
             } else if (prize.type === 'item') {
                 title.innerText = "ЦЕННЫЙ ПРИЗ!";
@@ -1361,14 +986,9 @@
             } else if (prize.type === 'bonus') {
                 title.innerText = "БОНУС!";
                 body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
-                confetti({ particleCount: 60, colors: ['#2ECC71', '#FFE259'] });
             } else {
                 title.innerText = "НЕ ПОВЕЗЛО";
-                if (attempts === 0) {
-                    body.innerHTML = `<div class="modal-desc">К сожалению, эта коробка оказалась пустой. Перейдите к получению ранее выигранных наград!</div>`;
-                } else {
-                    body.innerHTML = `<div class="modal-desc">К сожалению, коробка оказалась пустой. Попробуйте открыть другую!</div>`;
-                }
+                body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
             }
 
             if (attempts === 0) {
@@ -1408,9 +1028,7 @@
 
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
-            if (document.getElementById('spinBtn')) {
-                document.getElementById('spinBtn').disabled = true;
-            }
+            document.getElementById('spinBtn').disabled = true;
 
             const modal = document.getElementById('resultModal');
             const iconBox = document.getElementById('modalIconBox');
@@ -1429,14 +1047,14 @@
                 <div class="prize-summary-box">
                     <div class="prize-summary-row">
                         <span class="prize-label">Баланс к выплате:</span>
-                        <span class="prize-val" style="color: #2ECC71; white-space: nowrap;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
+                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
                     </div>
                     <div class="prize-summary-row">
                         <span class="prize-label">Физические призы:</span>
                         <span class="prize-val" style="color: #FFE259;">${itemsList}</span>
                     </div>
                 </div>
-                <div style="font-size: 11px; color: #64748b; margin-bottom: 14px; line-height: 1.4;">
+                <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
                     Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
@@ -1446,13 +1064,7 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
-                saveState({
-                    attempts: 0,
-                    spinStep: spinStep,
-                    sessionPrizes: sessionPrizes,
-                    openedBoxesData: openedBoxesData,
-                    isDone: true
-                });
+                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
                 let payload = "";
                 if (sessionPrizes) {
@@ -1461,48 +1073,25 @@
                     } catch(err) {}
                 }
 
-                const targetBot = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || 'cash_magnat_bot';
+                // ВСЕГДА вызываем sendData сначала (работает для ReplyKeyboard)
+                try {
+                    tg.sendData(JSON.stringify(sessionPrizes));
+                } catch(err) {}
 
-                function redirectToBot() {
-                    if (targetBot) {
-                        const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
-                        try {
-                            if (tg.openTelegramLink) {
-                                tg.openTelegramLink(deepLink);
-                            } else {
-                                window.location.href = deepLink;
-                            }
-                        } catch(err) {
-                            try { window.location.href = deepLink; } catch(e2) {}
-                        }
-                    }
-                    // ЗАДЕРЖКА ПЕРЕД ЗАКРЫТИЕМ МИНИ АПП
-                    setTimeout(() => {
-                        try { tg.close(); } catch(err) {}
-                    }, 2500);
-                }
-
-                // ДЛЯ ВСЕХ ТИПОВ ОТКРЫТИЯ ИСПОЛЬЗУЕМ ПРЯМОЙ ДИПЛИНК
-                // sendData используем только если это ReplyKeyboard,
-                // но для надёжности ВСЕГДА делаем диплинк
-                if (srcParam === 'kbd') {
-                    // Пробуем sendData для мгновенной передачи
+                // ВСЕГДА открываем диплинк для надёжности
+                if (botUsername) {
                     try {
-                        if (tg.sendData) {
-                            tg.sendData(JSON.stringify(sessionPrizes));
-                            // sendData сам закроет мини апп, но на всякий случай:
-                            setTimeout(() => {
-                                try { tg.close(); } catch(err) {}
-                            }, 3000);
-                            return;
-                        }
-                    } catch(err) {}
-                    // Если sendData не сработал - делаем диплинк
-                    redirectToBot();
-                } else {
-                    // Инлайн кнопка или синяя кнопка - только диплинк
-                    redirectToBot();
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        tg.openTelegramLink(deepLink);
+                    } catch(err) {
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                    }
                 }
+
+                // Закрываем мини апп с задержкой
+                setTimeout(() => {
+                    try { tg.close(); } catch(err) {}
+                }, 500);
             };
 
             modal.classList.add('active');
