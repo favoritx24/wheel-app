@@ -892,7 +892,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        const botUsername = urlParams.get('b') || '';
+        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
         const urlVersion = urlParams.get('v') || '0';
 
         function saveState(stateObj) {
@@ -1486,26 +1486,37 @@
                     } catch(err) {}
                 }
 
-                try {
-                    tg.sendData(JSON.stringify(sessionPrizes));
-                } catch(err) {}
+                const effectiveBotUsername = botUsername || tg.initDataUnsafe?.bot?.username || '';
 
-                if (botUsername) {
-                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
-                    try {
-                        tg.openTelegramLink(deepLink);
-                    } catch(err) {
-                        try {
-                            window.location.href = deepLink;
-                        } catch(e2) {}
+                // 1. Попытка отправить через sendData (работает при запуске из обычной клавиатуры)
+                let sentViaData = false;
+                try {
+                    if (tg.sendData) {
+                        tg.sendData(JSON.stringify(sessionPrizes));
+                        sentViaData = true;
                     }
+                } catch(err) {
+                    sentViaData = false;
                 }
 
-                setTimeout(() => {
-                    try {
-                        tg.close();
-                    } catch(err) {}
-                }, 350);
+                // 2. Если sendData не поддерживается (запуск из Инлайн под постом или Синей кнопки меню)
+                if (!sentViaData) {
+                    if (effectiveBotUsername) {
+                        const deepLink = "https://t.me/" + effectiveBotUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        try {
+                            tg.openTelegramLink(deepLink);
+                        } catch(err) {
+                            try {
+                                window.location.href = deepLink;
+                            } catch(e2) {}
+                        }
+                    }
+                    setTimeout(() => {
+                        try {
+                            tg.close();
+                        } catch(err) {}
+                    }, 400);
+                }
             };
 
             modal.classList.add('active');
