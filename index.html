@@ -847,6 +847,7 @@
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
         const urlVersion = urlParams.get('v') || '0';
+        const srcParam = urlParams.get('src') || 'inline';
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
@@ -1264,10 +1265,10 @@
             const btn = document.getElementById('modalBtn');
             btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
             
-            // ТОЧНАЯ КОПИЯ СТАРОГО РАБОЧЕГО КОДА
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
+                // Сохраняем состояние
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
                 let payload = "";
@@ -1277,19 +1278,24 @@
                     } catch(err) {}
                 }
 
+                // ВСЕГДА пробуем sendData (сработает для клавиатуры)
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
+                // ВСЕГДА делаем диплинк
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                    // Для клавиатуры - sendData уже отправил данные, диплинк как резерв
+                    // Для инлайн/синей кнопки - sendData молча упал, диплинк основной
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        window.location.href = deepLink;
                     }
                 }
 
+                // Закрываем мини апп
                 try {
                     tg.close();
                 } catch(err) {}
