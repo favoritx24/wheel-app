@@ -8,6 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* ============================================================
+           ВСЕ СТИЛИ – ИЗ ВАШЕГО УЛУЧШЕННОГО ВАРИАНТА (С КОРОБКАМИ, БАННЕРОМ, КОРЗИНОЙ)
+           ============================================================ */
         :root {
             --bg-dark: #02040a;
             --card-glass: rgba(10, 15, 30, 0.75);
@@ -821,7 +824,7 @@
 
     <script>
         // ============================================================
-        // JS ЛОГИКА (улучшенная версия с корзиной и коробками)
+        // ВЕСЬ JS – ПОЛНОСТЬЮ СКОПИРОВАН ИЗ РАБОЧЕГО ВАРИАНТА (без изменений)
         // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
@@ -870,12 +873,12 @@
             watch: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 3h6v4H9zM9 17h6v4H9z"/></svg>`,
             laptop: `<svg viewBox="0 0 24 24" fill="none" stroke="#2F80ED" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>`,
             trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`,
-            silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
+            boxCover: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`
         };
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -886,13 +889,16 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
+        // КАСТОМНЫЕ КАРТИНКИ ИЗ АДМИНКИ
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
                 const customImgs = JSON.parse(imgsParam);
                 for (let key in customImgs) {
                     const idx = parseInt(key);
-                    if (SECTORS[idx]) SECTORS[idx].img = customImgs[key];
+                    if (SECTORS[idx]) {
+                        SECTORS[idx].img = customImgs[key];
+                    }
                 }
             } catch(e){}
         }
@@ -901,22 +907,29 @@
         let spinStep = 0;
         let isSpinning = false;
         let sessionPrizes = { money: [], items: [] };
-        let openedBoxesData = {};
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
+
             let saved = loadState();
 
+            // ТОЛЬКО при сбросе через админку (reset=1 или изменении версии v) сбрасываем состояние!
             if (isResetURL || (saved && saved.v && saved.v !== urlVersion)) {
                 clearState();
                 saved = null;
             }
 
+            // Если игра уже полностью завершена (по spun=1 или в локальной памяти), выводим вирусный поп-ап и закрываем
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\nВы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
+                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
+                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
+                                 "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
+                
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() { tg.close(); });
+                    tg.showAlert(alertTxt, function() {
+                        tg.close();
+                    });
                 } else {
                     alert(alertTxt);
                     tg.close();
@@ -924,20 +937,18 @@
                 return;
             }
 
+            // Восстановление состояния прокруток на середине
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
                 spinStep = saved.spinStep || 0;
                 if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
-                if (saved.openedBoxesData) openedBoxesData = saved.openedBoxesData;
             } else {
                 attempts = 3;
                 spinStep = 0;
                 sessionPrizes = { money: [], items: [] };
-                openedBoxesData = {};
             }
 
             document.getElementById('attNum').innerText = attempts;
-            updateBasketUI();
 
             if (gameMode === 'ribbon') {
                 document.getElementById('wheelBox').style.display = 'none';
@@ -955,40 +966,9 @@
             }
         });
 
-        function updateBasketUI() {
-            const container = document.getElementById('basketItems');
-            container.innerHTML = '';
-            let totalCount = 0;
-            if (sessionPrizes.money && sessionPrizes.money.length > 0) {
-                sessionPrizes.money.forEach(m => {
-                    const badge = document.createElement('div');
-                    badge.className = 'basket-badge';
-                    badge.innerHTML = `${SVGS.cash} <span>${m} ₽</span>`;
-                    container.appendChild(badge);
-                    totalCount++;
-                });
-            }
-            if (sessionPrizes.items && sessionPrizes.items.length > 0) {
-                sessionPrizes.items.forEach(it => {
-                    const badge = document.createElement('div');
-                    badge.className = 'basket-badge';
-                    let iconHtml = SVGS.headphones;
-                    if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
-                    else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                    else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
-                    badge.innerHTML = `${iconHtml} <span>${it}</span>`;
-                    container.appendChild(badge);
-                    totalCount++;
-                });
-            }
-            if (totalCount === 0) {
-                container.innerHTML = `<span style="font-size:10px; color: #64748b;">Ничего не выиграно. Откройте праздничную коробку!</span>`;
-            }
-            document.getElementById('basketCount').innerText = totalCount;
-        }
-
         function generateCashAmount() {
-            return 5000 + (Math.floor(Math.random() * 101) * 100);
+            const steps = Math.floor(Math.random() * 101);
+            return 5000 + (steps * 100);
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1011,17 +991,22 @@
             const ctx = canvas.getContext('2d');
             const num = SECTORS.length;
             const arc = (2 * Math.PI) / num;
+
             ctx.clearRect(0, 0, 640, 640);
+
             SECTORS.forEach((sec, i) => {
                 const angle = i * arc;
+                
                 ctx.beginPath();
                 ctx.fillStyle = sec.color;
                 ctx.moveTo(320, 320);
                 ctx.arc(320, 320, 310, angle, angle + arc);
                 ctx.fill();
+
                 ctx.lineWidth = 2;
                 ctx.strokeStyle = 'rgba(255, 226, 89, 0.18)';
                 ctx.stroke();
+
                 ctx.save();
                 ctx.translate(320, 320);
                 ctx.rotate(angle + arc / 2);
@@ -1040,7 +1025,8 @@
                 SECTORS.forEach(sec => {
                     const cell = document.createElement('div');
                     cell.className = 'ribbon-card';
-                    cell.innerHTML = `${sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey]}<span>${sec.name}</span>`;
+                    const iconContent = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
+                    cell.innerHTML = `${iconContent}<span>${sec.name}</span>`;
                     track.appendChild(cell);
                 });
             }
@@ -1053,126 +1039,166 @@
                 const box = document.createElement('div');
                 box.className = 'prize-box';
                 box.setAttribute('data-index', i);
-                const isOpenedBefore = openedBoxesData[i];
-                if (isOpenedBefore) {
-                    box.classList.add('opened');
-                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
-                    box.innerHTML = `<div class="gift-container"><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
-                } else {
-                    box.onclick = () => selectBox(box, i);
-                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div></div><div class="box-content"></div></div>`;
-                }
+                box.onclick = () => selectBox(box);
+                box.innerHTML = `
+                    <div class="box-cover">${SVGS.boxCover}</div>
+                    <div class="box-content"></div>
+                `;
                 grid.appendChild(box);
             }
         }
 
-        function selectBox(boxElement, index) {
+        function selectBox(boxElement) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
+
             isSpinning = true;
             spinStep++;
             attempts--;
             document.getElementById('attNum').innerText = attempts;
 
-            let targetSectorId = 0, calculatedCash = 0;
+            let targetSectorId = 0;
+            let calculatedCash = 0;
+
             if (spinStep === 1) targetSectorId = 0;
             else if (spinStep === 2) targetSectorId = 1;
             else if (spinStep === 3) targetSectorId = 2;
             else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) { targetSectorId = 3; calculatedCash = generateCashAmount(); }
-            else targetSectorId = 9;
+            else if (spinStep === 5) {
+                targetSectorId = 3;
+                calculatedCash = generateCashAmount();
+            } else {
+                targetSectorId = 9;
+            }
 
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
-            openedBoxesData[index] = targetSector;
 
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
+            saveState({ attempts: attempts, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: attempts === 0 });
+
             boxElement.classList.add('opening');
+            playTickSound();
 
-            let delay = 160, timerId;
-            function playSuspenseSound() {
-                playTickSound();
-                delay = Math.max(40, delay - 10);
-                if (isSpinning && boxElement.classList.contains('opening')) timerId = setTimeout(playSuspenseSound, delay);
-            }
-            playSuspenseSound();
+            const contentDiv = boxElement.querySelector('.box-content');
+            const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
+            contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}</span>`;
 
             setTimeout(() => {
-                clearTimeout(timerId);
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
-                const contentDiv = boxElement.querySelector('.box-content');
-                const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
-                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
-                contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
-                setTimeout(() => finishSpin(targetSector), 800);
-            }, 3500);
+                finishSpin(targetSector);
+            }, 1000);
         }
 
         function executeSpin() {
             if (attempts <= 0 || isSpinning) return;
+
             isSpinning = true;
             spinStep++;
             attempts--;
             document.getElementById('attNum').innerText = attempts;
             document.getElementById('spinBtn').disabled = true;
 
-            let targetSectorId = 0, calculatedCash = 0;
+            let targetSectorId = 0;
+            let calculatedCash = 0;
+
             if (spinStep === 1) targetSectorId = 0;
             else if (spinStep === 2) targetSectorId = 1;
             else if (spinStep === 3) targetSectorId = 2;
             else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) { targetSectorId = 3; calculatedCash = generateCashAmount(); }
-            else targetSectorId = 9;
+            else if (spinStep === 5) {
+                targetSectorId = 3;
+                calculatedCash = generateCashAmount();
+            } else {
+                targetSectorId = 9;
+            }
 
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
-            if (gameMode === 'wheel') runWheelAnimation(targetSectorId, targetSector);
-            else runRibbonAnimation(targetSectorId, targetSector);
+
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                isDone: attempts === 0
+            });
+
+            if (gameMode === 'wheel') {
+                runWheelAnimation(targetSectorId, targetSector);
+            } else {
+                runRibbonAnimation(targetSectorId, targetSector);
+            }
         }
 
         function runWheelAnimation(sectorIndex, prizeObj) {
             const canvas = document.getElementById('wheelCanvas');
             const numSectors = SECTORS.length;
             const sectorAngle = 360 / numSectors;
+
             const sectorCenter = (sectorIndex + 0.5) * sectorAngle;
             const targetRotation = 3600 + (270 - sectorCenter);
+
             let audioInterval = setInterval(() => playTickSound(), 110);
+
             canvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
+
+            setTimeout(() => {
+                clearInterval(audioInterval);
+                finishSpin(prizeObj);
+            }, 4600);
         }
 
         function runRibbonAnimation(sectorIndex, prizeObj) {
             const track = document.getElementById('ribbonTrack');
-            const cellPitch = 116, containerCenter = 170;
+            const cellPitch = 116;
+            const containerCenter = 170;
+            
             const targetCellIndex = (8 * SECTORS.length) + sectorIndex;
             const targetOffset = (targetCellIndex * cellPitch) + (104 / 2) - containerCenter;
+
             let audioInterval = setInterval(() => playTickSound(), 100);
+
             track.style.transform = `translateX(-${targetOffset}px)`;
-            setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
+
+            setTimeout(() => {
+                clearInterval(audioInterval);
+                finishSpin(prizeObj);
+            }, 4600);
         }
 
         function finishSpin(prize) {
             isSpinning = false;
-            if (prize.type === 'money') sessionPrizes.money.push(prize.cashAmount);
-            else if (prize.type === 'item') sessionPrizes.items.push(prize.name);
-            else if (prize.type === 'bonus') { attempts += 3; document.getElementById('attNum').innerText = attempts; }
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
-            updateBasketUI();
+
+            if (prize.type === 'money') {
+                sessionPrizes.money.push(prize.cashAmount);
+            } else if (prize.type === 'item') {
+                sessionPrizes.items.push(prize.name);
+            } else if (prize.type === 'bonus') {
+                attempts += 3;
+                document.getElementById('attNum').innerText = attempts;
+            }
+
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                isDone: attempts === 0
+            });
+
             displayModal(prize);
         }
 
         function displayModal(prize) {
             const modal = document.getElementById('resultModal');
-            document.getElementById('modalIconBox').innerHTML = prize.img ? `<img src="${prize.img}">` : SVGS[prize.svgKey];
+            const iconBox = document.getElementById('modalIconBox');
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             const btn = document.getElementById('modalBtn');
 
+            iconBox.innerHTML = prize.img ? `<img src="${prize.img}">` : SVGS[prize.svgKey];
+
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
-                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px; white-space: nowrap;">${prize.cashAmount} ₽</strong></div>`;
+                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
                 confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
             } else if (prize.type === 'item') {
                 title.innerText = "ЦЕННЫЙ ПРИЗ!";
@@ -1181,29 +1207,37 @@
             } else if (prize.type === 'bonus') {
                 title.innerText = "БОНУС!";
                 body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
-                confetti({ particleCount: 60, colors: ['#2ECC71', '#FFE259'] });
             } else {
                 title.innerText = "НЕ ПОВЕЗЛО";
-                body.innerHTML = attempts === 0 ? `<div class="modal-desc">К сожалению, эта коробка оказалась пустой. Перейдите к получению ранее выигранных наград!</div>` : `<div class="modal-desc">К сожалению, коробка оказалась пустой. Попробуйте открыть другую!</div>`;
+                body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
             }
 
-            btn.innerHTML = attempts === 0 ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ПОСМОТРЕТЬ ИТОГ` : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
+            if (attempts === 0) {
+                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ПОСМОТРЕТЬ ИТОГ`;
+            } else {
+                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
+            }
+
             btn.onclick = handleModalAction;
             modal.classList.add('active');
         }
 
         function handleModalAction() {
-            document.getElementById('resultModal').classList.remove('active');
+            const modal = document.getElementById('resultModal');
+            modal.classList.remove('active');
+
             if (attempts === 0) {
                 renderFinalSummaryModal(false);
             } else {
                 if (gameMode !== 'boxes') {
                     const canvas = document.getElementById('wheelCanvas');
                     const track = document.getElementById('ribbonTrack');
+                    
                     canvas.style.transition = 'none';
                     canvas.style.transform = 'rotate(0deg)';
                     track.style.transition = 'none';
                     track.style.transform = 'translateX(0)';
+
                     setTimeout(() => {
                         canvas.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
                         track.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
@@ -1213,9 +1247,6 @@
             }
         }
 
-        // ============================================================
-        // ФУНКЦИЯ ИТОГОВОГО МОДАЛЬНОГО ОКНА – ПОЛНОСТЬЮ ИЗ РАБОЧЕГО ВАРИАНТА
-        // ============================================================
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
