@@ -283,7 +283,7 @@
             transform: scale(0.95);
         }
 
-        /* КРЫШКА КОРОБКИ (Слегка выходит за рамки корпуса) */
+        /* КРЫШКА КОРОБКИ */
         .box-lid-container {
             position: absolute;
             top: 0; left: -2px; right: -2px;
@@ -297,7 +297,6 @@
             transition: all 0.4s ease;
         }
 
-        /* Премиальная вертикальная лента с золотым шитьем на крышке */
         .box-lid-ribbon {
             position: absolute;
             top: 0; left: 50%;
@@ -309,7 +308,6 @@
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 0 4px rgba(0,0,0,0.3);
         }
 
-        /* ОГРОМНЫЙ ШЕЛКОВЫЙ БАНТ */
         .mega-bow {
             position: absolute;
             top: -12%; left: 50%;
@@ -334,7 +332,6 @@
             transition: all 0.4s ease;
         }
 
-        /* Элитная вертикальная золоченая лента на корпусе */
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
@@ -346,7 +343,6 @@
             box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 0 6px rgba(0,0,0,0.4);
         }
 
-        /* Элитная горизонтальная золоченая лента на корпусе */
         .box-ribbon-h {
             position: absolute;
             top: 42%; left: 0;
@@ -876,7 +872,7 @@
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         
         // ТОЧНОЕ ПОЛУЧЕНИЕ ИМЕНИ БОТА
-        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || 'cash_magnat_bot';
+        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
         const urlVersion = urlParams.get('v') || '0';
         const srcParam = urlParams.get('src') || 'inline';
 
@@ -1465,9 +1461,29 @@
                     } catch(err) {}
                 }
 
-                const targetBot = urlParams.get('b') || botUsername || 'cash_magnat_bot';
+                const targetBot = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || 'cash_magnat_bot';
 
-                // ЕСЛИ ОТКРЫТО С ОБЫЧНОЙ КЛАВИАТУРЫ -> SENDDATA
+                function redirectToBot() {
+                    if (targetBot) {
+                        const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
+                        try {
+                            if (tg.openTelegramLink) {
+                                tg.openTelegramLink(deepLink);
+                            } else {
+                                window.location.href = deepLink;
+                            }
+                        } catch(err) {
+                            try { window.location.href = deepLink; } catch(e2) {}
+                        }
+                    }
+                    setTimeout(() => {
+                        try { tg.close(); } catch(err) {}
+                    }, 1500);
+                }
+
+                // ЕДИНСТВЕННЫЙ НАДЕЖНЫЙ ПУТЬ:
+                // Если открыто с ReplyKeyboard -> sendData
+                // Если открыто с Инлайн поста или Синей кнопки -> ПРЯМОЙ ДИПЛИНК БЕЗ SENDDATA
                 if (srcParam === 'kbd') {
                     try {
                         if (tg.sendData) {
@@ -1475,26 +1491,10 @@
                             return;
                         }
                     } catch(err) {}
+                    redirectToBot();
+                } else {
+                    redirectToBot();
                 }
-
-                // ЕСЛИ ОТКРЫТО С ИНЛАЙН КНОПКИ ИЛИ СИНЕЙ КНОПКИ -> ДИПЛИНК ПЕРЕХОД (НЕ ВЫЗЫВАЯ SENDDATA!)
-                if (targetBot) {
-                    const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
-                    try {
-                        if (tg.openTelegramLink) {
-                            tg.openTelegramLink(deepLink);
-                        } else {
-                            window.location.href = deepLink;
-                        }
-                    } catch(err) {
-                        try { window.location.href = deepLink; } catch(e2) {}
-                    }
-                }
-
-                // ЗАДЕРЖКА ДЛЯ TELEGRAM DESKTOP ПК СЛОТА
-                setTimeout(() => {
-                    try { tg.close(); } catch(err) {}
-                }, 1000);
             };
 
             modal.classList.add('active');
