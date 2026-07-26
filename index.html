@@ -821,7 +821,8 @@
 
     <script>
         // ============================================================
-        // JS ЛОГИКА ТОЧНАЯ КОПИЯ РАБОЧЕГО КОДА (без guest, без srcParam)
+        // JS ЛОГИКА (полностью скопирована с рабочего варианта, 
+        // но с улучшенным дизайном и корзиной)
         // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
@@ -1214,11 +1215,11 @@
         }
 
         // ============================================================
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ – ТОЛЬКО ЭТА ЧАСТЬ ИЗМЕНЕНА
+        // ФУНКЦИЯ ВЗЯТА ИЗ РАБОЧЕГО ВАРИАНТА – С ДВОЙНОЙ ОТПРАВКОЙ
         // ============================================================
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
-            if (document.getElementById('spinBtn')) document.getElementById('spinBtn').disabled = true;
+            document.getElementById('spinBtn').disabled = true;
 
             const modal = document.getElementById('resultModal');
             document.getElementById('modalIconBox').innerHTML = SVGS.trophy;
@@ -1247,13 +1248,13 @@
             const btn = document.getElementById('modalBtn');
             btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
             
-            btn.onclick = function(e) {
+            btn.onclick = (e) => {
                 if (e) e.stopPropagation();
-
-                // Фиксируем завершение игры в локальном хранилище
+                
+                // Фиксируем завершение игры
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
-                // Формируем payload из выигранных призов
+                // Формируем payload
                 let payload = "";
                 if (sessionPrizes) {
                     try {
@@ -1261,25 +1262,24 @@
                     } catch(err) {}
                 }
 
-                // Если известен username бота – переходим по deep‑ссылке с payload
+                // ОТПРАВЛЯЕМ ДАННЫЕ ОБОИМИ СПОСОБАМИ (как в рабочем варианте)
+                try {
+                    tg.sendData(JSON.stringify(sessionPrizes));
+                } catch(err) {}
+
                 if (botUsername) {
-                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     try {
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = deepLink;
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     }
-                } else {
-                    // Если botUsername по какой‑то причине отсутствует – отправляем данные через sendData (запасной вариант)
-                    try {
-                        tg.sendData(JSON.stringify(sessionPrizes));
-                    } catch(err) {}
                 }
 
-                // Закрываем мини‑апп с задержкой, чтобы ссылка успела открыться
-                setTimeout(() => {
-                    try { tg.close(); } catch(e) {}
-                }, 800);
+                // Закрываем мини-апп (без задержки, как в рабочем варианте)
+                try {
+                    tg.close();
+                } catch(err) {}
             };
 
             modal.classList.add('active');
