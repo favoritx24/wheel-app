@@ -821,8 +821,7 @@
 
     <script>
         // ============================================================
-        // JS ЛОГИКА (полностью скопирована с рабочего варианта, 
-        // но с улучшенным дизайном и корзиной)
+        // JS ЛОГИКА (улучшенная версия с корзиной и коробками)
         // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
@@ -1215,46 +1214,49 @@
         }
 
         // ============================================================
-        // ФУНКЦИЯ ВЗЯТА ИЗ РАБОЧЕГО ВАРИАНТА – С ДВОЙНОЙ ОТПРАВКОЙ
+        // ФУНКЦИЯ ИТОГОВОГО МОДАЛЬНОГО ОКНА – ПОЛНОСТЬЮ ИЗ РАБОЧЕГО ВАРИАНТА
         // ============================================================
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
 
             const modal = document.getElementById('resultModal');
-            document.getElementById('modalIconBox').innerHTML = SVGS.trophy;
-            document.getElementById('modalTitle').innerText = "ВЫИГРЫШ ЗАФИКСИРОВАН!";
+            const iconBox = document.getElementById('modalIconBox');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const btn = document.getElementById('modalBtn');
+
+            iconBox.innerHTML = SVGS.trophy;
+            title.innerText = "ВЫИГРЫШ ЗАФИКСИРОВАН!";
 
             const totalMoney = (sessionPrizes && sessionPrizes.money) ? sessionPrizes.money.reduce((a, b) => a + b, 0) : 0;
             const itemsList = (sessionPrizes && sessionPrizes.items && sessionPrizes.items.length > 0) ? sessionPrizes.items.join(', ') : 'Не выпадали';
 
-            document.getElementById('modalBody').innerHTML = `
+            body.innerHTML = `
                 <div class="modal-desc">Все попытки использованы! Ваши награды зарезервированы:</div>
                 <div class="prize-summary-box">
                     <div class="prize-summary-row">
                         <span class="prize-label">Баланс к выплате:</span>
-                        <span class="prize-val" style="color: #2ECC71; white-space: nowrap;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
+                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
                     </div>
                     <div class="prize-summary-row">
                         <span class="prize-label">Физические призы:</span>
                         <span class="prize-val" style="color: #FFE259;">${itemsList}</span>
                     </div>
                 </div>
-                <div style="font-size: 11px; color: #64748b; margin-bottom: 14px; line-height: 1.4;">
+                <div style="font-size: 12px; color: #94A3B8; margin-bottom: 18px; line-height: 1.4;">
                     Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
                 </div>
             `;
 
-            const btn = document.getElementById('modalBtn');
             btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
             
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
-                // Фиксируем завершение игры
+                // Фиксируем завершение игры в локальном хранилище НАВСЕГДА
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, isDone: true });
 
-                // Формируем payload
                 let payload = "";
                 if (sessionPrizes) {
                     try {
@@ -1262,7 +1264,6 @@
                     } catch(err) {}
                 }
 
-                // ОТПРАВЛЯЕМ ДАННЫЕ ОБОИМИ СПОСОБАМИ (как в рабочем варианте)
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
@@ -1276,7 +1277,6 @@
                     }
                 }
 
-                // Закрываем мини-апп (без задержки, как в рабочем варианте)
                 try {
                     tg.close();
                 } catch(err) {}
