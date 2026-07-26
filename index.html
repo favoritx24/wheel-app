@@ -757,6 +757,7 @@
 </head>
 <body>
 
+    <!-- Вспомогательные векторные градиенты -->
     <svg style="position: absolute; width: 0; height: 0;">
         <defs>
             <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -799,7 +800,9 @@
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 Вы выиграли и можете забрать: (<span id="basketCount">0</span>)
             </div>
-            <div class="basket-items" id="basketItems"></div>
+            <div class="basket-items" id="basketItems">
+                <!-- Сюда динамически добавляются призы -->
+            </div>
         </div>
 
         <!-- Игровая Сцена -->
@@ -823,6 +826,7 @@
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
 
+            <!-- Игровая Сетка 4х4 -->
             <div class="boxes-wrapper" id="boxesBox">
                 <div class="boxes-grid" id="boxesGrid"></div>
             </div>
@@ -870,7 +874,9 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        const botUsername = urlParams.get('b') || '';
+        
+        // Гарантированное получение username бота
+        const botUsername = urlParams.get('b') || 'cash_magnat_bot';
         const urlVersion = urlParams.get('v') || '0';
         const srcParam = urlParams.get('src') || 'inline';
 
@@ -1459,9 +1465,9 @@
                     } catch(err) {}
                 }
 
-                const targetBot = urlParams.get('b') || botUsername || '';
+                const targetBot = urlParams.get('b') || botUsername || 'cash_magnat_bot';
 
-                // Если открыто с КЛАВИАТУРЫ -> отправляем через sendData
+                // 1. Попытка через sendData (если открыто с обычных кнопок клавиатуры)
                 let sentViaData = false;
                 if (srcParam === 'kbd') {
                     try {
@@ -1474,25 +1480,24 @@
                     }
                 }
 
-                // Если открыто с ИНЛАЙН кнопки или СИНЕЙ КНОПКИ (или sendData не поддерживается)
+                // 2. Гарантированный DeepLink (для открытий из под ПОСТА и СИНЕЙ КНОПКИ)
                 if (!sentViaData) {
-                    if (targetBot) {
-                        const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
-                        try {
-                            if (tg.openTelegramLink) {
-                                tg.openTelegramLink(deepLink);
-                            } else {
-                                window.location.href = deepLink;
-                            }
-                        } catch(err) {
-                            try { window.location.href = deepLink; } catch(e2) {}
+                    const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
+                    
+                    try {
+                        if (tg.openTelegramLink) {
+                            tg.openTelegramLink(deepLink);
+                        } else {
+                            window.location.href = deepLink;
                         }
+                    } catch(err) {
+                        try { window.location.href = deepLink; } catch(e2) {}
                     }
 
-                    // ЗАДЕРЖКА 1.2 СЕКУНДЫ ДЛЯ Telegram Desktop (ПК)
+                    // ЗАДЕРЖКА ДЛЯ TELEGRAM DESKTOP
                     setTimeout(() => {
                         try { tg.close(); } catch(err) {}
-                    }, 1200);
+                    }, 800);
                 }
             };
 
