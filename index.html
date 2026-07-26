@@ -1491,17 +1491,21 @@
                 } catch(err) {}
 
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        try {
+                            window.location.href = deepLink;
+                        } catch(e2) {}
                     }
                 }
 
-                try {
-                    tg.close();
-                } catch(err) {}
+                setTimeout(() => {
+                    try {
+                        tg.close();
+                    } catch(err) {}
+                }, 350);
             };
 
             modal.classList.add('active');
