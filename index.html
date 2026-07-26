@@ -892,8 +892,9 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || 'cash_magnat_bot';
+        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
         const urlVersion = urlParams.get('v') || '0';
+        const srcParam = urlParams.get('src') || 'inline';
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
@@ -1489,33 +1490,34 @@
 
                 const targetBot = botUsername || urlParams.get('b') || '';
 
-                // 1. Попытка отправки через sendData (для ReplyKeyboard)
-                try {
-                    if (tg.sendData) {
-                        tg.sendData(JSON.stringify(sessionPrizes));
-                    }
-                } catch(err) {}
-
-                // 2. Гарантированный переход через DeepLink (для Инлайн / Синей кнопки / Меню)
-                if (targetBot) {
-                    const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
-                    try {
-                        if (tg.openTelegramLink) {
-                            tg.openTelegramLink(deepLink);
-                        } else {
-                            window.location.href = deepLink;
+                function redirectToBot() {
+                    if (targetBot) {
+                        const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
+                        try {
+                            if (tg.openTelegramLink) {
+                                tg.openTelegramLink(deepLink);
+                            } else {
+                                window.location.href = deepLink;
+                            }
+                        } catch(err) {
+                            try { window.location.href = deepLink; } catch(e2) {}
                         }
-                    } catch(err) {
-                        try { window.location.href = deepLink; } catch(e2) {}
                     }
+                    setTimeout(() => {
+                        try { tg.close(); } catch(err) {}
+                    }, 350);
                 }
 
-                // 3. Задержка перед закрытием, чтобы ссылки успели выполниться
-                setTimeout(() => {
+                // ЧЕТКОЕ РАЗДЕЛЕНИЕ: Если открыто с КЛАВИАТУРЫ -> sendData, иначе -> DeepLink
+                if (srcParam === 'kbd') {
                     try {
-                        tg.close();
-                    } catch(err) {}
-                }, 400);
+                        tg.sendData(JSON.stringify(sessionPrizes));
+                    } catch(err) {
+                        redirectToBot();
+                    }
+                } else {
+                    redirectToBot();
+                }
             };
 
             modal.classList.add('active');
