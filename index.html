@@ -462,7 +462,7 @@
             font-size: 8.5px;
         }
 
-        /* ДРУГИЕ РЕЖИМЫ ИГРЫ (Оставляем как есть) */
+        /* ДРУГИЕ РЕЖИМЫ ИГРЫ */
         .wheel-wrapper {
             position: relative;
             width: 320px; height: 320px;
@@ -630,24 +630,6 @@
             padding: 0 4px;
         }
 
-        .partner-logos-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 4px;
-            margin-top: 2px;
-        }
-
-        .partner-logo-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 6px;
-            font-size: 8px;
-            font-weight: 800;
-            padding: 4px 2px;
-            color: #ffffff;
-            white-space: nowrap;
-        }
-
         /* МОДАЛЬНЫЕ ОКНА */
         .modal-overlay {
             position: fixed;
@@ -775,7 +757,6 @@
 </head>
 <body>
 
-    <!-- Вспомогательные векторные градиенты -->
     <svg style="position: absolute; width: 0; height: 0;">
         <defs>
             <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -818,9 +799,7 @@
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 Вы выиграли и можете забрать: (<span id="basketCount">0</span>)
             </div>
-            <div class="basket-items" id="basketItems">
-                <!-- Сюда динамически добавляются призы -->
-            </div>
+            <div class="basket-items" id="basketItems"></div>
         </div>
 
         <!-- Игровая Сцена -->
@@ -844,7 +823,6 @@
                 <div class="ribbon-track" id="ribbonTrack"></div>
             </div>
 
-            <!-- Игровая Сетка 4х4 -->
             <div class="boxes-wrapper" id="boxesBox">
                 <div class="boxes-grid" id="boxesGrid"></div>
             </div>
@@ -892,7 +870,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
-        const botUsername = urlParams.get('b') || tg.initDataUnsafe?.bot?.username || '';
+        const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
         const srcParam = urlParams.get('src') || 'inline';
 
@@ -923,7 +901,6 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        // По умолчанию режим БОКСЫ
         const rawGameMode = urlParams.get('mode');
         const gameMode = (rawGameMode === 'wheel' || rawGameMode === 'ribbon') ? rawGameMode : 'boxes';
 
@@ -970,7 +947,6 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
-        // КАСТОМНЫЕ КАРТИНКИ ИЗ АДМИНКИ
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -988,7 +964,7 @@
         let spinStep = 0;
         let isSpinning = false;
         let sessionPrizes = { money: [], items: [] };
-        let openedBoxesData = {}; // Локальная память открытых боксов за сессию
+        let openedBoxesData = {};
 
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
@@ -1153,7 +1129,6 @@
             }
         }
 
-        // Построение сетки с учетом открытых ранее боксов
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
@@ -1196,7 +1171,6 @@
             }
         }
 
-        // Интерактивный клик с нарастанием азарта (ровно 3.5 сек)
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
@@ -1222,7 +1196,6 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            // Запоминаем открытую коробку
             openedBoxesData[index] = targetSector;
 
             saveState({
@@ -1235,7 +1208,6 @@
 
             boxElement.classList.add('opening');
 
-            // Нагнетание атмосферы ускоряющимися тиками звука под время 3.5 секунды
             let delay = 160;
             let timerId;
             function playSuspenseSound() {
@@ -1247,10 +1219,9 @@
             }
             playSuspenseSound();
 
-            // Эффект взрыва крышки ровно через 3.5 секунды (3500 мс)
             setTimeout(() => {
                 clearTimeout(timerId);
-                playTickSound(1300, 0.3, 0.07); // Звук взлетающей крышки
+                playTickSound(1300, 0.3, 0.07);
 
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
@@ -1488,9 +1459,23 @@
                     } catch(err) {}
                 }
 
-                const targetBot = botUsername || urlParams.get('b') || '';
+                const targetBot = urlParams.get('b') || botUsername || '';
 
-                function redirectToBot() {
+                // Если открыто с КЛАВИАТУРЫ -> отправляем через sendData
+                let sentViaData = false;
+                if (srcParam === 'kbd') {
+                    try {
+                        if (tg.sendData) {
+                            tg.sendData(JSON.stringify(sessionPrizes));
+                            sentViaData = true;
+                        }
+                    } catch(err) {
+                        sentViaData = false;
+                    }
+                }
+
+                // Если открыто с ИНЛАЙН кнопки или СИНЕЙ КНОПКИ (или sendData не поддерживается)
+                if (!sentViaData) {
                     if (targetBot) {
                         const deepLink = "https://t.me/" + targetBot + "?start=claim" + (payload ? "_" + payload : "");
                         try {
@@ -1503,20 +1488,11 @@
                             try { window.location.href = deepLink; } catch(e2) {}
                         }
                     }
+
+                    // ЗАДЕРЖКА 1.2 СЕКУНДЫ ДЛЯ Telegram Desktop (ПК)
                     setTimeout(() => {
                         try { tg.close(); } catch(err) {}
-                    }, 350);
-                }
-
-                // ЧЕТКОЕ РАЗДЕЛЕНИЕ: Если открыто с КЛАВИАТУРЫ -> sendData, иначе -> DeepLink
-                if (srcParam === 'kbd') {
-                    try {
-                        tg.sendData(JSON.stringify(sessionPrizes));
-                    } catch(err) {
-                        redirectToBot();
-                    }
-                } else {
-                    redirectToBot();
+                    }, 1200);
                 }
             };
 
