@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>КЭШ-МАГНАТ | VIP CLUB</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        /* МГНОВЕННЫЙ ПЕРЕХВАТ: Если попытки истрачены, скрываем интерфейс и показываем только попап */
+        (function() {
+            try {
+                const tg = window.Telegram ? window.Telegram.WebApp : null;
+                const urlParams = new URLSearchParams(window.location.search);
+                const isSpunURL = urlParams.get('spun') === '1';
+                const uid = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
+                
+                let isDoneSaved = false;
+                try {
+                    const local = localStorage.getItem('km_state_' + uid);
+                    if (local) {
+                        const parsed = JSON.parse(local);
+                        if (parsed.isDone || parsed.attempts <= 0) isDoneSaved = true;
+                    }
+                } catch(e) {}
+
+                if (isSpunURL || isDoneSaved) {
+                    document.documentElement.style.display = 'none';
+                    window.addEventListener('DOMContentLoaded', function() {
+                        document.body.style.display = 'none';
+                    });
+
+                    const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
+                                     "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
+                                     "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
+
+                    if (tg) {
+                        tg.ready();
+                        if (tg.showAlert) {
+                            tg.showAlert(alertTxt, function() {
+                                tg.close();
+                            });
+                        } else {
+                            alert(alertTxt);
+                            tg.close();
+                        }
+                    } else {
+                        alert(alertTxt);
+                    }
+                }
+            } catch(e) {}
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -1154,9 +1199,7 @@
                 saved = null;
             }
 
-            // ПРОВЕРКА ИСПОЛЬЗОВАННЫХ ПОПЫТОК: Mini App не открывается вообще, показывается только native alert
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                document.body.style.display = 'none';
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
