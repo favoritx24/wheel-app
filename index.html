@@ -60,13 +60,13 @@
             justify-content: space-between;
         }
 
-        /* Защита от белого фона у PNG */
+        /* Защита PNG изображений от белого фона */
         img {
             background: transparent !important;
             object-fit: contain;
         }
 
-        /* Анимированный аэродизайн фона и кастомный медиафон */
+        /* Анимированный аэродизайн фона и поддержка кастомного медиа фона */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -156,7 +156,7 @@
             min-height: 32px;
         }
 
-        .custom-hdr-img {
+        .custom-hdr-logo {
             max-height: 38px;
             max-width: 220px;
             object-fit: contain;
@@ -292,7 +292,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: оптимизировано предотвращение захода за края */
+        /* Игровое поле: оптимизировано предотвращение выходов боковых коробок за экран */
         .game-stage {
             position: relative;
             width: 100%;
@@ -310,7 +310,7 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 335px; /* Защита боковых коробок от вылезания за экран */
+            max-width: 335px; /* Защита крайних коробок от залезания за границы экрана */
             max-height: 335px;
             z-index: 10;
             display: flex;
@@ -322,7 +322,7 @@
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 5px; /* Уменьшен интервал для ровного вмещения */
+            gap: 5px; /* Уменьшен интервал для полного вмещения на узких экранах */
             width: 100%;
             height: 100%;
             align-content: center;
@@ -444,7 +444,7 @@
             position: absolute;
             top: -16%; left: 50%;
             transform: translateX(-50%);
-            width: 48px; height: 38px;
+            width: 50px; height: 40px;
             z-index: 6;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
@@ -805,7 +805,6 @@
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
             object-fit: contain;
-            background: transparent !important;
         }
 
         .modal-title {
@@ -1029,7 +1028,7 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -1066,7 +1065,7 @@
             } catch(e){}
         }
 
-        // Загрузка логотипов спонсоров для коробок из админки
+        // Загрузка кастомных логотипов спонсоров для коробок из админки
         let sponsorLogosList = [];
         const boxLogosParam = urlParams.get('boxLogos');
         if (boxLogosParam) {
@@ -1162,9 +1161,10 @@
                 saved = null;
             }
 
-            // ПРОВЕРКА ПОПЫТОК: Если попытки истрачены, скрываем приложение, выводим ПОПАП и мгновенно закрываем
+            // ПРОВЕРКА ПОПЫТОК: Если попытки истрачены, НЕ открываем интерфейс, выводим ПОПАП и мгновенно закрываем
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                document.getElementById('appMainContainer').style.display = 'none';
+                const appContainer = document.getElementById('appMainContainer');
+                if (appContainer) appContainer.style.display = 'none';
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
@@ -1185,7 +1185,7 @@
             if (hdrLogoParam) {
                 const logoContainer = document.getElementById('headerLogoContainer');
                 if (logoContainer) {
-                    logoContainer.innerHTML = `<img src="${hdrLogoParam}" class="custom-hdr-img" alt="Logo">`;
+                    logoContainer.innerHTML = `<img src="${hdrLogoParam}" class="custom-hdr-logo" alt="Logo">`;
                 }
             }
 
@@ -1253,8 +1253,9 @@
                 sessionPrizes.items.forEach(it => {
                     const badge = document.createElement('div');
                     badge.className = 'basket-badge';
-                    let iconHtml = SVGS.iphone;
-                    if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
+                    let iconHtml = SVGS.headphones;
+                    if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
+                    else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
                     else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
                     container.appendChild(badge);
@@ -1328,7 +1329,7 @@
             }
         }
 
-        // Хелпер выборки 4 случайных уникальных логотипов спонсоров из админки
+        // Хелпер выборки 4 случайных спонсорских логотипов из загруженных в админке
         function getRandomBoxLogos() {
             if (!sponsorLogosList || sponsorLogosList.length === 0) return [];
             let shuffled = [...sponsorLogosList].sort(() => 0.5 - Math.random());
@@ -1363,17 +1364,7 @@
                         });
                     }
 
-                    box.innerHTML = `
-                        <div class="gift-container">
-                            <div class="box-lid-container"><div class="box-lid-ribbon"></div></div>
-                            ${SVGS.silkBow}
-                            <div class="box-body-container">
-                                <div class="box-ribbon-v"></div>
-                                <div class="box-ribbon-h"></div>
-                                ${logosHtml}
-                            </div>
-                            <div class="box-content"></div>
-                        </div>`;
+                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div>${logosHtml}</div><div class="box-content"></div></div>`;
                 }
                 grid.appendChild(box);
             }
