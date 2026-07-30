@@ -60,7 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Анимированный аэродизайн фона (стандартный) */
+        /* Анимированный аэродизайн фона */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -111,17 +111,6 @@
             0% { transform: translate(0, 0) scale(1); }
             50% { transform: translate(30px, 40px) scale(1.12); }
             100% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        /* Кастомный фон (из админки) – накладывается поверх */
-        .custom-bg {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            object-fit: cover;
-            display: none;
         }
 
         /* Главный контейнер приложения со строгой адаптацией под высоту */
@@ -184,7 +173,7 @@
         }
 
         .brand-logo-glow img {
-            height: 28px;
+            height: 32px;
             width: auto;
             object-fit: contain;
             background: transparent;
@@ -312,7 +301,7 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 330px;  /* уменьшили для лучшего вписывания */
+            max-width: 330px;
             max-height: 330px;
             z-index: 10;
             display: flex;
@@ -323,7 +312,7 @@
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;  /* уменьшили */
+            gap: 6px;
             width: 100%;
             height: 100%;
             align-content: center;
@@ -532,14 +521,15 @@
         }
 
         .box-content img, .box-content svg {
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
             background: transparent;
         }
 
         .box-content span {
-            font-size: 9px;  /* увеличен */
+            font-size: 9px;
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
@@ -576,7 +566,7 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
-        /* Колесо и Лента (без изменений) */
+        /* Колесо и Лента */
         .wheel-wrapper {
             position: relative;
             width: 290px; height: 290px;
@@ -866,6 +856,17 @@
             .brand-logo-glow { font-size: 18px; }
             .attempts-pill { font-size: 8px; padding: 2px 8px; }
         }
+
+        /* Кастомный фон (из админки) – накладывается поверх */
+        .custom-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            object-fit: cover;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -879,7 +880,7 @@
         </defs>
     </svg>
 
-    <!-- Динамический анимированный фон с орбами и частицами -->
+    <!-- Динамический анимированный фон с орбами и частями -->
     <div class="ambient-canvas" id="ambientCanvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
