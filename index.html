@@ -60,7 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Обертка для динамического кастомного фона */
+        /* Кастомный брендированный фон */
         .custom-bg-wrapper {
             position: absolute;
             top: 0; left: 0;
@@ -311,8 +311,8 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 320px; /* Сужено с 360px чтобы коробки не прижимались к левому/правому краям экрана */
-            max-height: 320px;
+            max-width: 330px; /* Сужено с 360px чтобы коробки не выходили за границы экрана */
+            max-height: 330px;
             z-index: 10;
             display: flex;
             align-items: center;
@@ -513,7 +513,7 @@
             100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* Карточка выпавшего приза из коробки (Кристальная резкость текста без размытия) */
+        /* Карточка выпавшего приза из коробки (Четкий и яркий шрифт без размытия) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -557,14 +557,13 @@
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
-            margin-top: 2px;
+            margin-top: 3px;
             line-height: 1.1;
             text-transform: uppercase;
             white-space: normal;
             word-wrap: break-word;
             display: block;
             width: 100%;
-            /* Абсолютно четкий текст с двойной контрастной обводкой-тенью */
             text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -1038,7 +1037,7 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        // ВТОРОЙ СЕКТОР ЗАМЕНЕН НА iPhone 17 Pro Max
+        // ВТОРОЙ СЕКТОР ОБНОВЛЕН ДО iPhone 17 Pro Max
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1647,7 +1646,7 @@
             }
         }
 
-        // КРИТИЧЕСКИ КОРРЕКТИРОВАННАЯ ЛОГИКА ТРАНЗИТА (100% точность вызова старта)
+        // СТОПРОЦЕНТНО ТОЧНЫЙ ТРАНЗИТ ОДИН В ОДИН (Гарантия автозапуска ТГ-старта)
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
@@ -1695,29 +1694,22 @@
                     } catch(err) {}
                 }
 
-                // 1. Пытаемся отправить данные (работает ТОЛЬКО при открытии из reply-клавиатуры бота)
-                let sentData = false;
                 try {
-                    if (tg.initDataUnsafe && tg.initDataUnsafe.query_id) {
-                        tg.sendData(JSON.stringify(sessionPrizes));
-                        sentData = true;
-                    }
+                    tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
-                // 2. Если данные не отправлены (открыто из поста или синей кнопкой "Проверить") - делаем безопасный транзит по диплинку
-                if (!sentData && botUsername) {
-                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                if (botUsername) {
                     try {
-                        tg.openTelegramLink(deepLink); // Это нативно закрывает Web App в приложении Telegram
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = deepLink;
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     }
-                } else {
-                    // Если данные успешно ушли через sendData, принудительно гасим окно
-                    try {
-                        tg.close();
-                    } catch(err) {}
                 }
+
+                try {
+                    tg.close();
+                } catch(err) {}
             };
 
             modal.classList.add('active');
