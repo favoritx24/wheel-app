@@ -8,6 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* ============================================================
+           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
+           ============================================================ */
         :root {
             --bg-dark: #02050e;
             --card-glass: rgba(10, 16, 35, 0.78);
@@ -45,6 +48,7 @@
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             position: relative;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
@@ -54,27 +58,27 @@
             justify-content: space-between;
         }
 
-        #customBgContainer {
+        /* Динамические фоны (Видео / GIF / Изображения) */
+        #customBgVideo, #customBgImg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .bg-overlay-mask {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: 0;
+            background: rgba(2, 5, 14, 0.55);
+            z-index: 1;
             pointer-events: none;
-            overflow: hidden;
-            display: none;
-        }
-        #bgVideo, #bgImage {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-        #bgImage {
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
         }
 
+        /* Анимированный аэродизайн фона */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -100,26 +104,9 @@
             animation: orbFloat 12s infinite alternate ease-in-out;
         }
 
-        .orb-1 {
-            width: 280px; height: 280px;
-            background: #1d4ed8;
-            top: -40px; left: -40px;
-        }
-
-        .orb-2 {
-            width: 320px; height: 320px;
-            background: #0284c7;
-            bottom: -60px; right: -60px;
-            animation-delay: -5s;
-        }
-
-        .orb-3 {
-            width: 220px; height: 220px;
-            background: #7e22ce;
-            top: 45%; left: 30%;
-            opacity: 0.25;
-            animation-delay: -8s;
-        }
+        .orb-1 { width: 280px; height: 280px; background: #1d4ed8; top: -40px; left: -40px; }
+        .orb-2 { width: 320px; height: 320px; background: #0284c7; bottom: -60px; right: -60px; animation-delay: -5s; }
+        .orb-3 { width: 220px; height: 220px; background: #7e22ce; top: 45%; left: 30%; opacity: 0.25; animation-delay: -8s; }
 
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
@@ -127,6 +114,7 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
+        /* Главный контейнер приложения */
         .app-container {
             position: relative;
             z-index: 2;
@@ -138,7 +126,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
+            padding: 8px 10px;
             padding-bottom: calc(8px + var(--safe-bottom));
             gap: 4px;
             overflow: hidden;
@@ -158,6 +146,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            min-height: 42px;
         }
 
         .brand-logo-glow {
@@ -173,22 +162,17 @@
             gap: 6px;
             filter: drop-shadow(0 0 12px rgba(255, 226, 89, 0.7));
             animation: logoGlow 2.5s ease-in-out infinite alternate;
-            min-height: 30px;
         }
 
-        .brand-logo-glow img {
-            height: 32px;
-            max-width: 180px;
+        .custom-brand-logo {
+            max-height: 40px;
+            max-width: 220px;
             object-fit: contain;
-            filter: drop-shadow(0 0 12px rgba(255, 226, 89, 0.7));
-            animation: logoGlowImg 2.5s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.6));
+            background: transparent !important;
         }
 
         @keyframes logoGlow {
-            0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
-        }
-        @keyframes logoGlowImg {
             0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); transform: scale(1); }
             100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
         }
@@ -239,6 +223,7 @@
             gap: 4px;
         }
 
+        /* Корзина призов */
         .basket-widget {
             width: 100%;
             background: rgba(6, 12, 28, 0.82);
@@ -289,8 +274,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .basket-badge svg {
-            width: 12px; height: 12px;
+        .basket-badge img, .basket-badge svg {
+            width: 12px; height: 12px; object-fit: contain; background: transparent;
         }
 
         @keyframes badgeIn {
@@ -298,6 +283,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
+        /* Игровое поле */
         .game-stage {
             position: relative;
             width: 100%;
@@ -312,26 +298,29 @@
         }
 
         .boxes-wrapper {
+            display: none;
             width: 100%;
             height: 100%;
-            max-width: 340px;
-            max-height: 340px;
+            max-width: 380px;
+            max-height: 380px;
             z-index: 10;
-            display: flex;
+            padding: 0 8px;
             align-items: center;
             justify-content: center;
-            padding: 0 4px;
+            box-sizing: border-box;
         }
 
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 8px;
             width: 100%;
             height: 100%;
             align-content: center;
+            padding: 4px;
         }
 
+        /* 3D ПОДАРОЧНЫЕ КОРОБКИ */
         .prize-box {
             position: relative;
             width: 100%;
@@ -343,7 +332,7 @@
 
         .prize-box:not(.disabled):not(.opened):not(.opening):hover,
         .prize-box:not(.disabled):not(.opened):not(.opening):active {
-            transform: scale(1.08) translateY(-4px);
+            transform: scale(1.06) translateY(-3px);
         }
 
         .gift-container {
@@ -354,6 +343,7 @@
             transition: transform 0.4s ease;
         }
 
+        /* Корпус коробки */
         .box-body-container {
             position: absolute;
             top: 22%; left: 0; right: 0; bottom: 0;
@@ -368,6 +358,7 @@
             transition: all 0.3s ease;
         }
 
+        /* Ленты на корпусе */
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
@@ -377,6 +368,7 @@
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
+            z-index: 2;
         }
 
         .box-ribbon-h {
@@ -387,31 +379,28 @@
             border-top: 1px solid var(--neon-gold);
             border-bottom: 1px solid var(--neon-gold);
             box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
+            z-index: 2;
         }
 
-        /* Квадранты для логотипов */
-        .box-logo {
+        /* Логотипы на 4 квадрантах коробки */
+        .box-quadrant-logo {
             position: absolute;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-        .box-logo img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 30%; height: 30%;
             object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            z-index: 3;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7));
+            background: transparent !important;
         }
-        .logo-tl { top: 8%; left: 8%; width: 28%; height: 28%; }
-        .logo-tr { top: 8%; right: 8%; width: 28%; height: 28%; }
-        .logo-bl { bottom: 12%; left: 8%; width: 28%; height: 28%; }
-        .logo-br { bottom: 12%; right: 8%; width: 28%; height: 28%; }
+        .box-quad-tl { top: 6%; left: 6%; }
+        .box-quad-tr { top: 6%; right: 6%; }
+        .box-quad-bl { bottom: 6%; left: 6%; }
+        .box-quad-br { bottom: 6%; right: 6%; }
 
+        /* Крышка коробки */
         .box-lid-container {
             position: absolute;
-            top: 0; left: -3px; right: -3px;
+            top: 0; left: -2px; right: -2px;
             height: 26%;
             background: var(--blue-box-lid);
             border-radius: 7px 7px 4px 4px;
@@ -432,25 +421,16 @@
             border-right: 1px solid var(--neon-gold);
         }
 
+        /* 3D Красный Бант */
         .mega-bow {
             position: absolute;
             top: -16%; left: 50%;
             transform: translateX(-50%);
-            width: 50px; height: 40px;
+            width: 48px; height: 38px;
             z-index: 5;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
             transition: all 0.4s ease;
-        }
-
-        .prize-box:not(.disabled):not(.opened):not(.opening):hover .box-lid-container {
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.8), inset 0 2px 4px rgba(255,255,255,0.7);
-            border-color: rgba(255, 226, 89, 0.9);
-        }
-
-        .prize-box:not(.disabled):not(.opened):not(.opening):hover .mega-bow {
-            transform: translateX(-50%) translateY(-4px) scale(1.18);
-            filter: drop-shadow(0 8px 16px rgba(255, 26, 26, 0.9));
         }
 
         .prize-box.opening .gift-container {
@@ -496,9 +476,10 @@
 
         @keyframes bodyFade {
             0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
+            100% { opacity: 0.15; transform: scale(0.88); filter: blur(1.5px); }
         }
 
+        /* Карточка открытого приза */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -509,7 +490,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 4px;
+            padding: 3px;
             z-index: 8;
             opacity: 0;
             transform: scale(0.2);
@@ -525,36 +506,36 @@
 
         @keyframes prizePopAndFloat {
             0% { transform: translateY(0px) scale(1); }
-            100% { transform: translateY(-4px) scale(1.03); }
+            100% { transform: translateY(-3px) scale(1.02); }
         }
 
         .box-content img, .box-content svg {
-            width: 36px; height: 36px;
+            width: 34px; height: 34px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
-            background: transparent;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+            background: transparent !important;
         }
 
         .box-content span {
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
-            line-height: 1.2;
+            line-height: 1.1;
             text-transform: uppercase;
             white-space: normal;
             word-wrap: break-word;
             display: block;
             width: 100%;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: 10px;
-            color: #2ECC71;
+            font-size: 8.5px;
+            color: var(--neon-gold);
         }
 
         .spark {
@@ -573,6 +554,7 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
+        /* Колесо и Лента */
         .wheel-wrapper {
             position: relative;
             width: 290px; height: 290px;
@@ -653,8 +635,7 @@
 
         .ribbon-card img, .ribbon-card svg {
             width: 32px; height: 32px;
-            object-fit: contain;
-            background: transparent;
+            object-fit: contain; background: transparent !important;
         }
 
         .ribbon-card span {
@@ -665,6 +646,7 @@
             line-height: 1.1;
         }
 
+        /* Кнопки */
         .btn-glow {
             width: 100%;
             padding: 14px 0;
@@ -733,6 +715,7 @@
             padding: 0 2px;
         }
 
+        /* Модальные окна */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -782,8 +765,7 @@
 
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
-            object-fit: contain;
-            background: transparent;
+            object-fit: contain; background: transparent !important;
         }
 
         .modal-title {
@@ -864,10 +846,10 @@
         </defs>
     </svg>
 
-    <div id="customBgContainer">
-        <video id="bgVideo" loop muted playsinline></video>
-        <div id="bgImage"></div>
-    </div>
+    <!-- Элементы фона -->
+    <video id="customBgVideo" autoplay loop muted playsinline></video>
+    <div id="customBgImg"></div>
+    <div class="bg-overlay-mask" id="bgMask" style="display:none;"></div>
 
     <div class="ambient-canvas" id="ambientCanvas">
         <div class="orb orb-1"></div>
@@ -876,17 +858,18 @@
     </div>
     <canvas id="particlesCanvas"></canvas>
 
-    <div class="app-container">
+    <div class="app-container" id="appMainContainer">
+        <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container">
-                <div class="brand-logo-glow" id="logoContainer">
+            <div class="brand-logo-container" id="brandLogoWrapper">
+                <div class="brand-logo-glow">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
                     КЭШ-МАГНАТ
                 </div>
-                <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             </div>
+            <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
                 <span class="attempts-count" id="attCounter">
@@ -896,6 +879,7 @@
             </div>
         </div>
 
+        <!-- Виджет Корзины -->
         <div class="basket-widget">
             <div class="basket-header">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -904,6 +888,7 @@
             <div class="basket-items" id="basketItems"></div>
         </div>
 
+        <!-- Игровая область -->
         <div class="game-stage">
             <div class="wheel-wrapper" id="wheelBox">
                 <div class="wheel-halo"></div>
@@ -929,11 +914,13 @@
             </div>
         </div>
 
+        <!-- Кнопка действия -->
         <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             ОТКРЫТЬ КОРОБКУ
         </button>
 
+        <!-- Нижний банер -->
         <div class="trust-banner">
             <div class="trust-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -945,6 +932,24 @@
         </div>
     </div>
 
+    <!-- Попап окончания попыток (БЕЗ загрузки приложения) -->
+    <div class="modal-overlay" id="exhaustedModal" style="z-index: 9999;">
+        <div class="modal-card">
+            <div class="modal-icon-badge">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h2 class="modal-title">ПОПЫТКИ ИСТРАЧЕНЫ!</h2>
+            <div class="modal-desc">
+                🔥 Ваш выигрыш зафиксирован и готов к выводу!<br><br>
+                Чтобы разблокировать получение призов, выполните простые условия в чате бота.
+            </div>
+            <button class="modal-action-btn" onclick="closeApp()">
+                ЗАКРЫТЬ
+            </button>
+        </div>
+    </div>
+
+    <!-- Модальное окно выигрыша -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-card">
             <div class="modal-icon-badge" id="modalIconBox"></div>
@@ -962,6 +967,9 @@
     </div>
 
     <script>
+        // ============================================================
+        // ПОЛНАЯ РАБОЧАЯ JS-ЛОГИКА
+        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -970,6 +978,10 @@
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
+
+        function closeApp() {
+            try { tg.close(); } catch(e){}
+        }
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
@@ -1000,9 +1012,41 @@
         const rawGameMode = urlParams.get('mode');
         const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'wheel';
 
+        // НАСТРОЙКА ЛОГОТИПА И ФОНА ИЗ АДМИНКИ
+        const customLogoParam = urlParams.get('logo');
+        if (customLogoParam) {
+            const logoWrap = document.getElementById('brandLogoWrapper');
+            logoWrap.innerHTML = `<img src="${decodeURIComponent(customLogoParam)}" class="custom-brand-logo" alt="Logo">`;
+        }
+
+        const customBgParam = urlParams.get('bg');
+        if (customBgParam) {
+            const bgUrl = decodeURIComponent(customBgParam);
+            const mask = document.getElementById('bgMask');
+            mask.style.display = 'block';
+            if (bgUrl.endsWith('.mp4') || bgUrl.endsWith('.webm')) {
+                const v = document.getElementById('customBgVideo');
+                v.src = bgUrl;
+                v.style.display = 'block';
+            } else {
+                const img = document.getElementById('customBgImg');
+                img.style.backgroundImage = `url('${bgUrl}')`;
+                img.style.display = 'block';
+            }
+        }
+
+        // НАСТРОЙКА ЛОГОТИПОВ НА КОРОБКАХ (ДО 6 ШТУК В РАНДОМ ПО 4 КВАДРАТА)
+        let boxLogosList = [];
+        const boxLogosParam = urlParams.get('box_logos');
+        if (boxLogosParam) {
+            try {
+                boxLogosList = boxLogosParam.split(',').map(s => decodeURIComponent(s.trim())).filter(Boolean);
+            } catch(e){}
+        }
+
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -1014,7 +1058,7 @@
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'headphones', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1044,42 +1088,7 @@
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // Кастомизация из админки
-        const customLogo = urlParams.get('logo') || '';
-        const customBg = urlParams.get('bg') || '';
-        const customBgType = urlParams.get('bg_type') || 'image';
-        let boxLogos = [];
-        try {
-            const boxLogosRaw = urlParams.get('box_logos');
-            if (boxLogosRaw) boxLogos = JSON.parse(boxLogosRaw);
-        } catch(e){}
-
-        // Применение кастомного фона
-        if (customBg) {
-            document.getElementById('ambientCanvas').style.display = 'none';
-            document.getElementById('particlesCanvas').style.display = 'none';
-            const bgContainer = document.getElementById('customBgContainer');
-            bgContainer.style.display = 'block';
-            if (customBgType === 'video') {
-                const video = document.getElementById('bgVideo');
-                video.src = customBg;
-                video.style.display = 'block';
-                document.getElementById('bgImage').style.display = 'none';
-                video.play().catch(()=>{});
-            } else {
-                document.getElementById('bgImage').style.backgroundImage = `url(${customBg})`;
-                document.getElementById('bgImage').style.display = 'block';
-                document.getElementById('bgVideo').style.display = 'none';
-            }
-        }
-
-        // Применение кастомного логотипа
-        if (customLogo) {
-            const logoContainer = document.getElementById('logoContainer');
-            logoContainer.innerHTML = `<img src="${customLogo}" alt="Logo">`;
-        }
-
-        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА (только без кастомного фона) =====
+        // АНИМАЦИЯ ЧАСТИЦ
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1121,7 +1130,6 @@
         }
 
         function animateParticles() {
-            if (customBg) return;
             pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
             particles.forEach(p => {
                 p.update();
@@ -1129,9 +1137,8 @@
             });
             requestAnimationFrame(animateParticles);
         }
-        if (!customBg) animateParticles();
+        animateParticles();
 
-        // ===== ЭФФЕКТ ИСКР =====
         function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
@@ -1161,18 +1168,13 @@
                 saved = null;
             }
 
+            // ПРОВЕРКА ПОПЫТОК ПРИ ВХОДЕ
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
-                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
-                                 "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
-                
+                document.getElementById('appMainContainer').style.display = 'none';
+                const exModal = document.getElementById('exhaustedModal');
+                exModal.classList.add('active');
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() {
-                        tg.close();
-                    });
-                } else {
-                    alert(alertTxt);
-                    tg.close();
+                    tg.showAlert("🔥 Ваш выигрыш зафиксирован и готов к выводу!");
                 }
                 return;
             }
@@ -1194,441 +1196,341 @@
 
             if (gameMode === 'ribbon') {
                 document.getElementById('wheelBox').style.display = 'none';
-                document.getElementById('boxesBox').style.display = 'none';
                 document.getElementById('ribbonBox').style.display = 'block';
-                buildRibbonTrack();
+                document.getElementById('boxesBox').style.display = 'none';
+                initRibbon();
             } else if (gameMode === 'boxes') {
                 document.getElementById('wheelBox').style.display = 'none';
                 document.getElementById('ribbonBox').style.display = 'none';
                 document.getElementById('boxesBox').style.display = 'flex';
-                document.getElementById('spinBtn').style.display = 'none';
-                buildBoxesGrid();
+                initBoxes();
             } else {
-                renderWheel();
+                document.getElementById('wheelBox').style.display = 'flex';
+                document.getElementById('ribbonBox').style.display = 'none';
+                document.getElementById('boxesBox').style.display = 'none';
+                drawWheel();
             }
         });
 
         function updateBasketUI() {
-            const container = document.getElementById('basketItems');
-            container.innerHTML = '';
-            let totalCount = 0;
-            if (sessionPrizes.money && sessionPrizes.money.length > 0) {
-                sessionPrizes.money.forEach(m => {
-                    const badge = document.createElement('div');
-                    badge.className = 'basket-badge';
-                    badge.innerHTML = `${SVGS.cash} <span>${m} ₽</span>`;
-                    container.appendChild(badge);
-                    totalCount++;
-                });
-            }
-            if (sessionPrizes.items && sessionPrizes.items.length > 0) {
-                sessionPrizes.items.forEach(it => {
-                    const badge = document.createElement('div');
-                    badge.className = 'basket-badge';
-                    let iconHtml = SVGS.headphones;
-                    if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
-                    else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                    else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
-                    badge.innerHTML = `${iconHtml} <span>${it}</span>`;
-                    container.appendChild(badge);
-                    totalCount++;
-                });
-            }
-            if (totalCount === 0) {
-                container.innerHTML = `<span style="font-size:9.5px; color: #64748b;">Ничего не выиграно. Откройте праздничную коробку!</span>`;
-            }
-            document.getElementById('basketCount').innerText = totalCount;
-        }
+            const bItems = document.getElementById('basketItems');
+            const bCount = document.getElementById('basketCount');
+            bItems.innerHTML = '';
+            let totalPrizes = sessionPrizes.money.length + sessionPrizes.items.length;
+            bCount.innerText = totalPrizes;
 
-        function generateCashAmount() {
-            const steps = Math.floor(Math.random() * 101);
-            return 5000 + (steps * 100);
-        }
+            sessionPrizes.money.forEach(amt => {
+                const badge = document.createElement('div');
+                badge.className = 'basket-badge';
+                badge.innerHTML = `${SVGS.cash} <span>${amt} ₽</span>`;
+                bItems.appendChild(badge);
+            });
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTickSound() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(840, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.04);
-        }
-
-        function renderWheel() {
-            const canvas = document.getElementById('wheelCanvas');
-            const ctx = canvas.getContext('2d');
-            const num = SECTORS.length;
-            const arc = (2 * Math.PI) / num;
-            ctx.clearRect(0, 0, 580, 580);
-            SECTORS.forEach((sec, i) => {
-                const angle = i * arc;
-                ctx.beginPath();
-                ctx.fillStyle = sec.color;
-                ctx.moveTo(290, 290);
-                ctx.arc(290, 290, 280, angle, angle + arc);
-                ctx.fill();
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'rgba(255, 226, 89, 0.2)';
-                ctx.stroke();
-                ctx.save();
-                ctx.translate(290, 290);
-                ctx.rotate(angle + arc / 2);
-                ctx.textAlign = "right";
-                ctx.fillStyle = "#FFFFFF";
-                ctx.font = "700 18px 'Plus Jakarta Sans'";
-                ctx.fillText(sec.name, 255, 6);
-                ctx.restore();
+            sessionPrizes.items.forEach(name => {
+                const badge = document.createElement('div');
+                badge.className = 'basket-badge';
+                let matchedSec = SECTORS.find(s => s.name === name);
+                let iconHtml = SVGS.trophy;
+                if (matchedSec) {
+                    iconHtml = matchedSec.img ? `<img src="${matchedSec.img}" alt="prize">` : SVGS[matchedSec.svgKey];
+                }
+                badge.innerHTML = `${iconHtml} <span>${name}</span>`;
+                bItems.appendChild(badge);
             });
         }
 
-        function buildRibbonTrack() {
+        // РИСОВАНИЕ КОЛЕСА
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const numSectors = SECTORS.length;
+            const arc = (2 * Math.PI) / numSectors;
+            const cx = 290, cy = 290, radius = 280;
+
+            ctx.clearRect(0, 0, 580, 580);
+
+            for (let i = 0; i < numSectors; i++) {
+                const angle = i * arc - Math.PI / 2;
+                ctx.beginPath();
+                ctx.fillStyle = SECTORS[i].color;
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, angle, angle + arc);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 226, 89, 0.25)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(angle + arc / 2 + Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = '900 18px "Plus Jakarta Sans"';
+                ctx.fillText(SECTORS[i].name, 0, -radius + 65);
+                ctx.restore();
+            }
+        }
+
+        // ИНИЦИАЛИЗАЦИЯ ЛЕНТЫ
+        function initRibbon() {
             const track = document.getElementById('ribbonTrack');
             track.innerHTML = '';
-            for (let r = 0; r < 12; r++) {
+            for (let r = 0; r < 8; r++) {
                 SECTORS.forEach(sec => {
-                    const cell = document.createElement('div');
-                    cell.className = 'ribbon-card';
-                    const iconContent = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
-                    cell.innerHTML = `${iconContent}<span>${sec.name}</span>`;
-                    track.appendChild(cell);
+                    const card = document.createElement('div');
+                    card.className = 'ribbon-card';
+                    const iconContent = sec.img ? `<img src="${sec.img}" alt="prize">` : SVGS[sec.svgKey];
+                    card.innerHTML = `${iconContent}<span>${sec.name}</span>`;
+                    track.appendChild(card);
                 });
             }
         }
 
-        // ===== СЕТКА 3D КОРОБОК С ЛОГОТИПАМИ =====
-        function getRandomLogos(count = 4) {
-            if (!boxLogos.length) return [];
-            const shuffled = [...boxLogos].sort(() => Math.random() - 0.5);
-            return shuffled.slice(0, Math.min(count, shuffled.length));
-        }
-
-        function buildBoxesGrid() {
+        // ИНИЦИАЛИЗАЦИЯ 3D КОРОБОК (8 ШТУК В СЕТКЕ)
+        function initBoxes() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
-            for (let i = 0; i < 16; i++) {
-                const box = document.createElement('div');
-                box.className = 'prize-box';
-                box.setAttribute('data-index', i);
-                const isOpenedBefore = openedBoxesData[i];
-                if (isOpenedBefore) {
-                    box.classList.add('opened');
-                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}" style="background:transparent">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
-                    box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
-                } else {
-                    box.onclick = () => selectBox(box, i);
-                    const logos = getRandomLogos(4);
-                    let logosHtml = '';
-                    if (logos.length > 0) {
-                        const positions = ['logo-tl', 'logo-tr', 'logo-bl', 'logo-br'];
-                        logos.forEach((url, idx) => {
-                            if (idx < positions.length) {
-                                logosHtml += `<div class="box-logo ${positions[idx]}"><img src="${url}" alt="logo" style="background:transparent"></div>`;
-                            }
-                        });
-                    }
-                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div>${logosHtml}</div><div class="box-content"></div></div>`;
+            for (let i = 0; i < 8; i++) {
+                const pBox = document.createElement('div');
+                pBox.className = 'prize-box';
+                pBox.dataset.index = i;
+
+                let quadLogosHtml = '';
+                if (boxLogosList.length > 0) {
+                    let shuffled = [...boxLogosList].sort(() => 0.5 - Math.random());
+                    let selected4 = shuffled.slice(0, 4);
+                    const quads = ['box-quad-tl', 'box-quad-tr', 'box-quad-bl', 'box-quad-br'];
+                    selected4.forEach((logoUrl, qIdx) => {
+                        if (logoUrl) {
+                            quadLogosHtml += `<img src="${logoUrl}" class="box-quadrant-logo ${quads[qIdx]}" alt="logo">`;
+                        }
+                    });
                 }
-                grid.appendChild(box);
+
+                pBox.innerHTML = `
+                    <div class="gift-container">
+                        <div class="box-body-container">
+                            <div class="box-ribbon-v"></div>
+                            <div class="box-ribbon-h"></div>
+                            ${quadLogosHtml}
+                        </div>
+                        <div class="box-lid-container">
+                            <div class="box-lid-ribbon"></div>
+                        </div>
+                        ${SVGS.silkBow}
+                        <div class="box-content" id="boxContent_${i}"></div>
+                    </div>
+                `;
+
+                if (openedBoxesData[i]) {
+                    pBox.classList.add('opened');
+                    const bContent = pBox.querySelector('.box-content');
+                    bContent.innerHTML = openedBoxesData[i];
+                }
+
+                pBox.addEventListener('click', () => {
+                    if (!isSpinning && !pBox.classList.contains('opened') && attempts > 0) {
+                        executeBoxOpening(pBox, i);
+                    }
+                });
+
+                grid.appendChild(pBox);
             }
         }
 
-        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
-        function selectBox(boxElement, index) {
-            if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
-
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
-
-            isSpinning = true;
-            spinStep++;
-            attempts--;
-            document.getElementById('attNum').innerText = attempts;
-
-            let targetSectorId = 0;
-            let calculatedCash = 0;
-
-            if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
-            else if (spinStep === 3) targetSectorId = 2;
-            else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
-                targetSectorId = 3;
-                calculatedCash = generateCashAmount();
-            } else {
-                targetSectorId = 9;
-            }
-
-            const targetSector = { ...SECTORS[targetSectorId] };
-            if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
-            openedBoxesData[index] = targetSector;
-
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
-
-            boxElement.classList.add('opening');
-
-            let delay = 150, timerId;
-            function playSuspenseSound() {
-                playTickSound();
-                delay = Math.max(40, delay - 8);
-                if (isSpinning && boxElement.classList.contains('opening')) timerId = setTimeout(playSuspenseSound, delay);
-            }
-            playSuspenseSound();
-
-            setTimeout(() => {
-                clearTimeout(timerId);
-                boxElement.classList.remove('opening');
-                boxElement.classList.add('opened');
-                
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('success');
-                }
-
-                const contentDiv = boxElement.querySelector('.box-content');
-                const iconContent = targetSector.img ? `<img src="${targetSector.img}" style="background:transparent">` : SVGS[targetSector.svgKey];
-                const cashValTxt = targetSector.cashAmount ? `<br><b style="white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
-                contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
-
-                const rect = boxElement.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-                spawnSparks(cx, cy, 22);
-                
-                confetti({
-                    particleCount: 50,
-                    spread: 55,
-                    origin: { x: (cx / window.innerWidth), y: (cy / window.innerHeight) },
-                    colors: ['#FFE259', '#FFA751', '#00d2ff']
-                });
-
-                setTimeout(() => finishSpin(targetSector), 900);
-            }, 3200);
+        // ОБРАБОТКА ШАГА ИГРЫ
+        function getNextSectorIndex() {
+            if (spinStep === 0) return 3; // 1000 ₽
+            if (spinStep === 1) return 2; // +3 попытки
+            if (spinStep === 2) return 1; // iPhone 17 Pro Max
+            return 1;
         }
 
         function executeSpin() {
-            if (attempts <= 0 || isSpinning) return;
+            if (isSpinning || attempts <= 0) return;
 
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
+            if (gameMode === 'boxes') {
+                const unopened = document.querySelectorAll('.prize-box:not(.opened)');
+                if (unopened.length > 0) {
+                    const firstUnopened = unopened[0];
+                    executeBoxOpening(firstUnopened, parseInt(firstUnopened.dataset.index));
+                }
+                return;
             }
 
             isSpinning = true;
-            spinStep++;
-            attempts--;
-            document.getElementById('attNum').innerText = attempts;
             document.getElementById('spinBtn').disabled = true;
 
-            let targetSectorId = 0;
-            let calculatedCash = 0;
+            const secIndex = getNextSectorIndex();
+            const sector = SECTORS[secIndex];
 
-            if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
-            else if (spinStep === 3) targetSectorId = 2;
-            else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
-                targetSectorId = 3;
-                calculatedCash = generateCashAmount();
+            if (gameMode === 'ribbon') {
+                const track = document.getElementById('ribbonTrack');
+                const cardWidth = 106;
+                const targetPos = -(3 * SECTORS.length * cardWidth + secIndex * cardWidth);
+                track.style.transform = `translateX(${targetPos}px)`;
+
+                setTimeout(() => {
+                    finishSpinStep(sector);
+                }, 4700);
             } else {
-                targetSectorId = 9;
-            }
+                const canvas = document.getElementById('wheelCanvas');
+                const arc = (2 * Math.PI) / SECTORS.length;
+                const targetAngle = 5 * 2 * Math.PI + (SECTORS.length - secIndex) * arc - arc / 2;
+                canvas.style.transform = `rotate(${targetAngle}rad)`;
 
-            const targetSector = { ...SECTORS[targetSectorId] };
-            if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
-
-            saveState({
-                attempts: attempts,
-                spinStep: spinStep,
-                sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
-            });
-
-            if (gameMode === 'wheel') {
-                runWheelAnimation(targetSectorId, targetSector);
-            } else {
-                runRibbonAnimation(targetSectorId, targetSector);
+                setTimeout(() => {
+                    finishSpinStep(sector);
+                }, 4700);
             }
         }
 
-        function runWheelAnimation(sectorIndex, prizeObj) {
-            const canvas = document.getElementById('wheelCanvas');
-            const numSectors = SECTORS.length;
-            const sectorAngle = 360 / numSectors;
-            const sectorCenter = (sectorIndex + 0.5) * sectorAngle;
-            const targetRotation = 3600 + (270 - sectorCenter);
-            let audioInterval = setInterval(() => playTickSound(), 110);
-            canvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
+        function executeBoxOpening(pBox, boxIdx) {
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+
+            const secIndex = getNextSectorIndex();
+            const sector = SECTORS[secIndex];
+
+            pBox.classList.add('opening');
+
+            setTimeout(() => {
+                pBox.classList.remove('opening');
+                pBox.classList.add('opened');
+
+                const rect = pBox.getBoundingClientRect();
+                spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 22);
+
+                let prizeHtml = '';
+                let iconHtml = sector.img ? `<img src="${sector.img}" alt="prize">` : SVGS[sector.svgKey];
+
+                if (secIndex === 3) {
+                    prizeHtml = `${iconHtml}<span>Денег<br><b>+1000 ₽</b></span>`;
+                } else if (secIndex === 2) {
+                    prizeHtml = `${iconHtml}<span>Бонус<br><b>+3 ПОПЫТКИ</b></span>`;
+                } else {
+                    prizeHtml = `${iconHtml}<span>Приз<br><b>${sector.name}</b></span>`;
+                }
+
+                const contentBox = document.getElementById(`boxContent_${boxIdx}`);
+                contentBox.innerHTML = prizeHtml;
+                openedBoxesData[boxIdx] = prizeHtml;
+
+                setTimeout(() => {
+                    finishSpinStep(sector);
+                }, 1000);
+            }, 1200);
         }
 
-        function runRibbonAnimation(sectorIndex, prizeObj) {
-            const track = document.getElementById('ribbonTrack');
-            const cellPitch = 106;
-            const containerCenter = 160;
-            const targetCellIndex = (8 * SECTORS.length) + sectorIndex;
-            const targetOffset = (targetCellIndex * cellPitch) + (96 / 2) - containerCenter;
-            let audioInterval = setInterval(() => playTickSound(), 100);
-            track.style.transform = `translateX(-${targetOffset}px)`;
-            setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
-        }
-
-        function finishSpin(prize) {
+        function finishSpinStep(sector) {
             isSpinning = false;
+            document.getElementById('spinBtn').disabled = false;
 
-            if (prize.type === 'money') {
-                sessionPrizes.money.push(prize.cashAmount);
-            } else if (prize.type === 'item') {
-                sessionPrizes.items.push(prize.name);
-            } else if (prize.type === 'bonus') {
-                attempts += 3;
-                document.getElementById('attNum').innerText = attempts;
+            let moneyWon = 0;
+            let itemWon = '';
+
+            if (sector.id === 3) moneyWon = 1000;
+            else if (sector.id === 1) itemWon = sector.name;
+
+            if (moneyWon > 0) sessionPrizes.money.push(moneyWon);
+            if (itemWon) sessionPrizes.items.push(itemWon);
+
+            if (sector.id === 2) {
+                attempts += 2; // +3 минус 1 использованная
+            } else {
+                attempts--;
             }
+
+            spinStep++;
+            document.getElementById('attNum').innerText = attempts;
+            updateBasketUI();
+
+            const isFinal = attempts <= 0;
 
             saveState({
                 attempts: attempts,
                 spinStep: spinStep,
                 sessionPrizes: sessionPrizes,
                 openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
+                isDone: isFinal
             });
 
-            updateBasketUI();
-            displayModal(prize);
+            showModalResult(sector, isFinal);
         }
 
-        function displayModal(prize) {
+        function showModalResult(sector, isFinal) {
             const modal = document.getElementById('resultModal');
             const iconBox = document.getElementById('modalIconBox');
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             const btn = document.getElementById('modalBtn');
 
-            iconBox.innerHTML = prize.img ? `<img src="${prize.img}" style="background:transparent">` : SVGS[prize.svgKey];
+            iconBox.innerHTML = sector.img ? `<img src="${sector.img}" alt="prize">` : SVGS[sector.svgKey];
 
-            if (prize.type === 'money') {
-                title.innerText = "ВЫИГРЫШ!";
-                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
-                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
-            } else if (prize.type === 'item') {
-                title.innerText = "ЦЕННЫЙ ПРИЗ!";
-                body.innerHTML = `<div class="modal-desc">Вы выиграли:<br><strong style="color: #FFE259; font-size: 18px;">${prize.name}</strong></div>`;
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            } else if (prize.type === 'bonus') {
-                title.innerText = "БОНУС!";
-                body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
+            if (sector.id === 3) {
+                title.innerText = "ВЫИГРЫШ +1000 ₽!";
+                body.innerHTML = `<div class="modal-desc">Поздравляем! Вы выиграли денежный приз <b>1000 ₽</b>. Деньги добавлены в вашу корзину!</div>`;
+            } else if (sector.id === 2) {
+                title.innerText = "БОНУС +3 ПОПЫТКИ!";
+                body.innerHTML = `<div class="modal-desc">Вам невероятно повезло! Зачислено <b>+3 дополнительных открытия</b>!</div>`;
             } else {
-                title.innerText = "НЕ ПОВЕЗЛО";
-                body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
+                title.innerText = "ГРАНДИОЗНЫЙ ВЫИГРЫШ!";
+                body.innerHTML = `<div class="modal-desc">ФАНТАСТИКА! Вы выиграли ценный приз: <b>${sector.name}</b>!</div>`;
             }
 
-            if (attempts === 0) {
-                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ПОСМОТРЕТЬ ИТОГ`;
+            if (isFinal) {
+                let totalSum = sessionPrizes.money.reduce((a, b) => a + b, 0);
+                let itemsListStr = sessionPrizes.items.join(', ') || 'Нет';
+
+                body.innerHTML += `
+                    <div class="prize-summary-box">
+                        <div class="prize-summary-row"><span class="prize-label">Всего денег:</span><span class="prize-val">${totalSum} ₽</span></div>
+                        <div class="prize-summary-row"><span class="prize-label">Призы:</span><span class="prize-val">${itemsListStr}</span></div>
+                    </div>
+                `;
+                btn.innerText = "ЗАБРАТЬ ВЫИГРЫШ";
+                btn.onclick = () => {
+                    modal.classList.remove('active');
+                    finishAndClaim();
+                };
+
+                confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
             } else {
-                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
+                btn.innerText = "ПРОДОЛЖИТЬ ИГРУ";
+                btn.onclick = () => {
+                    modal.classList.remove('active');
+                };
             }
 
-            btn.onclick = handleModalAction;
             modal.classList.add('active');
         }
 
-        function handleModalAction() {
-            const modal = document.getElementById('resultModal');
-            modal.classList.remove('active');
-
-            if (attempts === 0) {
-                renderFinalSummaryModal(false);
-            } else {
-                if (gameMode !== 'boxes') {
-                    const canvas = document.getElementById('wheelCanvas');
-                    const track = document.getElementById('ribbonTrack');
-                    
-                    canvas.style.transition = 'none';
-                    canvas.style.transform = 'rotate(0deg)';
-                    track.style.transition = 'none';
-                    track.style.transform = 'translateX(0)';
-
-                    setTimeout(() => {
-                        canvas.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
-                        track.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
-                        document.getElementById('spinBtn').disabled = false;
-                    }, 50);
-                }
-            }
-        }
-
-        function renderFinalSummaryModal(isAlreadyDone) {
-            document.getElementById('attNum').innerText = "0";
-            document.getElementById('spinBtn').disabled = true;
-
-            const modal = document.getElementById('resultModal');
-            const iconBox = document.getElementById('modalIconBox');
-            const title = document.getElementById('modalTitle');
-            const body = document.getElementById('modalBody');
-            const btn = document.getElementById('modalBtn');
-
-            iconBox.innerHTML = SVGS.trophy;
-            title.innerText = "ВЫИГРЫШ ЗАФИКСИРОВАН!";
-
-            const totalMoney = (sessionPrizes && sessionPrizes.money) ? sessionPrizes.money.reduce((a, b) => a + b, 0) : 0;
-            const itemsList = (sessionPrizes && sessionPrizes.items && sessionPrizes.items.length > 0) ? sessionPrizes.items.join(', ') : 'Не выпадали';
-
-            body.innerHTML = `
-                <div class="modal-desc">Все попытки использованы! Ваши награды зарезервированы:</div>
-                <div class="prize-summary-box">
-                    <div class="prize-summary-row">
-                        <span class="prize-label">Баланс к выплате:</span>
-                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
-                    </div>
-                    <div class="prize-summary-row">
-                        <span class="prize-label">Физические призы:</span>
-                        <span class="prize-val" style="color: #FFE259;">${itemsList}</span>
-                    </div>
-                </div>
-                <div style="font-size: 11.5px; color: #94A3B8; margin-bottom: 16px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
-                </div>
-            `;
-
-            btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
-            
-            btn.onclick = (e) => {
-                if (e) e.stopPropagation();
-                
-                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
-
-                let payload = "";
-                if (sessionPrizes) {
-                    try {
-                        payload = btoa(unescape(encodeURIComponent(JSON.stringify(sessionPrizes)))).replace(/=/g, '');
-                    } catch(err) {}
-                }
-
-                try {
-                    tg.sendData(JSON.stringify(sessionPrizes));
-                } catch(err) {}
-
-                if (botUsername) {
-                    try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
-                        tg.openTelegramLink(deepLink);
-                    } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
-                    }
-                }
-
-                try {
-                    tg.close();
-                } catch(err) {}
+        function finishAndClaim() {
+            const payload = {
+                money: sessionPrizes.money,
+                items: sessionPrizes.items,
+                alreadySpun: true
             };
 
-            modal.classList.add('active');
+            const jsonStr = JSON.stringify(payload);
+            let b64 = '';
+            try {
+                b64 = btoa(unescape(encodeURIComponent(jsonStr))).replace(/=/g, '');
+            } catch(e){}
+
+            // 1) Пробуем отправить данные через Telegram WebApp Data
+            try {
+                tg.sendData(jsonStr);
+            } catch(e){}
+
+            // 2) Надежный редирект через deep-link обратно в бота
+            setTimeout(() => {
+                if (botUsername) {
+                    window.location.href = `https://t.me/${botUsername}?start=claim_${b64}`;
+                } else {
+                    tg.close();
+                }
+            }, 300);
         }
     </script>
 </body>
