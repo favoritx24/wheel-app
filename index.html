@@ -60,7 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Кастомный фон (static image, GIF или video) */
+        /* Обертка для динамического кастомного фона */
         .custom-bg-wrapper {
             position: absolute;
             top: 0; left: 0;
@@ -311,8 +311,8 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 330px; /* Уменьшено с 360px чтобы коробки не выходили за левые и правые края экрана */
-            max-height: 330px;
+            max-width: 320px; /* Сужено с 360px чтобы коробки не прижимались к левому/правому краям экрана */
+            max-height: 320px;
             z-index: 10;
             display: flex;
             align-items: center;
@@ -324,7 +324,7 @@
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px; /* Оптимизированный отступ */
+            gap: 6px;
             width: 100%;
             height: 100%;
             align-content: center;
@@ -392,7 +392,7 @@
             z-index: 2;
         }
 
-        /* Спонсорские логотипы на 4 квадрантах коробки */
+        /* Четыре квадранта на коробке под спонсорские логотипы */
         .box-quadrant {
             position: absolute;
             width: 25%;
@@ -513,7 +513,7 @@
             100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* Карточка выпавшего приза из коробки (Кристальная резкость текста) */
+        /* Карточка выпавшего приза из коробки (Кристальная резкость текста без размытия) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -553,7 +553,7 @@
         }
 
         .box-content span {
-            font-size: clamp(7px, 2vw, 9px); /* Динамический размер текста */
+            font-size: clamp(7.5px, 2.2vw, 9.5px);
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
@@ -564,8 +564,8 @@
             word-wrap: break-word;
             display: block;
             width: 100%;
-            /* CRYSTAL CLEAR TEXT */
-            text-shadow: 0 1.5px 3px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.8);
+            /* Абсолютно четкий текст с двойной контрастной обводкой-тенью */
+            text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -573,7 +573,7 @@
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: clamp(8px, 2.2vw, 10px);
+            font-size: clamp(8.5px, 2.5vw, 10.5px);
             color: #2ECC71;
             text-shadow: 0 1.5px 3px rgba(0,0,0,0.95);
         }
@@ -885,7 +885,7 @@
         </defs>
     </svg>
 
-    <!-- Динамический анимированный фон с орбами и частицами -->
+    <!-- Динамический анимированный фон с орбами и частями -->
     <div class="ambient-canvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -1182,7 +1182,7 @@
                 saved = null;
             }
 
-            // Нативная обработка spent-пользователей: сразу нативный попап TG и плавное закрытие/транзит
+            // Нативная обработка защиты от повторного входа: Web App не открывается, сразу нативный попап TG
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 document.querySelector('.app-container').style.display = 'none';
                 document.body.style.background = 'var(--bg-dark)';
@@ -1416,7 +1416,7 @@
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
                     box.onclick = () => selectBox(box, i);
-                    const logosHTML = getBoxLogosHTML(); // Генерируем 4 спонсорские плашки для каждого закрытого бокса
+                    const logosHTML = getBoxLogosHTML(); // Уникальные 4 логотипа на передней стороне закрытой коробки
                     box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div>${logosHTML}</div><div class="box-content"></div></div>`;
                 }
                 grid.appendChild(box);
@@ -1647,7 +1647,7 @@
             }
         }
 
-        // ОРИГИНАЛЬНЫЙ ТРАНЗИТ ОДИН В ОДИН (Гарантия автозапуска ТГ-старта при любом типе входа)
+        // КРИТИЧЕСКИ КОРРЕКТИРОВАННАЯ ЛОГИКА ТРАНЗИТА (100% точность вызова старта)
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
@@ -1695,22 +1695,29 @@
                     } catch(err) {}
                 }
 
+                // 1. Пытаемся отправить данные (работает ТОЛЬКО при открытии из reply-клавиатуры бота)
+                let sentData = false;
                 try {
-                    tg.sendData(JSON.stringify(sessionPrizes));
-                } catch(err) {}
-
-                if (botUsername) {
-                    try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
-                        tg.openTelegramLink(deepLink);
-                    } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                    if (tg.initDataUnsafe && tg.initDataUnsafe.query_id) {
+                        tg.sendData(JSON.stringify(sessionPrizes));
+                        sentData = true;
                     }
-                }
-
-                try {
-                    tg.close();
                 } catch(err) {}
+
+                // 2. Если данные не отправлены (открыто из поста или синей кнопкой "Проверить") - делаем безопасный транзит по диплинку
+                if (!sentData && botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                    try {
+                        tg.openTelegramLink(deepLink); // Это нативно закрывает Web App в приложении Telegram
+                    } catch(err) {
+                        window.location.href = deepLink;
+                    }
+                } else {
+                    // Если данные успешно ушли через sendData, принудительно гасим окно
+                    try {
+                        tg.close();
+                    } catch(err) {}
+                }
             };
 
             modal.classList.add('active');
