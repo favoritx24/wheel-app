@@ -9,7 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН (коробки стали компактнее, текст чётче, поддержка кастомного фона, логотипов на коробках и заголовка)
+           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
+           - Компактные коробки (не вылезают за края)
+           - Чёткий текст призов
+           - Кастомный логотип, фон, логотипы на коробках
            ============================================================ */
         :root {
             --bg-dark: #02050e;
@@ -55,7 +58,7 @@
             justify-content: space-between;
         }
 
-        /* Кастомный фон (из админки) */
+        /* Кастомный фон */
         #customBg {
             position: fixed;
             top: 0; left: 0;
@@ -73,7 +76,7 @@
             object-fit: cover;
         }
 
-        /* Анимированный аэродизайн фона (стандартный) */
+        /* Стандартный анимированный фон */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -126,7 +129,6 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* Главный контейнер приложения */
         .app-container {
             position: relative;
             z-index: 2;
@@ -153,7 +155,6 @@
             align-items: center;
         }
 
-        /* Логотип – теперь может быть картинкой */
         #logoContainer {
             display: flex;
             flex-direction: column;
@@ -317,7 +318,6 @@
             z-index: 10;
         }
 
-        /* Боксы компактнее, чтобы не вылезать за края */
         .boxes-wrapper {
             display: none;
             width: 100%;
@@ -340,7 +340,6 @@
             align-content: center;
         }
 
-        /* 3D ПОДАРОЧНЫЕ КОРОБКИ */
         .prize-box {
             position: relative;
             width: 100%;
@@ -363,7 +362,6 @@
             transition: transform 0.4s ease;
         }
 
-        /* Корпус синей коробки */
         .box-body-container {
             position: absolute;
             top: 22%; left: 0; right: 0; bottom: 0;
@@ -378,7 +376,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Логотипы компаний в четвертях коробки */
         .corner-logo {
             position: absolute;
             width: 36%;
@@ -395,7 +392,6 @@
         .corner-logo.bottom-left { bottom: 4%; left: 4%; }
         .corner-logo.bottom-right { bottom: 4%; right: 4%; }
 
-        /* Ленты на корпусе */
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
@@ -419,7 +415,6 @@
             z-index: 1;
         }
 
-        /* Крышка коробки */
         .box-lid-container {
             position: absolute;
             top: 0; left: -3px; right: -3px;
@@ -443,7 +438,6 @@
             border-right: 1px solid var(--neon-gold);
         }
 
-        /* 3D Красный Бант */
         .mega-bow {
             position: absolute;
             top: -16%; left: 50%;
@@ -511,7 +505,6 @@
             100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* Карточка приза теперь с улучшенной читаемостью */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -585,7 +578,6 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
-        /* Колесо и Лента (без изменений) */
         .wheel-wrapper {
             position: relative;
             width: 290px; height: 290px;
@@ -877,10 +869,8 @@
         </defs>
     </svg>
 
-    <!-- Кастомный фон (управляется из админки) -->
     <div id="customBg"></div>
 
-    <!-- Стандартный анимированный фон -->
     <div class="ambient-canvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -888,75 +878,71 @@
     </div>
     <canvas id="particlesCanvas"></canvas>
 
-    <!-- Главный интерфейс скрыт до проверки состояния попыток -->
-    <div id="appRoot" style="display: none;">
-        <div class="app-container">
-            <div class="header-block">
-                <div id="logoContainer">
-                    <!-- По умолчанию текст и иконка, будут заменены если задан кастомный логотип -->
-                    <div class="brand-logo-glow">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                        </svg>
-                        КЭШ-МАГНАТ
-                    </div>
-                    <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
-                </div>
-                <div class="attempts-pill">
-                    <span class="attempts-label">Доступно открытий:</span>
-                    <span class="attempts-count" id="attCounter">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                        <span id="attNum">3</span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="basket-widget">
-                <div class="basket-header">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    Вы выиграли и можете забрать: (<span id="basketCount">0</span>)
-                </div>
-                <div class="basket-items" id="basketItems"></div>
-            </div>
-
-            <div class="game-stage">
-                <div class="wheel-wrapper" id="wheelBox">
-                    <div class="wheel-halo"></div>
-                    <svg class="pointer-marker" viewBox="0 0 28 34" fill="none">
-                        <path d="M14 34L0 0H28L14 34Z" fill="url(#ptrG)"/>
-                        <defs>
-                            <linearGradient id="ptrG" x1="14" y1="0" x2="14" y2="34" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#FFE259"/>
-                                <stop offset="1" stop-color="#FFA751"/>
-                            </linearGradient>
-                        </defs>
+    <div class="app-container">
+        <div class="header-block">
+            <div id="logoContainer">
+                <div class="brand-logo-glow">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
-                    <canvas id="wheelCanvas" width="580" height="580"></canvas>
+                    КЭШ-МАГНАТ
                 </div>
+                <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
+            </div>
+            <div class="attempts-pill">
+                <span class="attempts-label">Доступно открытий:</span>
+                <span class="attempts-count" id="attCounter">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span id="attNum">3</span>
+                </span>
+            </div>
+        </div>
 
-                <div class="ribbon-wrapper" id="ribbonBox">
-                    <div class="ribbon-pointer-line"></div>
-                    <div class="ribbon-track" id="ribbonTrack"></div>
-                </div>
+        <div class="basket-widget">
+            <div class="basket-header">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                Вы выиграли и можете забрать: (<span id="basketCount">0</span>)
+            </div>
+            <div class="basket-items" id="basketItems"></div>
+        </div>
 
-                <div class="boxes-wrapper" id="boxesBox">
-                    <div class="boxes-grid" id="boxesGrid"></div>
-                </div>
+        <div class="game-stage">
+            <div class="wheel-wrapper" id="wheelBox">
+                <div class="wheel-halo"></div>
+                <svg class="pointer-marker" viewBox="0 0 28 34" fill="none">
+                    <path d="M14 34L0 0H28L14 34Z" fill="url(#ptrG)"/>
+                    <defs>
+                        <linearGradient id="ptrG" x1="14" y1="0" x2="14" y2="34" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FFE259"/>
+                            <stop offset="1" stop-color="#FFA751"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <canvas id="wheelCanvas" width="580" height="580"></canvas>
             </div>
 
-            <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                ОТКРЫТЬ КОРОБКУ
-            </button>
+            <div class="ribbon-wrapper" id="ribbonBox">
+                <div class="ribbon-pointer-line"></div>
+                <div class="ribbon-track" id="ribbonTrack"></div>
+            </div>
 
-            <div class="trust-banner">
-                <div class="trust-header">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    Розыгрыш сертифицирован и гарантирован
-                </div>
-                <div class="trust-desc">
-                    Выдача всех наград застрахована, верифицирована регуляторами и на 100% финансируется за счет рекламных бюджетов: Т-Банк, СБЕР, OZON, WB, Я.Маркет, DNS и интернет предпринимателей.
-                </div>
+            <div class="boxes-wrapper" id="boxesBox">
+                <div class="boxes-grid" id="boxesGrid"></div>
+            </div>
+        </div>
+
+        <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            ОТКРЫТЬ КОРОБКУ
+        </button>
+
+        <div class="trust-banner">
+            <div class="trust-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Розыгрыш сертифицирован и гарантирован
+            </div>
+            <div class="trust-desc">
+                Выдача всех наград застрахована, верифицирована регуляторами и на 100% финансируется за счет рекламных бюджетов: Т-Банк, СБЕР, OZON, WB, Я.Маркет, DNS и интернет предпринимателей.
             </div>
         </div>
     </div>
@@ -978,9 +964,6 @@
     </div>
 
     <script>
-        // ============================================================
-        // ПОЛНАЯ JS-ЛОГИКА (поддержка кастомных логотипов, фона, логотипов на коробках)
-        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -996,9 +979,7 @@
         const boxLogosParam = urlParams.get('box_logos') || '';
         let boxLogos = [];
         if (boxLogosParam) {
-            try {
-                boxLogos = JSON.parse(boxLogosParam);
-            } catch(e) {}
+            try { boxLogos = JSON.parse(boxLogosParam); } catch(e) {}
         }
 
         function saveState(stateObj) {
@@ -1082,7 +1063,6 @@
                 return;
             }
             bgDiv.style.display = 'block';
-            // Определяем тип: видео или изображение
             const isVideo = customBg.endsWith('.mp4') || customBg.endsWith('.webm');
             if (isVideo) {
                 bgDiv.innerHTML = `<video autoplay muted loop playsinline src="${customBg}"></video>`;
@@ -1098,24 +1078,11 @@
             const logoContainer = document.getElementById('logoContainer');
             if (customLogo) {
                 logoContainer.innerHTML = `<img src="${customLogo}" class="brand-logo-img">`;
-                // Добавим подпись VIP EXCLUSIVE CLUB (всегда присутствует)
                 logoContainer.innerHTML += `<div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>`;
-            } else {
-                // Стандартный вид
-                logoContainer.innerHTML = `
-                    <div class="brand-logo-glow">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                        </svg>
-                        КЭШ-МАГНАТ
-                    </div>
-                    <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
-                `;
             }
         }
         applyCustomLogo();
 
-        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1152,21 +1119,14 @@
             }
         }
 
-        for (let i = 0; i < 75; i++) {
-            particles.push(new Particle());
-        }
-
+        for (let i = 0; i < 75; i++) particles.push(new Particle());
         function animateParticles() {
             pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw(pCtx);
-            });
+            particles.forEach(p => { p.update(); p.draw(pCtx); });
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
 
-        // ===== ЭФФЕКТ ИСКР =====
         function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
@@ -1196,25 +1156,19 @@
                 saved = null;
             }
 
-            // Если попытки уже закончились, показываем только всплывающее окно и не отрисовываем интерфейс
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() {
-                        tg.close();
-                    });
+                    tg.showAlert(alertTxt, function() { tg.close(); });
                 } else {
                     alert(alertTxt);
                     tg.close();
                 }
                 return;
             }
-
-            // Показываем интерфейс, только если есть попытки
-            document.getElementById('appRoot').style.display = 'block';
 
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
@@ -1247,7 +1201,6 @@
             }
         });
 
-        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ =====
         function updateBasketUI() {
             const container = document.getElementById('basketItems');
             container.innerHTML = '';
@@ -1265,7 +1218,7 @@
                 sessionPrizes.items.forEach(it => {
                     const badge = document.createElement('div');
                     badge.className = 'basket-badge';
-                    let iconHtml = SVGS.iphone; // универсальная иконка для вещей
+                    let iconHtml = SVGS.iphone;
                     if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
                     else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
@@ -1341,7 +1294,6 @@
             }
         }
 
-        // ===== СЕТКА 3D КОРОБОК С ЛОГОТИПАМИ =====
         function getRandomLogos(count) {
             if (!boxLogos || boxLogos.length < count) return [];
             const shuffled = [...boxLogos].sort(() => 0.5 - Math.random());
@@ -1384,13 +1336,10 @@
             }
         }
 
-        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
             isSpinning = true;
             spinStep++;
@@ -1432,9 +1381,7 @@
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
                 
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('success');
-                }
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
                 const contentDiv = boxElement.querySelector('.box-content');
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
@@ -1460,9 +1407,7 @@
         function executeSpin() {
             if (attempts <= 0 || isSpinning) return;
 
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
             isSpinning = true;
             spinStep++;
@@ -1487,13 +1432,7 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            saveState({
-                attempts: attempts,
-                spinStep: spinStep,
-                sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
-            });
+            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
 
             if (gameMode === 'wheel') {
                 runWheelAnimation(targetSectorId, targetSector);
@@ -1527,23 +1466,14 @@
         function finishSpin(prize) {
             isSpinning = false;
 
-            if (prize.type === 'money') {
-                sessionPrizes.money.push(prize.cashAmount);
-            } else if (prize.type === 'item') {
-                sessionPrizes.items.push(prize.name);
-            } else if (prize.type === 'bonus') {
+            if (prize.type === 'money') sessionPrizes.money.push(prize.cashAmount);
+            else if (prize.type === 'item') sessionPrizes.items.push(prize.name);
+            else if (prize.type === 'bonus') {
                 attempts += 3;
                 document.getElementById('attNum').innerText = attempts;
             }
 
-            saveState({
-                attempts: attempts,
-                spinStep: spinStep,
-                sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
-            });
-
+            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
             updateBasketUI();
             displayModal(prize);
         }
