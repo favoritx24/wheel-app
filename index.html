@@ -532,6 +532,7 @@
             width: 36px; height: 36px;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+            background: transparent;
         }
 
         .box-content span {
@@ -653,6 +654,7 @@
         .ribbon-card img, .ribbon-card svg {
             width: 32px; height: 32px;
             object-fit: contain;
+            background: transparent;
         }
 
         .ribbon-card span {
@@ -781,6 +783,7 @@
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
             object-fit: contain;
+            background: transparent;
         }
 
         .modal-title {
@@ -1041,7 +1044,7 @@
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // Параметры кастомизации
+        // Кастомизация из админки
         const customLogo = urlParams.get('logo') || '';
         const customBg = urlParams.get('bg') || '';
         const customBgType = urlParams.get('bg_type') || 'image';
@@ -1076,7 +1079,7 @@
             logoContainer.innerHTML = `<img src="${customLogo}" alt="Logo">`;
         }
 
-        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА (только если нет кастомного фона) =====
+        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА (только без кастомного фона) =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1315,7 +1318,7 @@
                 const isOpenedBefore = openedBoxesData[i];
                 if (isOpenedBefore) {
                     box.classList.add('opened');
-                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
+                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}" style="background:transparent">` : SVGS[isOpenedBefore.svgKey];
                     const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
@@ -1326,7 +1329,7 @@
                         const positions = ['logo-tl', 'logo-tr', 'logo-bl', 'logo-br'];
                         logos.forEach((url, idx) => {
                             if (idx < positions.length) {
-                                logosHtml += `<div class="box-logo ${positions[idx]}"><img src="${url}" alt="logo"></div>`;
+                                logosHtml += `<div class="box-logo ${positions[idx]}"><img src="${url}" alt="logo" style="background:transparent"></div>`;
                             }
                         });
                     }
@@ -1389,7 +1392,7 @@
                 }
 
                 const contentDiv = boxElement.querySelector('.box-content');
-                const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
+                const iconContent = targetSector.img ? `<img src="${targetSector.img}" style="background:transparent">` : SVGS[targetSector.svgKey];
                 const cashValTxt = targetSector.cashAmount ? `<br><b style="white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
 
@@ -1507,7 +1510,7 @@
             const body = document.getElementById('modalBody');
             const btn = document.getElementById('modalBtn');
 
-            iconBox.innerHTML = prize.img ? `<img src="${prize.img}">` : SVGS[prize.svgKey];
+            iconBox.innerHTML = prize.img ? `<img src="${prize.img}" style="background:transparent">` : SVGS[prize.svgKey];
 
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
