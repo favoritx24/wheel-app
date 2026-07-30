@@ -10,6 +10,9 @@
     <style>
         /* ============================================================
            УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
+           - Трехмерные синие коробки с шелковыми красными бантами
+           - Полное отсутствие скролла (100dvh, flex scaling)
+           - Плавные физичные анимации, неоновые свечения и эффекты
            ============================================================ */
         :root {
             --bg-dark: #02050e;
@@ -25,6 +28,8 @@
             --text-muted: #94a3b8;
             --border-glass: rgba(255, 226, 89, 0.2);
             --border-subtle: rgba(255, 255, 255, 0.08);
+            --shadow-gold: 0 0 25px rgba(255, 226, 89, 0.5);
+            --shadow-blue: 0 0 20px rgba(0, 210, 255, 0.4);
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
@@ -55,7 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Анимированный фон и динамические фоны */
+        /* Анимированный аэродизайн фона и поддержка видео/фото фонов */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -89,9 +94,26 @@
             animation: orbFloat 12s infinite alternate ease-in-out;
         }
 
-        .orb-1 { width: 280px; height: 280px; background: #1d4ed8; top: -40px; left: -40px; }
-        .orb-2 { width: 320px; height: 320px; background: #0284c7; bottom: -60px; right: -60px; animation-delay: -5s; }
-        .orb-3 { width: 220px; height: 220px; background: #7e22ce; top: 45%; left: 30%; opacity: 0.25; animation-delay: -8s; }
+        .orb-1 {
+            width: 280px; height: 280px;
+            background: #1d4ed8;
+            top: -40px; left: -40px;
+        }
+
+        .orb-2 {
+            width: 320px; height: 320px;
+            background: #0284c7;
+            bottom: -60px; right: -60px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 220px; height: 220px;
+            background: #7e22ce;
+            top: 45%; left: 30%;
+            opacity: 0.25;
+            animation-delay: -8s;
+        }
 
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
@@ -99,7 +121,7 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* Главный контейнер приложения со строгой адаптацией */
+        /* Главный контейнер приложения со строгой адаптацией под высоту */
         .app-container {
             position: relative;
             z-index: 2;
@@ -111,7 +133,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 10px;
+            padding: 8px 12px;
             padding-bottom: calc(8px + var(--safe-bottom));
             gap: 4px;
             overflow: hidden;
@@ -154,7 +176,10 @@
             100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
         }
 
-        .brand-logo-glow svg { width: 22px; height: 22px; fill: url(#goldGrad); }
+        .brand-logo-glow svg {
+            width: 22px; height: 22px;
+            fill: url(#goldGrad);
+        }
 
         .brand-subtitle {
             font-size: 9px;
@@ -166,8 +191,9 @@
             text-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
         }
 
+        /* Кастомный логотип в шапке */
         .custom-app-logo {
-            max-height: 40px;
+            max-height: 38px;
             max-width: 80%;
             object-fit: contain !important;
             background: transparent !important;
@@ -188,8 +214,22 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
-        .attempts-label { font-size: 9.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
-        .attempts-count { font-size: 12.5px; font-weight: 900; color: var(--neon-gold); display: flex; align-items: center; gap: 4px; }
+        .attempts-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .attempts-count {
+            font-size: 12.5px;
+            font-weight: 900;
+            color: var(--neon-gold);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
         /* Виджет корзины призов */
         .basket-widget {
@@ -207,8 +247,24 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.5);
         }
 
-        .basket-header { font-size: 8.5px; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 4px; }
-        .basket-items { display: flex; flex-wrap: wrap; gap: 4px; min-height: 18px; align-items: center; }
+        .basket-header {
+            font-size: 8.5px;
+            font-weight: 900;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .basket-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            min-height: 18px;
+            align-items: center;
+        }
 
         .basket-badge {
             display: inline-flex;
@@ -225,14 +281,19 @@
             animation: badgeIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-        .basket-badge svg, .basket-badge img { width: 12px; height: 12px; object-fit: contain !important; background: transparent !important; }
+
+        .basket-badge svg, .basket-badge img {
+            width: 12px; height: 12px;
+            object-fit: contain !important;
+            background: transparent !important;
+        }
 
         @keyframes badgeIn {
             from { opacity: 0; transform: scale(0.7) translateY(5px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле */
+        /* Игровое поле: откорректированные отступы (пункт 1) */
         .game-stage {
             position: relative;
             width: 100%;
@@ -251,13 +312,13 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 350px;
-            max-height: 350px;
+            max-width: 340px;
+            max-height: 340px;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2px;
+            padding: 0 4px;
         }
 
         .boxes-grid {
@@ -292,7 +353,7 @@
             transition: transform 0.4s ease;
         }
 
-        /* Корпус коробки */
+        /* Корпус синей коробки */
         .box-body-container {
             position: absolute;
             top: 22%; left: 0; right: 0; bottom: 0;
@@ -316,35 +377,37 @@
             background: var(--red-ribbon-gradient);
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
             z-index: 3;
         }
 
         .box-ribbon-h {
             position: absolute;
             top: 40%; left: 0;
-            width: 100%; height: 18%;
+            width: 100%; height: 20%;
             background: var(--red-ribbon-h-gradient);
             border-top: 1px solid var(--neon-gold);
             border-bottom: 1px solid var(--neon-gold);
+            box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
             z-index: 3;
         }
 
-        /* 4 Логотипа спонсоров по секциям коробки */
+        /* 4 Логотипа спонсоров по 4 секциям коробки (Пункт 7) */
         .quad-logo {
             position: absolute;
-            width: 28%;
-            height: 28%;
+            width: 26%;
+            height: 26%;
             object-fit: contain !important;
             background: transparent !important;
             z-index: 4;
             pointer-events: none;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
 
-        .quad-tl { top: 7%; left: 7%; }
-        .quad-tr { top: 7%; right: 7%; }
-        .quad-bl { bottom: 7%; left: 7%; }
-        .quad-br { bottom: 7%; right: 7%; }
+        .quad-tl { top: 6%; left: 6%; }
+        .quad-tr { top: 6%; right: 6%; }
+        .quad-bl { bottom: 6%; left: 6%; }
+        .quad-br { bottom: 6%; right: 6%; }
 
         /* Крышка коробки */
         .box-lid-container {
@@ -375,28 +438,59 @@
             position: absolute;
             top: -16%; left: 50%;
             transform: translateX(-50%);
-            width: 44px; height: 36px;
+            width: 46px; height: 38px;
             z-index: 6;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
             transition: all 0.4s ease;
         }
 
-        .prize-box.opening .gift-container { animation: professionalShake 0.12s infinite alternate ease-in-out; }
-        .prize-box.opening .box-lid-container { box-shadow: 0 0 25px rgba(255, 226, 89, 1); border-color: rgba(255, 226, 89, 1); }
-
-        @keyframes professionalShake {
-            0% { transform: translate(1px, 1px) rotate(0deg) scale(1.04); }
-            50% { transform: translate(-1.5px, -1px) rotate(-2deg) scale(1.04); }
-            100% { transform: translate(1.5px, -1.5px) rotate(2deg) scale(1.04); }
+        /* Подсветка при наведении */
+        .prize-box:not(.disabled):not(.opened):not(.opening):hover .box-lid-container {
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.8), inset 0 2px 4px rgba(255,255,255,0.7);
+            border-color: rgba(255, 226, 89, 0.9);
         }
 
-        .prize-box.opened .box-lid-container { animation: lidFlyOff 1s cubic-bezier(0.25, 1, 0.50, 1) forwards; }
-        .prize-box.opened .mega-bow { animation: bowFlyOff 1s cubic-bezier(0.25, 1, 0.50, 1) forwards; }
-        .prize-box.opened .box-body-container { animation: bodyFade 0.6s ease forwards; }
+        .prize-box:not(.disabled):not(.opened):not(.opening):hover .mega-bow {
+            transform: translateX(-50%) translateY(-4px) scale(1.18);
+            filter: drop-shadow(0 8px 16px rgba(255, 26, 26, 0.9));
+        }
+
+        /* Состояние интригующей тряски предвкушения */
+        .prize-box.opening .gift-container {
+            animation: professionalShake 0.12s infinite alternate ease-in-out;
+        }
+
+        .prize-box.opening .box-lid-container {
+            box-shadow: 0 0 30px rgba(255, 226, 89, 1), inset 0 2px 4px rgba(255,255,255,0.8);
+            border-color: rgba(255, 226, 89, 1);
+        }
+
+        @keyframes professionalShake {
+            0% { transform: translate(1.5px, 1.5px) rotate(0deg) scale(1.05); }
+            20% { transform: translate(-1.5px, -1.5px) rotate(-2deg) scale(1.05); }
+            40% { transform: translate(-2px, 0px) rotate(2deg) scale(1.05); }
+            60% { transform: translate(1.5px, 2px) rotate(0deg) scale(1.05); }
+            80% { transform: translate(-1.5px, 1.5px) rotate(-2deg) scale(1.05); }
+            100% { transform: translate(1.5px, -2px) rotate(2deg) scale(1.05); }
+        }
+
+        /* Эффект полета крышки и вылета приза */
+        .prize-box.opened .box-lid-container {
+            animation: lidFlyOff 1s cubic-bezier(0.25, 1, 0.50, 1) forwards;
+        }
+
+        .prize-box.opened .mega-bow {
+            animation: bowFlyOff 1s cubic-bezier(0.25, 1, 0.50, 1) forwards;
+        }
+
+        .prize-box.opened .box-body-container {
+            animation: bodyFade 0.6s ease forwards;
+        }
 
         @keyframes lidFlyOff {
             0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            50% { transform: translateY(-70px) rotateX(60deg) rotateZ(45deg) scale(0.7); opacity: 0.8; }
             100% { transform: translateY(-160px) rotateX(120deg) rotateZ(90deg) scale(0.2); opacity: 0; }
         }
 
@@ -410,7 +504,7 @@
             100% { opacity: 0.15; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* Карточка выпавшего приза из коробки - ВЫСОКАЯ ЧЕТКОСТЬ */
+        /* Карточка выпавшего приза из коробки - ПОВЫШЕННАЯ ЧЕТКОСТЬ (Пункт 1) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -425,9 +519,11 @@
             z-index: 8;
             opacity: 0;
             transform: scale(0.2);
-            box-shadow: 0 0 25px rgba(255, 226, 89, 0.8);
+            box-shadow: 0 0 20px rgba(255, 226, 89, 0.8);
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         .prize-box.opened .box-content {
@@ -442,6 +538,7 @@
             100% { transform: translateY(-3px) scale(1.02); }
         }
 
+        /* ТРЕБОВАНИЕ 3: Прозрачные PNG без белых углов */
         .box-content img {
             width: 34px; height: 34px;
             object-fit: contain !important;
@@ -460,11 +557,13 @@
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
-            line-height: 1.05;
+            line-height: 1.1;
             text-transform: uppercase;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            width: 100%;
+            white-space: normal;
             word-wrap: break-word;
+            display: block;
+            width: 100%;
+            text-shadow: 0 1px 2px #000000, 0 0 4px #000000;
         }
 
         .box-content span b {
@@ -472,7 +571,7 @@
             display: inline-block;
             font-size: 8.5px;
             color: #2ECC71;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            text-shadow: 0 1px 2px #000000, 0 0 4px #000000;
         }
 
         /* Частицы и вспышки */
@@ -571,9 +670,23 @@
             flex-shrink: 0;
         }
 
-        .ribbon-card img { width: 32px; height: 32px; object-fit: contain !important; background: transparent !important; }
-        .ribbon-card svg { width: 32px; height: 32px; }
-        .ribbon-card span { font-size: 9px; font-weight: 700; color: var(--text-main); text-align: center; line-height: 1.1; }
+        .ribbon-card img {
+            width: 32px; height: 32px;
+            object-fit: contain !important;
+            background: transparent !important;
+        }
+
+        .ribbon-card svg {
+            width: 32px; height: 32px;
+        }
+
+        .ribbon-card span {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
+            line-height: 1.1;
+        }
 
         /* Неоновая главная кнопка */
         .btn-glow {
@@ -601,9 +714,14 @@
 
         .btn-glow svg { width: 16px; height: 16px; }
         .btn-glow:active { transform: scale(0.96); }
-        .btn-glow:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-glow:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-        /* Премиальная нижняя плашка */
+        /* Премиальная нижняя информационная плашка */
         .trust-banner {
             width: 100%;
             background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
@@ -619,9 +737,26 @@
             z-index: 12;
         }
 
-        .trust-header { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 8.5px; font-weight: 900; color: var(--neon-gold); text-transform: uppercase; letter-spacing: 1.2px; }
+        .trust-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 8.5px;
+            font-weight: 900;
+            color: var(--neon-gold);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
         .trust-header svg { width: 11px; height: 11px; color: var(--neon-gold); }
-        .trust-desc { font-size: 8.5px; color: #94a3b8; line-height: 1.3; padding: 0 2px; }
+
+        .trust-desc {
+            font-size: 8.5px;
+            color: #94a3b8;
+            line-height: 1.3;
+            padding: 0 2px;
+        }
 
         /* Модальные окна */
         .modal-overlay {
@@ -639,7 +774,10 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
 
         .modal-card {
             background: linear-gradient(160deg, #0f172a 0%, #050814 100%);
@@ -668,14 +806,49 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
-        .modal-icon-badge img { width: 38px; height: 38px; object-fit: contain !important; background: transparent !important; }
-        .modal-icon-badge svg { width: 38px; height: 38px; }
+        .modal-icon-badge img {
+            width: 38px; height: 38px;
+            object-fit: contain !important;
+            background: transparent !important;
+        }
 
-        .modal-title { font-size: 17px; font-weight: 900; color: var(--neon-gold); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .modal-desc { font-size: 12.5px; color: #94a3b8; margin-bottom: 16px; line-height: 1.4; }
+        .modal-icon-badge svg {
+            width: 38px; height: 38px;
+        }
 
-        .prize-summary-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 8px 12px; margin-bottom: 14px; }
-        .prize-summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; padding: 4px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+        .modal-title {
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--neon-gold);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-desc {
+            font-size: 12.5px;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .prize-summary-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 14px;
+        }
+
+        .prize-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
         .prize-summary-row:last-child { border-bottom: none; }
         .prize-label { color: #94a3b8; }
         .prize-val { font-weight: 800; color: #FFFFFF; }
@@ -699,7 +872,15 @@
             box-shadow: 0 6px 20px rgba(255, 167, 81, 0.3);
         }
 
-        .security-note { display: flex; items-center: center; justify-content: center; gap: 4px; font-size: 9.5px; color: #64748b; margin-top: 10px; }
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 9.5px;
+            color: #64748b;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -713,7 +894,7 @@
         </defs>
     </svg>
 
-    <!-- Фон с орбами и частицами (динамически дополняется при наличии кастомного фона) -->
+    <!-- Анимированный фон с поддержкой динамических статичных, гиф и видео фонов (Пункт 6) -->
     <div class="ambient-canvas" id="ambientCanvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -813,6 +994,9 @@
     </div>
 
     <script>
+        // ============================================================
+        // ПОЛНАЯ РАБОЧАЯ JS-ЛОГИКА (100% Сохранность всех данных)
+        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -822,13 +1006,14 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        // Инициализация кастомных параметров: Логотип шапки и Фон
+        // ТРЕБОВАНИЕ 4: Загрузка кастомного логотипа в шапку из параметров
         const customLogoUrl = urlParams.get('logo');
         if (customLogoUrl) {
             const logoBox = document.getElementById('brandLogoBox');
             logoBox.innerHTML = `<img src="${customLogoUrl}" class="custom-app-logo" alt="Logo">`;
         }
 
+        // ТРЕБОВАНИЕ 6: Загрузка кастомного фона (видео/гиф/фото) из параметров
         const customBgUrl = urlParams.get('bg');
         if (customBgUrl) {
             const ambient = document.getElementById('ambientCanvas');
@@ -839,7 +1024,7 @@
             }
         }
 
-        // Парсинг спонсорских логотипов коробок (до 6 штук)
+        // ТРЕБОВАНИЕ 7: Парсинг спонсорских логотипов коробок
         let boxLogosPool = [];
         const rawBoxLogos = urlParams.get('box_logos');
         if (rawBoxLogos) {
@@ -877,7 +1062,7 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`, // iPhone SVG
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -901,6 +1086,7 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
+        // Кастомные изображения из админ-панели
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -920,7 +1106,7 @@
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // Анимированный фон частичек
+        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -963,11 +1149,15 @@
 
         function animateParticles() {
             pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-            particles.forEach(p => { p.update(); p.draw(pCtx); });
+            particles.forEach(p => {
+                p.update();
+                p.draw(pCtx);
+            });
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
 
+        // ===== ЭФФЕКТ ИСКР ПРИ ОТКРЫТИИ =====
         function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
@@ -1003,7 +1193,9 @@
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() { tg.close(); });
+                    tg.showAlert(alertTxt, function() {
+                        tg.close();
+                    });
                 } else {
                     alert(alertTxt);
                     tg.close();
@@ -1042,6 +1234,7 @@
             }
         });
 
+        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ ПРИЗОВ =====
         function updateBasketUI() {
             const container = document.getElementById('basketItems');
             container.innerHTML = '';
@@ -1135,11 +1328,10 @@
             }
         }
 
-        // Вспомогательная функция расстановки 4 логотипов из пула
+        // ТРЕБОВАНИЕ 7: Генерация HTML для 4 рандомных логотипов спонсоров без повторов
         function get4QuadLogosHTML() {
             if (!boxLogosPool || boxLogosPool.length === 0) return '';
             const poolCopy = [...boxLogosPool];
-            // Перемешиваем
             for (let i = poolCopy.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [poolCopy[i], poolCopy[j]] = [poolCopy[j], poolCopy[i]];
@@ -1156,6 +1348,7 @@
             `;
         }
 
+        // ===== СЕТКА 3D КОРОБОК С СОХРАНЕНИЕМ СОСТОЯНИЯ =====
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
@@ -1167,7 +1360,7 @@
                 if (isOpenedBefore) {
                     box.classList.add('opened');
                     const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b>${isOpenedBefore.cashAmount} ₽</b>` : '';
+                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
                     box.onclick = () => selectBox(box, i);
@@ -1178,10 +1371,13 @@
             }
         }
 
+        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
-            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
 
             isSpinning = true;
             spinStep++;
@@ -1223,11 +1419,13 @@
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
                 
-                if (tg.HapticFeedback) { tg.HapticFeedback.notificationOccurred('success'); }
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
 
                 const contentDiv = boxElement.querySelector('.box-content');
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
-                const cashValTxt = targetSector.cashAmount ? `<br><b>${targetSector.cashAmount} ₽</b>` : '';
+                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
 
                 const rect = boxElement.getBoundingClientRect();
@@ -1249,7 +1447,9 @@
         function executeSpin() {
             if (attempts <= 0 || isSpinning) return;
 
-            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
 
             isSpinning = true;
             spinStep++;
@@ -1442,7 +1642,9 @@
                     } catch(err) {}
                 }
 
-                try { tg.sendData(JSON.stringify(sessionPrizes)); } catch(err) {}
+                try {
+                    tg.sendData(JSON.stringify(sessionPrizes));
+                } catch(err) {}
 
                 if (botUsername) {
                     try {
@@ -1453,7 +1655,9 @@
                     }
                 }
 
-                try { tg.close(); } catch(err) {}
+                try {
+                    tg.close();
+                } catch(err) {}
             };
 
             modal.classList.add('active');
