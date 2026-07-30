@@ -60,6 +60,25 @@
             justify-content: space-between;
         }
 
+        /* Динамические кастомные фоны */
+        .dynamic-bg-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .dynamic-bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         /* Анимированный аэродизайн фона */
         .ambient-canvas {
             position: absolute;
@@ -145,6 +164,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            min-height: 44px;
         }
 
         .brand-logo-glow {
@@ -162,6 +182,14 @@
             animation: logoGlow 2.5s ease-in-out infinite alternate;
         }
 
+        .brand-logo-glow img {
+            max-height: 38px;
+            max-width: 210px;
+            object-fit: contain;
+            background: transparent !important;
+            mix-blend-mode: normal;
+        }
+
         @keyframes logoGlow {
             0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); transform: scale(1); }
             100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
@@ -170,16 +198,6 @@
         .brand-logo-glow svg {
             width: 22px; height: 22px;
             fill: url(#goldGrad);
-        }
-
-        /* стили для логотипа-картинки */
-        .brand-logo-glow img {
-            width: auto;
-            height: 36px;
-            object-fit: contain;
-            filter: none;
-            -webkit-text-fill-color: initial;
-            background: none;
         }
 
         .brand-subtitle {
@@ -274,8 +292,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .basket-badge svg {
+        .basket-badge svg, .basket-badge img {
             width: 12px; height: 12px;
+            object-fit: contain;
+            background: transparent !important;
         }
 
         @keyframes badgeIn {
@@ -283,7 +303,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: расширенное без выхода за границы */
+        /* Игровое поле: масштабирование под границы экрана */
         .game-stage {
             position: relative;
             width: 100%;
@@ -301,18 +321,20 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 360px;
-            max-height: 360px;
+            max-width: 320px;
+            max-height: 320px;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 4px;
+            box-sizing: border-box;
         }
 
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 6px;
             width: 100%;
             height: 100%;
             align-content: center;
@@ -366,6 +388,7 @@
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
+            z-index: 2;
         }
 
         .box-ribbon-h {
@@ -376,7 +399,33 @@
             border-top: 1px solid var(--neon-gold);
             border-bottom: 1px solid var(--neon-gold);
             box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
+            z-index: 2;
         }
+
+        /* Четыре квадранта на коробке под спонсорские логотипы */
+        .box-quadrant {
+            position: absolute;
+            width: 30%;
+            height: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .box-quadrant img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            background: transparent !important;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+        }
+
+        .q-tl { top: 8%; left: 8%; }
+        .q-tr { top: 8%; right: 8%; }
+        .q-bl { bottom: 8%; left: 8%; }
+        .q-br { bottom: 8%; right: 8%; }
 
         /* Крышка коробки */
         .box-lid-container {
@@ -470,25 +519,27 @@
 
         @keyframes bodyFade {
             0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
+            100% { opacity: 0.15; transform: scale(0.88); filter: blur(1px); }
         }
 
-        /* Карточка выпавшего приза из коробки */
+        /* Карточка выпавшего приза из коробки (Четкий текст без размытия) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 40%, rgba(255, 226, 89, 0.35) 0%, rgba(8, 14, 30, 0.98) 100%);
+            background: radial-gradient(circle at 50% 40%, rgba(255, 226, 89, 0.4) 0%, rgba(5, 10, 24, 0.99) 100%);
             border: 2px solid var(--neon-gold);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 4px;
+            padding: 6px 4px;
             z-index: 8;
             opacity: 0;
             transform: scale(0.2);
-            box-shadow: 0 0 30px rgba(255, 226, 89, 0.8);
+            box-shadow: 0 0 20px rgba(255, 226, 89, 0.6);
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .prize-box.opened .box-content {
@@ -504,32 +555,39 @@
         }
 
         .box-content img, .box-content svg {
-            width: 36px; height: 36px;
+            width: 42%;
+            height: 42%;
             object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            mix-blend-mode: normal;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
         }
 
         .box-content span {
-            font-size: 7px;
+            font-size: clamp(8px, 2.2vw, 10px);
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
-            margin-top: 2px;
-            line-height: 1.05;
+            margin-top: 3px;
+            line-height: 1.1;
             text-transform: uppercase;
             white-space: normal;
             word-wrap: break-word;
             display: block;
             width: 100%;
-            word-break: break-word;
-            overflow-wrap: anywhere;
-            hyphens: auto;
+            text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: 8px;
+            font-size: clamp(9px, 2.5vw, 11px);
+            color: #2ECC71;
+            text-shadow: 0 1.5px 3px rgba(0,0,0,0.95);
         }
 
         /* Частицы и вспышки */
@@ -631,6 +689,7 @@
         .ribbon-card img, .ribbon-card svg {
             width: 32px; height: 32px;
             object-fit: contain;
+            background: transparent !important;
         }
 
         .ribbon-card span {
@@ -762,6 +821,7 @@
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
             object-fit: contain;
+            background: transparent !important;
         }
 
         .modal-title {
@@ -829,37 +889,6 @@
             color: #64748b;
             margin-top: 10px;
         }
-
-        /* стили для кастомного фона */
-        .custom-bg {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            object-fit: cover;
-            pointer-events: none;
-        }
-
-        /* стили для логотипов на коробках */
-        .box-logo {
-            position: absolute;
-            width: 22%;
-            height: 22%;
-            object-fit: contain;
-            z-index: 3;
-            pointer-events: none;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
-        }
-
-        .box-logo.top-left { top: 23%; left: 6%; }
-        .box-logo.top-right { top: 23%; right: 6%; }
-        .box-logo.bottom-left { bottom: 10%; left: 6%; }
-        .box-logo.bottom-right { bottom: 10%; right: 6%; }
-
-        .prize-box.opened .box-logo {
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
     </style>
 </head>
 <body>
@@ -881,17 +910,18 @@
     </div>
     <canvas id="particlesCanvas"></canvas>
 
-    <!-- Кастомный фон (скрыт по умолчанию) -->
-    <video class="custom-bg" id="customBgVideo" muted loop playsinline style="display:none;"></video>
-    <img class="custom-bg" id="customBgImage" style="display:none;" alt="">
-
     <div class="app-container">
         <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container" id="brandLogoContainer">
-                <!-- будет заполнено динамически -->
+            <div class="brand-logo-container">
+                <div class="brand-logo-glow" id="brandLogo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    </svg>
+                    КЭШ-МАГНАТ
+                </div>
+                <div class="brand-subtitle" id="brandSubtitle">VIP EXCLUSIVE CLUB</div>
             </div>
-            <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
                 <span class="attempts-count" id="attCounter">
@@ -984,11 +1014,6 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        // новые параметры из админки
-        const logoUrl = urlParams.get('logo') || '';
-        const bgUrl = urlParams.get('bg') || '';
-        const logosParam = urlParams.get('logos') || '';
-
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
@@ -1030,6 +1055,7 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
+        // Замена AirPods Pro 2 на iPhone 17 Pro Max
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1043,7 +1069,7 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
-        // Кастомные изображения из админ-панели
+        // Кастомные изображения призов без фона
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -1057,12 +1083,15 @@
             } catch(e){}
         }
 
-        // массив логотипов для коробок
-        let logosArray = [];
-        if (logosParam) {
+        // Кастомные спонсорские логотипы на коробки (до 6 штук)
+        let boxLogos = [];
+        const blParam = urlParams.get('box_logos');
+        if (blParam) {
             try {
-                logosArray = JSON.parse(logosParam);
-            } catch(e) {}
+                boxLogos = JSON.parse(blParam);
+            } catch(e) {
+                boxLogos = blParam.split(',').map(s => s.trim()).filter(Boolean);
+            }
         }
 
         let attempts = 3;
@@ -1070,37 +1099,6 @@
         let isSpinning = false;
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
-
-        // ===== КАСТОМНЫЙ ФОН =====
-        function applyCustomBackground() {
-            if (bgUrl) {
-                document.querySelector('.ambient-canvas').style.display = 'none';
-                document.getElementById('particlesCanvas').style.display = 'none';
-                if (bgUrl.endsWith('.mp4') || bgUrl.endsWith('.webm') || bgUrl.endsWith('.mov')) {
-                    const video = document.getElementById('customBgVideo');
-                    video.src = bgUrl;
-                    video.style.display = 'block';
-                    video.play().catch(e => {});
-                } else {
-                    const img = document.getElementById('customBgImage');
-                    img.src = bgUrl;
-                    img.style.display = 'block';
-                }
-            }
-        }
-
-        // ===== ЛОГОТИП БРЕНДА =====
-        function renderBrandLogo() {
-            const container = document.getElementById('brandLogoContainer');
-            if (logoUrl) {
-                container.innerHTML = `<div class="brand-logo-glow"><img src="${logoUrl}" alt="logo" style="height:40px; object-fit:contain;"></div>`;
-            } else {
-                container.innerHTML = `<div class="brand-logo-glow">
-                    <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
-                    КЭШ-МАГНАТ
-                </div>`;
-            }
-        }
 
         // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
@@ -1144,7 +1142,6 @@
         }
 
         function animateParticles() {
-            if (bgUrl) return; // не анимировать, если задан кастомный фон
             pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
             particles.forEach(p => {
                 p.update();
@@ -1173,6 +1170,13 @@
             }
         }
 
+        // Рандомизация 4 неповторяющихся логотипов спонсоров для одной коробки
+        function getRandomLogosForBox() {
+            if (boxLogos.length === 0) return [];
+            let shuffled = [...boxLogos].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 4);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
@@ -1184,25 +1188,70 @@
                 saved = null;
             }
 
+            // Нативная обработка истраченных попыток (попап)
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
-                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
-                                 "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
-                
-                if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() {
+                document.querySelector('.app-container').style.display = 'none';
+                document.body.style.background = '#02050e';
+
+                const popupParams = {
+                    title: "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН!",
+                    message: "Вы успешно использовали все доступные прокрутки! Все ваши призы надежно зарезервированы.\n\n⚡️ Чтобы моментально забрать призы, перейдите в бота и выполните 2 простых шага спонсоров прямо сейчас!",
+                    buttons: [{ id: "ok", type: "default", text: "ОТКРЫТЬ БОТА" }]
+                };
+
+                if (tg.showPopup) {
+                    tg.showPopup(popupParams, function() {
+                        try {
+                            let payload = "";
+                            if (saved && saved.sessionPrizes) {
+                                payload = btoa(unescape(encodeURIComponent(JSON.stringify(saved.sessionPrizes)))).replace(/=/g, '');
+                            }
+                            const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                            tg.openTelegramLink(deepLink);
+                        } catch(e){}
                         tg.close();
                     });
                 } else {
-                    alert(alertTxt);
+                    alert(popupParams.message);
                     tg.close();
                 }
                 return;
             }
 
-            // применить кастомный фон и логотип
-            applyCustomBackground();
-            renderBrandLogo();
+            // Кастомный фон (GIF, Видео или картинка)
+            const customBgUrl = urlParams.get('bg');
+            if (customBgUrl) {
+                const ambient = document.querySelector('.ambient-canvas');
+                if (ambient) ambient.style.display = 'none';
+                
+                const bgContainer = document.createElement('div');
+                bgContainer.className = 'dynamic-bg-container';
+                
+                const isVideo = customBgUrl.toLowerCase().endsWith('.mp4') || 
+                                customBgUrl.toLowerCase().endsWith('.webm') || 
+                                customBgUrl.toLowerCase().endsWith('.mov') ||
+                                urlParams.get('bg_type') === 'video';
+                
+                if (isVideo) {
+                    bgContainer.innerHTML = `
+                        <video class="dynamic-bg-video" autoplay loop muted playsinline>
+                            <source src="${customBgUrl}">
+                        </video>
+                    `;
+                } else {
+                    bgContainer.style.backgroundImage = `url('${customBgUrl}')`;
+                }
+                document.body.appendChild(bgContainer);
+            }
+
+            // Кастомный логотип в шапке
+            const customLogoUrl = urlParams.get('logo');
+            if (customLogoUrl) {
+                const logoEl = document.getElementById('brandLogo');
+                logoEl.innerHTML = `<img src="${customLogoUrl}">`;
+                logoEl.style.background = 'none';
+                logoEl.style.webkitTextFillColor = 'initial';
+            }
 
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
                 attempts = saved.attempts;
@@ -1329,13 +1378,7 @@
             }
         }
 
-        // ===== СЕТКА 3D КОРОБОК С ЛОГОТИПАМИ =====
-        function getRandomLogos(count = 4) {
-            if (!logosArray.length) return [];
-            const shuffled = [...logosArray].sort(() => Math.random() - 0.5);
-            return shuffled.slice(0, count);
-        }
-
+        // ===== СЕТКА 3Д КОРОБОК С ПОДДЕРЖКОЙ РАНДОМНЫХ ЛОГОТИПОВ =====
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
@@ -1347,21 +1390,35 @@
                 if (isOpenedBefore) {
                     box.classList.add('opened');
                     const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
+                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71;">${isOpenedBefore.cashAmount} ₽</b>` : '';
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
                     box.onclick = () => selectBox(box, i);
-                    let logosHtml = '';
-                    const selectedLogos = getRandomLogos(4);
-                    if (selectedLogos.length === 4) {
-                        logosHtml = `
-                            <img class="box-logo top-left" src="${selectedLogos[0]}">
-                            <img class="box-logo top-right" src="${selectedLogos[1]}">
-                            <img class="box-logo bottom-left" src="${selectedLogos[2]}">
-                            <img class="box-logo bottom-right" src="${selectedLogos[3]}">
-                        `;
-                    }
-                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div></div>${logosHtml}<div class="box-content"></div></div>`;
+                    
+                    // Рандомная привязка 4 разных спонсорских логотипов на квадранты коробки
+                    const selectedLogos = getRandomLogosForBox();
+                    const tlHtml = selectedLogos[0] ? `<div class="box-quadrant q-tl"><img src="${selectedLogos[0]}"></div>` : '';
+                    const trHtml = selectedLogos[1] ? `<div class="box-quadrant q-tr"><img src="${selectedLogos[1]}"></div>` : '';
+                    const blHtml = selectedLogos[2] ? `<div class="box-quadrant q-bl"><img src="${selectedLogos[2]}"></div>` : '';
+                    const brHtml = selectedLogos[3] ? `<div class="box-quadrant q-br"><img src="${selectedLogos[3]}"></div>` : '';
+
+                    box.innerHTML = `
+                        <div class="gift-container">
+                            <div class="box-lid-container">
+                                <div class="box-lid-ribbon"></div>
+                            </div>
+                            ${SVGS.silkBow}
+                            <div class="box-body-container">
+                                <div class="box-ribbon-v"></div>
+                                <div class="box-ribbon-h"></div>
+                                ${tlHtml}
+                                ${trHtml}
+                                ${blHtml}
+                                ${brHtml}
+                            </div>
+                            <div class="box-content"></div>
+                        </div>
+                    `;
                 }
                 grid.appendChild(box);
             }
@@ -1421,7 +1478,7 @@
 
                 const contentDiv = boxElement.querySelector('.box-content');
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
-                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
+                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71;">${targetSector.cashAmount} ₽</b>` : '';
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
 
                 const rect = boxElement.getBoundingClientRect();
@@ -1591,6 +1648,7 @@
             }
         }
 
+        // ФИНАЛЬНОЕ ОКНО РЕЗЕРВИРОВАНИЯ И ГАРАНТИРОВАННОГО ЗАПУСКА СТАРТА
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
@@ -1638,16 +1696,22 @@
                     } catch(err) {}
                 }
 
+                // Передаем данные нативной кнопкой
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
+                // Мгновенный принудительный запуск старта с зачислением
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim_" + payload;
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        try {
+                            tg.openLink(deepLink);
+                        } catch(e) {
+                            window.location.href = deepLink;
+                        }
                     }
                 }
 
