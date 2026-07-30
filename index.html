@@ -60,7 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Анимированный аэродизайн фона и поддержка видео/фото фонов */
+        /* Анимированный аэродизайн фона */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -68,14 +68,6 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
-        }
-
-        .custom-bg-element {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 0;
         }
 
         #particlesCanvas {
@@ -153,7 +145,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 38px;
         }
 
         .brand-logo-glow {
@@ -189,15 +180,6 @@
             text-transform: uppercase;
             margin-top: 1px;
             text-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
-        }
-
-        /* Кастомный логотип в шапке */
-        .custom-app-logo {
-            max-height: 38px;
-            max-width: 80%;
-            object-fit: contain !important;
-            background: transparent !important;
-            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.6));
         }
 
         .attempts-pill {
@@ -282,10 +264,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .basket-badge svg, .basket-badge img {
+        .basket-badge svg {
             width: 12px; height: 12px;
-            object-fit: contain !important;
-            background: transparent !important;
         }
 
         @keyframes badgeIn {
@@ -293,7 +273,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: откорректированные отступы (пункт 1) */
+        /* Игровое поле: расширенное без выхода за границы */
         .game-stage {
             position: relative;
             width: 100%;
@@ -305,26 +285,24 @@
             margin: 2px 0;
             overflow: hidden;
             z-index: 10;
-            padding: 0 4px;
         }
 
         .boxes-wrapper {
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 340px;
-            max-height: 340px;
+            max-width: 360px;
+            max-height: 360px;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 4px;
         }
 
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 8px;
             width: 100%;
             height: 100%;
             align-content: center;
@@ -342,7 +320,7 @@
 
         .prize-box:not(.disabled):not(.opened):not(.opening):hover,
         .prize-box:not(.disabled):not(.opened):not(.opening):active {
-            transform: scale(1.06) translateY(-3px);
+            transform: scale(1.08) translateY(-4px);
         }
 
         .gift-container {
@@ -358,11 +336,11 @@
             position: absolute;
             top: 22%; left: 0; right: 0; bottom: 0;
             background: var(--blue-box-gradient);
-            border-radius: 0 0 8px 8px;
+            border-radius: 0 0 10px 10px;
             border: 1px solid rgba(0, 210, 255, 0.3);
             box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.25), 
                         inset 0 -6px 12px rgba(0, 0, 0, 0.8),
-                        0 6px 14px rgba(0, 0, 0, 0.6);
+                        0 8px 18px rgba(0, 0, 0, 0.6);
             z-index: 2;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -373,12 +351,11 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 18%; height: 100%;
+            width: 20%; height: 100%;
             background: var(--red-ribbon-gradient);
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
-            z-index: 3;
         }
 
         .box-ribbon-h {
@@ -389,36 +366,18 @@
             border-top: 1px solid var(--neon-gold);
             border-bottom: 1px solid var(--neon-gold);
             box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
-            z-index: 3;
         }
-
-        /* 4 Логотипа спонсоров по 4 секциям коробки (Пункт 7) */
-        .quad-logo {
-            position: absolute;
-            width: 26%;
-            height: 26%;
-            object-fit: contain !important;
-            background: transparent !important;
-            z-index: 4;
-            pointer-events: none;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-        }
-
-        .quad-tl { top: 6%; left: 6%; }
-        .quad-tr { top: 6%; right: 6%; }
-        .quad-bl { bottom: 6%; left: 6%; }
-        .quad-br { bottom: 6%; right: 6%; }
 
         /* Крышка коробки */
         .box-lid-container {
             position: absolute;
-            top: 0; left: -2px; right: -2px;
+            top: 0; left: -3px; right: -3px;
             height: 26%;
             background: var(--blue-box-lid);
-            border-radius: 6px 6px 4px 4px;
-            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 210, 255, 0.5);
-            z-index: 5;
+            border-radius: 7px 7px 4px 4px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.5);
+            border: 1.2px solid rgba(0, 210, 255, 0.5);
+            z-index: 4;
             transform-origin: bottom center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -427,7 +386,7 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 18%; height: 100%;
+            width: 20%; height: 100%;
             background: var(--red-ribbon-gradient);
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
@@ -438,8 +397,8 @@
             position: absolute;
             top: -16%; left: 50%;
             transform: translateX(-50%);
-            width: 46px; height: 38px;
-            z-index: 6;
+            width: 50px; height: 40px;
+            z-index: 5;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
             transition: all 0.4s ease;
@@ -501,77 +460,63 @@
 
         @keyframes bodyFade {
             0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.15; transform: scale(0.88); filter: blur(1.5px); }
+            100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* Карточка выпавшего приза из коробки - ПОВЫШЕННАЯ ЧЕТКОСТЬ (Пункт 1) */
+        /* Карточка выпавшего приза из коробки */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 40%, rgba(255, 226, 89, 0.35) 0%, rgba(8, 14, 30, 0.98) 100%);
             border: 2px solid var(--neon-gold);
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 3px;
+            padding: 4px;
             z-index: 8;
             opacity: 0;
             transform: scale(0.2);
-            box-shadow: 0 0 20px rgba(255, 226, 89, 0.8);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
+            box-shadow: 0 0 30px rgba(255, 226, 89, 0.8);
         }
 
         .prize-box.opened .box-content {
             opacity: 1;
             transform: scale(1);
             animation: prizePopAndFloat 2.8s infinite alternate ease-in-out;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes prizePopAndFloat {
             0% { transform: translateY(0px) scale(1); }
-            100% { transform: translateY(-3px) scale(1.02); }
+            100% { transform: translateY(-4px) scale(1.03); }
         }
 
-        /* ТРЕБОВАНИЕ 3: Прозрачные PNG без белых углов */
-        .box-content img {
-            width: 34px; height: 34px;
-            object-fit: contain !important;
-            background: transparent !important;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
-        }
-
-        .box-content svg {
-            width: 32px; height: 32px;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
+        .box-content img, .box-content svg {
+            width: 36px; height: 36px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
         }
 
         .box-content span {
-            font-size: 7.5px;
-            font-weight: 800;
+            font-size: 7px;
+            font-weight: 900;
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
-            line-height: 1.1;
+            line-height: 1.05;
             text-transform: uppercase;
             white-space: normal;
             word-wrap: break-word;
             display: block;
             width: 100%;
-            text-shadow: 0 1px 2px #000000, 0 0 4px #000000;
         }
 
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: 8.5px;
-            color: #2ECC71;
-            text-shadow: 0 1px 2px #000000, 0 0 4px #000000;
+            font-size: 8px;
         }
 
         /* Частицы и вспышки */
@@ -670,14 +615,9 @@
             flex-shrink: 0;
         }
 
-        .ribbon-card img {
+        .ribbon-card img, .ribbon-card svg {
             width: 32px; height: 32px;
-            object-fit: contain !important;
-            background: transparent !important;
-        }
-
-        .ribbon-card svg {
-            width: 32px; height: 32px;
+            object-fit: contain;
         }
 
         .ribbon-card span {
@@ -806,14 +746,9 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
-        .modal-icon-badge img {
+        .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
-            object-fit: contain !important;
-            background: transparent !important;
-        }
-
-        .modal-icon-badge svg {
-            width: 38px; height: 38px;
+            object-fit: contain;
         }
 
         .modal-title {
@@ -894,8 +829,8 @@
         </defs>
     </svg>
 
-    <!-- Анимированный фон с поддержкой динамических статичных, гиф и видео фонов (Пункт 6) -->
-    <div class="ambient-canvas" id="ambientCanvas">
+    <!-- Динамический анимированный фон с орбами и частями -->
+    <div class="ambient-canvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
@@ -905,7 +840,7 @@
     <div class="app-container">
         <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container" id="brandLogoBox">
+            <div class="brand-logo-container">
                 <div class="brand-logo-glow">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
@@ -1006,31 +941,6 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        // ТРЕБОВАНИЕ 4: Загрузка кастомного логотипа в шапку из параметров
-        const customLogoUrl = urlParams.get('logo');
-        if (customLogoUrl) {
-            const logoBox = document.getElementById('brandLogoBox');
-            logoBox.innerHTML = `<img src="${customLogoUrl}" class="custom-app-logo" alt="Logo">`;
-        }
-
-        // ТРЕБОВАНИЕ 6: Загрузка кастомного фона (видео/гиф/фото) из параметров
-        const customBgUrl = urlParams.get('bg');
-        if (customBgUrl) {
-            const ambient = document.getElementById('ambientCanvas');
-            if (customBgUrl.endsWith('.mp4') || customBgUrl.endsWith('.webm')) {
-                ambient.innerHTML = `<video src="${customBgUrl}" class="custom-bg-element" autoplay loop muted playsinline></video>`;
-            } else {
-                ambient.innerHTML = `<img src="${customBgUrl}" class="custom-bg-element" alt="Background">`;
-            }
-        }
-
-        // ТРЕБОВАНИЕ 7: Парсинг спонсорских логотипов коробок
-        let boxLogosPool = [];
-        const rawBoxLogos = urlParams.get('box_logos');
-        if (rawBoxLogos) {
-            try { boxLogosPool = JSON.parse(rawBoxLogos); } catch(e){}
-        }
-
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
@@ -1062,7 +972,7 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -1072,10 +982,9 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        // ТРЕБОВАНИЕ 2: Замена AirPods Pro 2 на iPhone 17 Pro Max
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'headphones', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1328,26 +1237,6 @@
             }
         }
 
-        // ТРЕБОВАНИЕ 7: Генерация HTML для 4 рандомных логотипов спонсоров без повторов
-        function get4QuadLogosHTML() {
-            if (!boxLogosPool || boxLogosPool.length === 0) return '';
-            const poolCopy = [...boxLogosPool];
-            for (let i = poolCopy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [poolCopy[i], poolCopy[j]] = [poolCopy[j], poolCopy[i]];
-            }
-            const selected = poolCopy.slice(0, 4);
-            while (selected.length < 4) {
-                selected.push(boxLogosPool[Math.floor(Math.random() * boxLogosPool.length)]);
-            }
-            return `
-                <img src="${selected[0]}" class="quad-logo quad-tl" alt="">
-                <img src="${selected[1]}" class="quad-logo quad-tr" alt="">
-                <img src="${selected[2]}" class="quad-logo quad-bl" alt="">
-                <img src="${selected[3]}" class="quad-logo quad-br" alt="">
-            `;
-        }
-
         // ===== СЕТКА 3D КОРОБОК С СОХРАНЕНИЕМ СОСТОЯНИЯ =====
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
@@ -1364,8 +1253,7 @@
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
                     box.onclick = () => selectBox(box, i);
-                    const quadLogosHTML = get4QuadLogosHTML();
-                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container">${quadLogosHTML}<div class="box-ribbon-v"></div><div class="box-ribbon-h"></div></div><div class="box-content"></div></div>`;
+                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div></div><div class="box-content"></div></div>`;
                 }
                 grid.appendChild(box);
             }
