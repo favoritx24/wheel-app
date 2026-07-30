@@ -42,6 +42,14 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* Гарантия прозрачности и адаптивности PNG картинок */
+        img {
+            background-color: transparent !important;
+            border: none !important;
+            outline: none !important;
+            -webkit-user-drag: none;
+        }
+
         html, body {
             width: 100%;
             height: 100vh;
@@ -264,8 +272,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .basket-badge svg {
-            width: 12px; height: 12px;
+        .basket-badge svg, .basket-badge img {
+            width: 13px; height: 13px;
+            object-fit: contain;
+            background: transparent !important;
         }
 
         @keyframes badgeIn {
@@ -466,7 +476,7 @@
             100% { opacity: 0.15; transform: scale(0.85); filter: blur(1px); }
         }
 
-        /* Карточка выпавшего приза из коробки (Улучшен контраст и ЧЕТКОСТЬ) */
+        /* Карточка выпавшего приза из коробки (Улучшен контраст и ЧЕТКОСТЬ + PNG Без Фона) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -499,9 +509,14 @@
         }
 
         .box-content img, .box-content svg {
-            width: 30px; height: 30px;
+            width: 32px; height: 32px;
+            max-width: 80%;
+            max-height: 48%;
             object-fit: contain;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.9));
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
             flex-shrink: 0;
         }
 
@@ -626,8 +641,13 @@
         }
 
         .ribbon-card img, .ribbon-card svg {
-            width: 32px; height: 32px;
+            width: 34px; height: 34px;
+            max-width: 80%;
+            max-height: 50%;
             object-fit: contain;
+            background: transparent !important;
+            border: none !important;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.7));
         }
 
         .ribbon-card span {
@@ -757,8 +777,13 @@
         }
 
         .modal-icon-badge svg, .modal-icon-badge img {
-            width: 38px; height: 38px;
+            width: 44px; height: 44px;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
+            background: transparent !important;
+            border: none !important;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
         }
 
         .modal-title {
@@ -1171,8 +1196,11 @@
                 sessionPrizes.items.forEach(it => {
                     const badge = document.createElement('div');
                     badge.className = 'basket-badge';
+                    const matchingSec = SECTORS.find(s => s.name === it);
                     let iconHtml = SVGS.headphones;
-                    if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
+                    if (matchingSec && matchingSec.img) {
+                        iconHtml = `<img src="${matchingSec.img}" alt="">`;
+                    } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
                     else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
@@ -1240,7 +1268,7 @@
                 SECTORS.forEach(sec => {
                     const cell = document.createElement('div');
                     cell.className = 'ribbon-card';
-                    const iconContent = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
+                    const iconContent = sec.img ? `<img src="${sec.img}" alt="">` : SVGS[sec.svgKey];
                     cell.innerHTML = `${iconContent}<span>${sec.name}</span>`;
                     track.appendChild(cell);
                 });
@@ -1258,7 +1286,7 @@
                 const isOpenedBefore = openedBoxesData[i];
                 if (isOpenedBefore) {
                     box.classList.add('opened');
-                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
+                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}" alt="">` : SVGS[isOpenedBefore.svgKey];
                     const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
@@ -1322,7 +1350,7 @@
                 }
 
                 const contentDiv = boxElement.querySelector('.box-content');
-                const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
+                const iconContent = targetSector.img ? `<img src="${targetSector.img}" alt="">` : SVGS[targetSector.svgKey];
                 const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
                 contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
 
@@ -1440,7 +1468,7 @@
             const body = document.getElementById('modalBody');
             const btn = document.getElementById('modalBtn');
 
-            iconBox.innerHTML = prize.img ? `<img src="${prize.img}">` : SVGS[prize.svgKey];
+            iconBox.innerHTML = prize.img ? `<img src="${prize.img}" alt="">` : SVGS[prize.svgKey];
 
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
