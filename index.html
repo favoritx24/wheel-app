@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
-           - Трехмерные синие коробки с красными бантами и логотипами
+           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
+           - Трехмерные синие коробки с шелковыми красными бантами
            - Полное отсутствие скролла (100dvh, flex scaling)
            - Плавные физичные анимации, неоновые свечения и эффекты
            ============================================================ */
@@ -60,17 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Кастомный медиа-фон (видео / гиф / картинка) */
-        .custom-bg-media {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Анимированный аэродизайн фона по умолчанию */
+        /* Анимированный аэродизайн фона и поддержка кастомного медиа фона */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -78,6 +68,17 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        #customBgMedia {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            pointer-events: none;
         }
 
         #particlesCanvas {
@@ -123,7 +124,7 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* Главный контейнер приложения */
+        /* Главный контейнер приложения со строгой адаптацией под высоту */
         .app-container {
             position: relative;
             z-index: 2;
@@ -135,8 +136,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 8px;
-            padding-bottom: calc(6px + var(--safe-bottom));
+            padding: 8px 10px;
+            padding-bottom: calc(8px + var(--safe-bottom));
             gap: 4px;
             overflow: hidden;
         }
@@ -158,17 +159,16 @@
             min-height: 32px;
         }
 
-        .custom-brand-logo {
+        .custom-hdr-logo {
             max-height: 38px;
-            max-width: 240px;
+            max-width: 220px;
             object-fit: contain;
             background: transparent !important;
-            border: none !important;
-            filter: drop-shadow(0 0 12px rgba(255, 226, 89, 0.7));
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
         }
 
         .brand-logo-glow {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -188,12 +188,12 @@
         }
 
         .brand-logo-glow svg {
-            width: 20px; height: 20px;
+            width: 22px; height: 22px;
             fill: url(#goldGrad);
         }
 
         .brand-subtitle {
-            font-size: 8.5px;
+            font-size: 9px;
             font-weight: 800;
             color: var(--neon-blue);
             letter-spacing: 3px;
@@ -208,16 +208,16 @@
             gap: 6px;
             background: var(--card-glass);
             border: 1px solid var(--border-glass);
-            padding: 2px 10px;
+            padding: 3px 12px;
             border-radius: 30px;
             backdrop-filter: blur(16px);
-            margin-top: 3px;
+            margin-top: 4px;
             flex-shrink: 0;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .attempts-label {
-            font-size: 9px;
+            font-size: 9.5px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -225,7 +225,7 @@
         }
 
         .attempts-count {
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 900;
             color: var(--neon-gold);
             display: flex;
@@ -238,8 +238,8 @@
             width: 100%;
             background: rgba(6, 12, 28, 0.82);
             border: 1px solid rgba(255, 226, 89, 0.18);
-            border-radius: 10px;
-            padding: 5px 8px;
+            border-radius: 12px;
+            padding: 6px 10px;
             backdrop-filter: blur(16px);
             display: flex;
             flex-direction: column;
@@ -250,7 +250,7 @@
         }
 
         .basket-header {
-            font-size: 8px;
+            font-size: 8.5px;
             font-weight: 900;
             color: #94a3b8;
             text-transform: uppercase;
@@ -264,7 +264,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
-            min-height: 16px;
+            min-height: 18px;
             align-items: center;
         }
 
@@ -274,9 +274,9 @@
             gap: 4px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 226, 89, 0.25);
-            padding: 2px 6px;
+            padding: 2px 7px;
             border-radius: 16px;
-            font-size: 9px;
+            font-size: 9.5px;
             font-weight: 800;
             color: #ffffff;
             white-space: nowrap;
@@ -284,8 +284,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .basket-badge svg {
-            width: 11px; height: 11px;
+        .basket-badge svg, .basket-badge img {
+            width: 12px; height: 12px;
+            object-fit: contain;
+            background: transparent !important;
         }
 
         @keyframes badgeIn {
@@ -293,7 +295,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле */
+        /* Игровое поле: оптимизировано предотвращение выходов за экраны */
         .game-stage {
             position: relative;
             width: 100%;
@@ -311,7 +313,8 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 380px;
+            max-width: 340px; /* Слегка сужено для боковых коробок */
+            max-height: 340px;
             z-index: 10;
             display: flex;
             align-items: center;
@@ -321,18 +324,17 @@
 
         .boxes-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px; /* Уменьшен интервал для вместимости */
             width: 100%;
+            height: 100%;
             align-content: center;
-            justify-items: center;
         }
 
         /* 3D ПОДАРОЧНЫЕ КОРОБКИ */
         .prize-box {
             position: relative;
             width: 100%;
-            max-width: 105px;
             aspect-ratio: 1;
             perspective: 1000px;
             cursor: pointer;
@@ -355,10 +357,10 @@
         /* Корпус синей коробки */
         .box-body-container {
             position: absolute;
-            top: 20%; left: 0; right: 0; bottom: 0;
+            top: 22%; left: 0; right: 0; bottom: 0;
             background: var(--blue-box-gradient);
             border-radius: 0 0 10px 10px;
-            border: 1px solid rgba(0, 210, 255, 0.35);
+            border: 1px solid rgba(0, 210, 255, 0.3);
             box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.25), 
                         inset 0 -6px 12px rgba(0, 0, 0, 0.8),
                         0 8px 18px rgba(0, 0, 0, 0.6);
@@ -372,52 +374,61 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 18%; height: 100%;
+            width: 20%; height: 100%;
             background: var(--red-ribbon-gradient);
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
-            z-index: 2;
+            z-index: 3;
         }
 
         .box-ribbon-h {
             position: absolute;
-            top: 42%; left: 0;
-            width: 100%; height: 18%;
+            top: 40%; left: 0;
+            width: 100%; height: 20%;
             background: var(--red-ribbon-h-gradient);
             border-top: 1px solid var(--neon-gold);
             border-bottom: 1px solid var(--neon-gold);
             box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
-            z-index: 2;
+            z-index: 3;
         }
 
-        /* 4 Логотипа компаний на 4 секторах коробки */
-        .box-quad-logo {
+        /* 4 КВАДРАНТА ДЛЯ ЛОГОТИПОВ СПОНСОРОВ НА КОРОБКЕ */
+        .box-sponsor-quadrant {
             position: absolute;
-            width: 28%;
-            height: 28%;
+            width: 38%;
+            height: 38%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4;
+            pointer-events: none;
+            padding: 2px;
+        }
+
+        .quadrant-tl { top: 2%; left: 2%; }
+        .quadrant-tr { top: 2%; right: 2%; }
+        .quadrant-bl { bottom: 2%; left: 2%; }
+        .quadrant-br { bottom: 2%; right: 2%; }
+
+        .box-sponsor-quadrant img {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
             background: transparent !important;
-            pointer-events: none;
-            z-index: 3;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
         }
-
-        .box-quad-logo.top-left { top: 6%; left: 6%; }
-        .box-quad-logo.top-right { top: 6%; right: 6%; }
-        .box-quad-logo.bottom-left { bottom: 6%; left: 6%; }
-        .box-quad-logo.bottom-right { bottom: 6%; right: 6%; }
 
         /* Крышка коробки */
         .box-lid-container {
             position: absolute;
-            top: 0; left: -3px; right: -3px;
-            height: 25%;
+            top: 0; left: -2px; right: -2px;
+            height: 26%;
             background: var(--blue-box-lid);
             border-radius: 7px 7px 4px 4px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.5);
             border: 1.2px solid rgba(0, 210, 255, 0.5);
-            z-index: 4;
+            z-index: 5;
             transform-origin: bottom center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -426,7 +437,7 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 18%; height: 100%;
+            width: 20%; height: 100%;
             background: var(--red-ribbon-gradient);
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
@@ -438,7 +449,7 @@
             top: -16%; left: 50%;
             transform: translateX(-50%);
             width: 48px; height: 38px;
-            z-index: 5;
+            z-index: 6;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
             transition: all 0.4s ease;
@@ -451,11 +462,11 @@
         }
 
         .prize-box:not(.disabled):not(.opened):not(.opening):hover .mega-bow {
-            transform: translateX(-50%) translateY(-4px) scale(1.15);
+            transform: translateX(-50%) translateY(-3px) scale(1.15);
             filter: drop-shadow(0 8px 16px rgba(255, 26, 26, 0.9));
         }
 
-        /* Тряска при клике */
+        /* Состояние интригующей тряски предвкушения */
         .prize-box.opening .gift-container {
             animation: professionalShake 0.12s infinite alternate ease-in-out;
         }
@@ -466,15 +477,15 @@
         }
 
         @keyframes professionalShake {
-            0% { transform: translate(1.5px, 1.5px) rotate(0deg) scale(1.05); }
-            20% { transform: translate(-1.5px, -1.5px) rotate(-2deg) scale(1.05); }
-            40% { transform: translate(-2px, 0px) rotate(2deg) scale(1.05); }
-            60% { transform: translate(1.5px, 2px) rotate(0deg) scale(1.05); }
-            80% { transform: translate(-1.5px, 1.5px) rotate(-2deg) scale(1.05); }
-            100% { transform: translate(1.5px, -2px) rotate(2deg) scale(1.05); }
+            0% { transform: translate(1.5px, 1.5px) rotate(0deg) scale(1.04); }
+            20% { transform: translate(-1.5px, -1.5px) rotate(-2deg) scale(1.04); }
+            40% { transform: translate(-2px, 0px) rotate(2deg) scale(1.04); }
+            60% { transform: translate(1.5px, 2px) rotate(0deg) scale(1.04); }
+            80% { transform: translate(-1.5px, 1.5px) rotate(-2deg) scale(1.04); }
+            100% { transform: translate(1.5px, -2px) rotate(2deg) scale(1.04); }
         }
 
-        /* Полет крышки и банта */
+        /* Эффект полета крышки и вылета приза */
         .prize-box.opened .box-lid-container {
             animation: lidFlyOff 1s cubic-bezier(0.25, 1, 0.50, 1) forwards;
         }
@@ -500,14 +511,14 @@
 
         @keyframes bodyFade {
             0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
+            100% { opacity: 0.15; transform: scale(0.85); filter: blur(1.5px); }
         }
 
-        /* Карточка открытого приза с ЧЕТКИМ текстом */
+        /* ЧЕТКАЯ ПОДЛОЖКА И КАРТОЧКА ВЫПАВШЕГО ПРИЗА ВНУТРИ КОРОБКИ */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 40%, rgba(20, 30, 60, 0.98) 0%, rgba(5, 10, 25, 1) 100%);
+            background: radial-gradient(circle at 50% 40%, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 0.99) 100%);
             border: 2px solid var(--neon-gold);
             border-radius: 10px;
             display: flex;
@@ -515,17 +526,17 @@
             align-items: center;
             justify-content: center;
             padding: 3px;
-            z-index: 8;
+            z-index: 10;
             opacity: 0;
             transform: scale(0.2);
-            box-shadow: 0 0 25px rgba(255, 226, 89, 0.9);
+            box-shadow: 0 0 25px rgba(255, 226, 89, 0.8), inset 0 0 12px rgba(255, 226, 89, 0.3);
         }
 
         .prize-box.opened .box-content {
             opacity: 1;
             transform: scale(1);
             animation: prizePopAndFloat 2.8s infinite alternate ease-in-out;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes prizePopAndFloat {
@@ -534,15 +545,16 @@
         }
 
         .box-content img, .box-content svg {
-            width: 38px; height: 38px;
-            object-fit: contain !important;
+            width: 34px; height: 34px;
+            object-fit: contain;
             background: transparent !important;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.9));
         }
 
+        /* МАКСИМАЛЬНО ЧЕТКИЙ И ЧИТАЕМЫЙ ТЕКСТ ПОДАРКА */
         .box-content span {
-            font-size: 8.5px;
-            font-weight: 800;
+            font-size: 8px;
+            font-weight: 900;
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
@@ -552,19 +564,21 @@
             word-wrap: break-word;
             display: block;
             width: 100%;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,1);
-            -webkit-font-smoothing: antialiased;
-            text-rendering: optimizeLegibility;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 1), 0 0 2px rgba(0,0,0,1);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 3px;
+            border-radius: 4px;
         }
 
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: 9px;
-            color: var(--neon-gold);
+            font-size: 8.5px;
+            color: #2ECC71;
+            text-shadow: 0 1px 3px rgba(0,0,0,1);
         }
 
-        /* Искры */
+        /* Частицы и вспышки */
         .spark {
             position: absolute;
             width: 4px; height: 4px;
@@ -617,7 +631,7 @@
         .ribbon-wrapper {
             display: none;
             position: relative;
-            width: 100%; height: 110px;
+            width: 100%; height: 120px;
             background: var(--card-glass);
             border: 2px solid var(--border-glass);
             border-radius: 20px;
@@ -647,7 +661,7 @@
         }
 
         .ribbon-card {
-            width: 90px; height: 90px;
+            width: 96px; height: 96px;
             margin: 0 5px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border-subtle);
@@ -662,12 +676,12 @@
 
         .ribbon-card img, .ribbon-card svg {
             width: 32px; height: 32px;
-            object-fit: contain !important;
+            object-fit: contain;
             background: transparent !important;
         }
 
         .ribbon-card span {
-            font-size: 8.5px;
+            font-size: 9px;
             font-weight: 700;
             color: var(--text-main);
             text-align: center;
@@ -677,13 +691,13 @@
         /* Неоновая главная кнопка */
         .btn-glow {
             width: 100%;
-            padding: 13px 0;
+            padding: 14px 0;
             border: none;
             border-radius: 50px;
             background: var(--gold-gradient);
             color: #02040a;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 900;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -707,18 +721,18 @@
             box-shadow: none;
         }
 
-        /* Нижняя информационная плашка */
+        /* Премиальная нижняя информационная плашка */
         .trust-banner {
             width: 100%;
             background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
             border: 1px solid rgba(255, 226, 89, 0.2);
-            border-radius: 12px;
-            padding: 7px 9px;
+            border-radius: 14px;
+            padding: 8px 10px;
             text-align: center;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 4px;
             flex-shrink: 0;
             z-index: 12;
         }
@@ -738,9 +752,9 @@
         .trust-header svg { width: 11px; height: 11px; color: var(--neon-gold); }
 
         .trust-desc {
-            font-size: 8px;
+            font-size: 8.5px;
             color: #94a3b8;
-            line-height: 1.25;
+            line-height: 1.3;
             padding: 0 2px;
         }
 
@@ -794,7 +808,7 @@
 
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
-            object-fit: contain !important;
+            object-fit: contain;
             background: transparent !important;
         }
 
@@ -808,9 +822,9 @@
         }
 
         .modal-desc {
-            font-size: 12px;
+            font-size: 12.5px;
             color: #94a3b8;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             line-height: 1.4;
         }
 
@@ -826,7 +840,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            font-size: 11.5px;
             padding: 4px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
@@ -859,7 +873,7 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            font-size: 9px;
+            font-size: 9.5px;
             color: #64748b;
             margin-top: 10px;
         }
@@ -876,7 +890,7 @@
         </defs>
     </svg>
 
-    <!-- Динамический анимированный фон с орбами -->
+    <!-- Динамический анимированный фон с орбами и частями / Кастомный фон -->
     <div class="ambient-canvas" id="ambientBg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -884,18 +898,18 @@
     </div>
     <canvas id="particlesCanvas"></canvas>
 
-    <div class="app-container">
+    <div class="app-container" id="appMainContainer">
         <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container" id="brandLogoContainer">
-                <div class="brand-logo-glow" id="brandLogoText">
+            <div class="brand-logo-container" id="headerLogoContainer">
+                <div class="brand-logo-glow">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
                     КЭШ-МАГНАТ
                 </div>
-                <div class="brand-subtitle" id="brandSub">VIP EXCLUSIVE CLUB</div>
             </div>
+            <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
                 <span class="attempts-count" id="attCounter">
@@ -927,7 +941,7 @@
                         </linearGradient>
                     </defs>
                 </svg>
-                <canvas id="wheelCanvas" width="560" height="560"></canvas>
+                <canvas id="wheelCanvas" width="580" height="580"></canvas>
             </div>
 
             <div class="ribbon-wrapper" id="ribbonBox">
@@ -988,45 +1002,6 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        // ПРИМЕНЕНИЕ КАСТОМНОГО ЛОГОТИПА ИЗ АДМИНКИ
-        const customLogoParam = urlParams.get('logo');
-        if (customLogoParam) {
-            const logoContainer = document.getElementById('brandLogoContainer');
-            if (logoContainer) {
-                logoContainer.innerHTML = `<img src="${decodeURIComponent(customLogoParam)}" class="custom-brand-logo" alt="Logo">`;
-            }
-        }
-
-        // ПРИМЕНЕНИЕ КАСТОМНОГО ФОНА (ФОТО, GIF, ВИДЕО) ИЗ АДМИНКИ
-        const customBgParam = urlParams.get('bg');
-        if (customBgParam) {
-            const bgUrl = decodeURIComponent(customBgParam);
-            const ambientBg = document.getElementById('ambientBg');
-            if (bgUrl.match(/\.(mp4|webm|mov)$/i)) {
-                const video = document.createElement('video');
-                video.className = 'custom-bg-media';
-                video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
-                video.src = bgUrl;
-                document.body.insertBefore(video, document.body.firstChild);
-                if (ambientBg) ambientBg.style.display = 'none';
-            } else {
-                const img = document.createElement('img');
-                img.className = 'custom-bg-media';
-                img.src = bgUrl;
-                document.body.insertBefore(img, document.body.firstChild);
-                if (ambientBg) ambientBg.style.display = 'none';
-            }
-        }
-
-        // ПАРСИНГ ЛОГОТИПОВ ДЛЯ КОРОБОК
-        let parsedBoxLogos = [];
-        const boxLogosParam = urlParams.get('box_logos');
-        if (boxLogosParam) {
-            try {
-                parsedBoxLogos = JSON.parse(decodeURIComponent(boxLogosParam));
-            } catch(e){}
-        }
-
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
@@ -1054,11 +1029,11 @@
         }
 
         const rawGameMode = urlParams.get('mode');
-        const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'boxes';
+        const gameMode = (rawGameMode === 'ribbon' || rawGameMode === 'boxes') ? rawGameMode : 'wheel';
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -1085,7 +1060,7 @@
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
-                const customImgs = JSON.parse(decodeURIComponent(imgsParam));
+                const customImgs = JSON.parse(imgsParam);
                 for (let key in customImgs) {
                     const idx = parseInt(key);
                     if (SECTORS[idx]) {
@@ -1095,13 +1070,22 @@
             } catch(e){}
         }
 
+        // Загрузка кастомных логотипов спонсоров для коробок из админки
+        let sponsorLogosList = [];
+        const boxLogosParam = urlParams.get('boxLogos');
+        if (boxLogosParam) {
+            try {
+                sponsorLogosList = JSON.parse(boxLogosParam).filter(url => url && url.trim() !== '');
+            } catch(e){}
+        }
+
         let attempts = 3;
         let spinStep = 0;
         let isSpinning = false;
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА
+        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1138,7 +1122,7 @@
             }
         }
 
-        for (let i = 0; i < 70; i++) {
+        for (let i = 0; i < 75; i++) {
             particles.push(new Particle());
         }
 
@@ -1152,14 +1136,14 @@
         }
         animateParticles();
 
-        // ЭФФЕКТ ИСКР ПРИ ОТКРЫТИИ
-        function spawnSparks(x, y, count = 18) {
+        // ===== ЭФФЕКТ ИСКР ПРИ ОТКРЫТИИ =====
+        function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
                 const spark = document.createElement('div');
                 spark.className = 'spark';
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 35 + Math.random() * 50;
+                const distance = 35 + Math.random() * 45;
                 spark.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
                 spark.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
                 spark.style.left = x + 'px';
@@ -1168,21 +1152,6 @@
                 spark.style.height = spark.style.width;
                 container.appendChild(spark);
                 spark.addEventListener('animationend', () => spark.remove());
-            }
-        }
-
-        function handleExhaustedClose() {
-            const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
-                             "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
-                             "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в боте прямо сейчас! 🎁";
-            
-            if (tg.showAlert) {
-                tg.showAlert(alertTxt, function() {
-                    tg.close();
-                });
-            } else {
-                alert(alertTxt);
-                tg.close();
             }
         }
 
@@ -1197,9 +1166,40 @@
                 saved = null;
             }
 
+            // ПРОВЕРКА ПОПЫТОК: Если попыток нет, выводим ПОПАП и НЕ ОТКРЫВАЕМ приложение
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                handleExhaustedClose();
+                document.getElementById('appMainContainer').style.display = 'none';
+                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
+                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
+                                 "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
+                
+                if (tg.showAlert) {
+                    tg.showAlert(alertTxt, function() {
+                        try { tg.close(); } catch(e){}
+                    });
+                } else {
+                    alert(alertTxt);
+                    try { tg.close(); } catch(e){}
+                }
                 return;
+            }
+
+            // КАСТОМНЫЙ ЛОГОТИП ШАПКИ
+            const hdrLogoParam = urlParams.get('hdrLogo');
+            if (hdrLogoParam) {
+                const logoBox = document.getElementById('headerLogoContainer');
+                logoBox.innerHTML = `<img src="${hdrLogoParam}" class="custom-hdr-logo" alt="Logo">`;
+            }
+
+            // КАСТОМНЫЙ ФОН МИНИ АПП (Картинка, GIF, Видео)
+            const bgMediaParam = urlParams.get('bgMedia');
+            if (bgMediaParam) {
+                const bgBox = document.getElementById('ambientBg');
+                if (bgMediaParam.match(/\.(mp4|webm|ogg)$/i)) {
+                    bgBox.innerHTML = `<video id="customBgMedia" autoplay loop muted playsinline src="${bgMediaParam}"></video>`;
+                } else {
+                    bgBox.style.backgroundImage = `url('${bgMediaParam}')`;
+                }
             }
 
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
@@ -1221,366 +1221,454 @@
                 document.getElementById('wheelBox').style.display = 'none';
                 document.getElementById('boxesBox').style.display = 'none';
                 document.getElementById('ribbonBox').style.display = 'block';
-                initRibbon();
+                buildRibbonTrack();
             } else if (gameMode === 'boxes') {
                 document.getElementById('wheelBox').style.display = 'none';
                 document.getElementById('ribbonBox').style.display = 'none';
                 document.getElementById('boxesBox').style.display = 'flex';
-                initBoxes();
+                document.getElementById('spinBtn').style.display = 'none';
+                buildBoxesGrid();
             } else {
-                document.getElementById('ribbonBox').style.display = 'none';
-                document.getElementById('boxesBox').style.display = 'none';
-                document.getElementById('wheelBox').style.display = 'flex';
-                drawWheel();
+                renderWheel();
             }
         });
 
-        // ================= ИНИЦИАЛИЗАЦИЯ БОКСОВ (3D ПОДАРОЧНЫХ КОРОБОК) =================
-        function initBoxes() {
-            const grid = document.getElementById('boxesGrid');
-            grid.innerHTML = '';
-            
-            // Генерация 9 коробок
-            for (let i = 0; i < 9; i++) {
-                const box = document.createElement('div');
-                box.className = 'prize-box';
-                box.dataset.index = i;
-
-                // Случайный выбор 4 не повторяющихся логотипов из массива box_logos (если загружены)
-                let logosHTML = '';
-                if (parsedBoxLogos && parsedBoxLogos.length > 0) {
-                    const shuffled = [...parsedBoxLogos].sort(() => 0.5 - Math.random());
-                    const selected = shuffled.slice(0, 4);
-                    const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-                    selected.forEach((logoUrl, idx) => {
-                        if (positions[idx] && logoUrl) {
-                            logosHTML += `<img src="${logoUrl}" class="box-quad-logo ${positions[idx]}" alt="Logo">`;
-                        }
-                    });
-                }
-
-                box.innerHTML = `
-                    <div class="gift-container">
-                        <div class="box-lid-container">
-                            <div class="box-lid-ribbon"></div>
-                        </div>
-                        ${SVGS.silkBow}
-                        <div class="box-body-container">
-                            <div class="box-ribbon-v"></div>
-                            <div class="box-ribbon-h"></div>
-                            ${logosHTML}
-                        </div>
-                        <div class="box-content" id="boxContent_${i}"></div>
-                    </div>
-                `;
-
-                if (openedBoxesData[i]) {
-                    box.classList.add('opened', 'disabled');
-                    const contentDiv = box.querySelector(`#boxContent_${i}`);
-                    const sec = openedBoxesData[i];
-                    contentDiv.innerHTML = getSectorDisplayContent(sec);
-                } else {
-                    box.addEventListener('click', () => onBoxClick(i));
-                }
-
-                grid.appendChild(box);
+        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ ПРИЗОВ =====
+        function updateBasketUI() {
+            const container = document.getElementById('basketItems');
+            container.innerHTML = '';
+            let totalCount = 0;
+            if (sessionPrizes.money && sessionPrizes.money.length > 0) {
+                sessionPrizes.money.forEach(m => {
+                    const badge = document.createElement('div');
+                    badge.className = 'basket-badge';
+                    badge.innerHTML = `${SVGS.cash} <span>${m} ₽</span>`;
+                    container.appendChild(badge);
+                    totalCount++;
+                });
             }
+            if (sessionPrizes.items && sessionPrizes.items.length > 0) {
+                sessionPrizes.items.forEach(it => {
+                    const badge = document.createElement('div');
+                    badge.className = 'basket-badge';
+                    let iconHtml = SVGS.iphone;
+                    if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
+                    else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
+                    badge.innerHTML = `${iconHtml} <span>${it}</span>`;
+                    container.appendChild(badge);
+                    totalCount++;
+                });
+            }
+            if (totalCount === 0) {
+                container.innerHTML = `<span style="font-size:9.5px; color: #64748b;">Ничего не выиграно. Откройте праздничную коробку!</span>`;
+            }
+            document.getElementById('basketCount').innerText = totalCount;
         }
 
-        function getSectorDisplayContent(sec) {
-            let imgOrSvg = sec.img ? `<img src="${sec.img}" alt="Prize">` : SVGS[sec.svgKey];
-            if (sec.type === 'money') {
-                return `${imgOrSvg}<span>ВЫИГРЫШ<br><b>${sec.amount || 5000} ₽</b></span>`;
-            } else if (sec.type === 'loss') {
-                return `${imgOrSvg}<span><b>ПРОИГРЫШ</b></span>`;
-            } else {
-                return `${imgOrSvg}<span><b>${sec.name}</b></span>`;
-            }
+        function generateCashAmount() {
+            const steps = Math.floor(Math.random() * 101);
+            return 5000 + (steps * 100);
         }
 
-        function onBoxClick(index) {
-            if (isSpinning || attempts <= 0) return;
-            const box = document.querySelector(`.prize-box[data-index="${index}"]`);
-            if (!box || box.classList.contains('opened') || box.classList.contains('opening')) return;
-
-            isSpinning = true;
-            document.getElementById('spinBtn').disabled = true;
-
-            const targetSector = getWinningSectorForStep(spinStep);
-            
-            // Если выигрыш денег, проставляем сумму в объекте сектора
-            let targetObj = { ...targetSector };
-            if (targetObj.type === 'money') {
-                targetObj.amount = (spinStep === 0) ? 5000 : (spinStep === 1 ? 15000 : 25000);
-            }
-
-            box.classList.add('opening');
-
-            setTimeout(() => {
-                const rect = box.getBoundingClientRect();
-                spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 22);
-
-                box.classList.remove('opening');
-                box.classList.add('opened', 'disabled');
-
-                const contentDiv = box.querySelector(`#boxContent_${index}`);
-                contentDiv.innerHTML = getSectorDisplayContent(targetObj);
-
-                openedBoxesData[index] = targetObj;
-
-                setTimeout(() => {
-                    handlePrizeWin(targetObj);
-                    isSpinning = false;
-                }, 700);
-
-            }, 800);
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTickSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(840, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
         }
 
-        // ================= ИНИЦИАЛИЗАЦИЯ КОЛЕСА И ЛЕНТЫ =================
-        function drawWheel() {
+        function renderWheel() {
             const canvas = document.getElementById('wheelCanvas');
-            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const num = SECTORS.length;
-            const arc = (Math.PI * 2) / num;
-            const cx = 280, cy = 280, r = 270;
-
-            ctx.clearRect(0, 0, 560, 560);
-
+            const arc = (2 * Math.PI) / num;
+            ctx.clearRect(0, 0, 580, 580);
             SECTORS.forEach((sec, i) => {
                 const angle = i * arc;
                 ctx.beginPath();
                 ctx.fillStyle = sec.color;
-                ctx.moveTo(cx, cy);
-                ctx.arc(cx, cy, r, angle, angle + arc);
-                ctx.lineTo(cx, cy);
+                ctx.moveTo(290, 290);
+                ctx.arc(290, 290, 280, angle, angle + arc);
                 ctx.fill();
-
-                ctx.strokeStyle = 'rgba(255, 226, 89, 0.3)';
                 ctx.lineWidth = 2;
+                ctx.strokeStyle = 'rgba(255, 226, 89, 0.2)';
                 ctx.stroke();
-
                 ctx.save();
-                ctx.translate(cx, cy);
+                ctx.translate(290, 290);
                 ctx.rotate(angle + arc / 2);
-                ctx.textAlign = 'right';
-                ctx.fillStyle = '#FFFFFF';
-                ctx.font = '900 18px "Plus Jakarta Sans", sans-serif';
-                ctx.fillText(sec.name, r - 35, 6);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "700 18px 'Plus Jakarta Sans'";
+                ctx.fillText(sec.name, 255, 6);
                 ctx.restore();
             });
         }
 
-        function initRibbon() {
+        function buildRibbonTrack() {
             const track = document.getElementById('ribbonTrack');
             track.innerHTML = '';
-            for (let r = 0; r < 6; r++) {
+            for (let r = 0; r < 12; r++) {
                 SECTORS.forEach(sec => {
-                    const card = document.createElement('div');
-                    card.className = 'ribbon-card';
-                    let imgOrSvg = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
-                    card.innerHTML = `${imgOrSvg}<span>${sec.name}</span>`;
-                    track.appendChild(card);
+                    const cell = document.createElement('div');
+                    cell.className = 'ribbon-card';
+                    const iconContent = sec.img ? `<img src="${sec.img}">` : SVGS[sec.svgKey];
+                    cell.innerHTML = `${iconContent}<span>${sec.name}</span>`;
+                    track.appendChild(cell);
                 });
             }
         }
 
-        // ================= ЕДИНАЯ ЛОГИКА ВРАЩЕНИЯ И ОТКРЫТИЯ =================
-        function getWinningSectorForStep(step) {
-            if (step === 0) return SECTORS[3]; // Денежный приз (5,000 ₽)
-            if (step === 1) return SECTORS[1]; // iPhone 17 Pro Max
-            return SECTORS[7]; // Денежный приз (15,000 ₽)
+        // Хелпер рандомного распределения 4 уникальных логотипов из массива спонсоров
+        function getRandomBoxLogos() {
+            if (!sponsorLogosList || sponsorLogosList.length === 0) return [];
+            let shuffled = [...sponsorLogosList].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 4);
         }
 
-        function executeSpin() {
-            if (isSpinning || attempts <= 0) return;
+        // ===== СЕТКА 3D КОРОБОК С ПОДДЕРЖКОЙ ЛОГОТИПОВ ПО 4 КВАДРАНТАМ =====
+        function buildBoxesGrid() {
+            const grid = document.getElementById('boxesGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 16; i++) {
+                const box = document.createElement('div');
+                box.className = 'prize-box';
+                box.setAttribute('data-index', i);
+                const isOpenedBefore = openedBoxesData[i];
 
-            if (gameMode === 'boxes') {
-                // Автоматический выбор первой закрытой коробки
-                const unopened = document.querySelectorAll('.prize-box:not(.opened):not(.opening)');
-                if (unopened.length > 0) {
-                    const randomUnopened = unopened[Math.floor(Math.random() * unopened.length)];
-                    onBoxClick(parseInt(randomUnopened.dataset.index));
+                if (isOpenedBefore) {
+                    box.classList.add('opened');
+                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
+                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
+                    box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
+                } else {
+                    box.onclick = () => selectBox(box, i);
+                    
+                    // Генерируем логотипы спонсоров по 4 квадрантам
+                    const boxLogos = getRandomBoxLogos();
+                    let logosHtml = '';
+                    if (boxLogos.length > 0) {
+                        const quadClasses = ['quadrant-tl', 'quadrant-tr', 'quadrant-bl', 'quadrant-br'];
+                        boxLogos.forEach((logoUrl, qIdx) => {
+                            if (logoUrl) {
+                                logosHtml += `<div class="box-sponsor-quadrant ${quadClasses[qIdx]}"><img src="${logoUrl}" alt="Sponsor"></div>`;
+                            }
+                        });
+                    }
+
+                    box.innerHTML = `
+                        <div class="gift-container">
+                            <div class="box-lid-container"><div class="box-lid-ribbon"></div></div>
+                            ${SVGS.silkBow}
+                            <div class="box-body-container">
+                                <div class="box-ribbon-v"></div>
+                                <div class="box-ribbon-h"></div>
+                                ${logosHtml}
+                            </div>
+                            <div class="box-content"></div>
+                        </div>`;
                 }
-                return;
+                grid.appendChild(box);
+            }
+        }
+
+        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
+        function selectBox(boxElement, index) {
+            if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
+
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
             }
 
             isSpinning = true;
-            document.getElementById('spinBtn').disabled = true;
+            spinStep++;
+            attempts--;
+            document.getElementById('attNum').innerText = attempts;
 
-            const targetSector = getWinningSectorForStep(spinStep);
-            let targetObj = { ...targetSector };
-            if (targetObj.type === 'money') {
-                targetObj.amount = (spinStep === 0) ? 5000 : (spinStep === 1 ? 15000 : 25000);
+            let targetSectorId = 0;
+            let calculatedCash = 0;
+
+            if (spinStep === 1) targetSectorId = 0;
+            else if (spinStep === 2) targetSectorId = 1;
+            else if (spinStep === 3) targetSectorId = 2;
+            else if (spinStep === 4) targetSectorId = 5;
+            else if (spinStep === 5) {
+                targetSectorId = 3;
+                calculatedCash = generateCashAmount();
+            } else {
+                targetSectorId = 9;
             }
 
-            if (gameMode === 'wheel') {
-                const num = SECTORS.length;
-                const arc = (Math.PI * 2) / num;
-                const targetIdx = SECTORS.findIndex(s => s.id === targetSector.id);
-                const rot = (360 * 5) - (targetIdx * (360 / num)) - ((360 / num) / 2) - 90;
+            const targetSector = { ...SECTORS[targetSectorId] };
+            if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
+            openedBoxesData[index] = targetSector;
 
-                const canvas = document.getElementById('wheelCanvas');
-                canvas.style.transform = `rotate(${rot}deg)`;
+            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
 
-                setTimeout(() => {
-                    handlePrizeWin(targetObj);
-                    isSpinning = false;
-                }, 4700);
-            } else if (gameMode === 'ribbon') {
-                const track = document.getElementById('ribbonTrack');
-                const cardWidth = 106;
-                const targetIdx = SECTORS.findIndex(s => s.id === targetSector.id);
-                const offset = (3 * 10 * cardWidth) + (targetIdx * cardWidth);
+            boxElement.classList.add('opening');
 
-                track.style.transform = `translateX(-${offset}px)`;
-
-                setTimeout(() => {
-                    handlePrizeWin(targetObj);
-                    isSpinning = false;
-                }, 4700);
+            let delay = 150, timerId;
+            function playSuspenseSound() {
+                playTickSound();
+                delay = Math.max(40, delay - 8);
+                if (isSpinning && boxElement.classList.contains('opening')) timerId = setTimeout(playSuspenseSound, delay);
             }
+            playSuspenseSound();
+
+            setTimeout(() => {
+                clearTimeout(timerId);
+                boxElement.classList.remove('opening');
+                boxElement.classList.add('opened');
+                
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+
+                const contentDiv = boxElement.querySelector('.box-content');
+                const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
+                const cashValTxt = targetSector.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${targetSector.cashAmount} ₽</b>` : '';
+                contentDiv.innerHTML = `${iconContent}<span>${targetSector.name}${cashValTxt}</span>`;
+
+                const rect = boxElement.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                spawnSparks(cx, cy, 22);
+                
+                confetti({
+                    particleCount: 50,
+                    spread: 55,
+                    origin: { x: (cx / window.innerWidth), y: (cy / window.innerHeight) },
+                    colors: ['#FFE259', '#FFA751', '#00d2ff']
+                });
+
+                setTimeout(() => finishSpin(targetSector), 900);
+            }, 3200);
         }
 
-        // ================= ОБРАБОТКА ВЫИГРЫША И ОБНОВЛЕНИЕ СОСТОЯНИЯ =================
-        function handlePrizeWin(sector) {
-            attempts--;
-            spinStep++;
+        function executeSpin() {
+            if (attempts <= 0 || isSpinning) return;
 
-            if (sector.type === 'money') {
-                sessionPrizes.money.push(sector.amount || 5000);
-            } else if (sector.type === 'item') {
-                sessionPrizes.items.push(sector.name);
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
             }
 
+            isSpinning = true;
+            spinStep++;
+            attempts--;
             document.getElementById('attNum').innerText = attempts;
-            updateBasketUI();
+            document.getElementById('spinBtn').disabled = true;
 
-            const isDone = attempts <= 0;
+            let targetSectorId = 0;
+            let calculatedCash = 0;
+
+            if (spinStep === 1) targetSectorId = 0;
+            else if (spinStep === 2) targetSectorId = 1;
+            else if (spinStep === 3) targetSectorId = 2;
+            else if (spinStep === 4) targetSectorId = 5;
+            else if (spinStep === 5) {
+                targetSectorId = 3;
+                calculatedCash = generateCashAmount();
+            } else {
+                targetSectorId = 9;
+            }
+
+            const targetSector = { ...SECTORS[targetSectorId] };
+            if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
             saveState({
                 attempts: attempts,
                 spinStep: spinStep,
                 sessionPrizes: sessionPrizes,
                 openedBoxesData: openedBoxesData,
-                isDone: isDone
+                isDone: attempts === 0
             });
 
-            if (window.confetti && sector.type !== 'loss') {
-                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            if (gameMode === 'wheel') {
+                runWheelAnimation(targetSectorId, targetSector);
+            } else {
+                runRibbonAnimation(targetSectorId, targetSector);
+            }
+        }
+
+        function runWheelAnimation(sectorIndex, prizeObj) {
+            const canvas = document.getElementById('wheelCanvas');
+            const numSectors = SECTORS.length;
+            const sectorAngle = 360 / numSectors;
+            const sectorCenter = (sectorIndex + 0.5) * sectorAngle;
+            const targetRotation = 3600 + (270 - sectorCenter);
+            let audioInterval = setInterval(() => playTickSound(), 110);
+            canvas.style.transform = `rotate(${targetRotation}deg)`;
+            setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
+        }
+
+        function runRibbonAnimation(sectorIndex, prizeObj) {
+            const track = document.getElementById('ribbonTrack');
+            const cellPitch = 106;
+            const containerCenter = 160;
+            const targetCellIndex = (8 * SECTORS.length) + sectorIndex;
+            const targetOffset = (targetCellIndex * cellPitch) + (96 / 2) - containerCenter;
+            let audioInterval = setInterval(() => playTickSound(), 100);
+            track.style.transform = `translateX(-${targetOffset}px)`;
+            setTimeout(() => { clearInterval(audioInterval); finishSpin(prizeObj); }, 4600);
+        }
+
+        function finishSpin(prize) {
+            isSpinning = false;
+
+            if (prize.type === 'money') {
+                sessionPrizes.money.push(prize.cashAmount);
+            } else if (prize.type === 'item') {
+                sessionPrizes.items.push(prize.name);
+            } else if (prize.type === 'bonus') {
+                attempts += 3;
+                document.getElementById('attNum').innerText = attempts;
             }
 
-            showResultModal(sector, isDone);
-        }
-
-        function updateBasketUI() {
-            const container = document.getElementById('basketItems');
-            const countSpan = document.getElementById('basketCount');
-            container.innerHTML = '';
-
-            let totalCount = 0;
-
-            sessionPrizes.money.forEach(m => {
-                totalCount++;
-                const badge = document.createElement('div');
-                badge.className = 'basket-badge';
-                badge.innerHTML = `${SVGS.cash} ${m} ₽`;
-                container.appendChild(badge);
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                openedBoxesData: openedBoxesData,
+                isDone: attempts === 0
             });
 
-            sessionPrizes.items.forEach(it => {
-                totalCount++;
-                const badge = document.createElement('div');
-                badge.className = 'basket-badge';
-                badge.innerHTML = `${SVGS.trophy} ${it}`;
-                container.appendChild(badge);
-            });
-
-            countSpan.innerText = totalCount;
+            updateBasketUI();
+            displayModal(prize);
         }
 
-        // ================= МОДАЛЬНОЕ ОКНО РЕЗУЛЬТАТА =================
-        function showResultModal(sector, isDone) {
+        function displayModal(prize) {
             const modal = document.getElementById('resultModal');
             const iconBox = document.getElementById('modalIconBox');
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             const btn = document.getElementById('modalBtn');
 
-            let imgOrSvg = sector.img ? `<img src="${sector.img}">` : SVGS[sector.svgKey];
-            iconBox.innerHTML = imgOrSvg;
+            iconBox.innerHTML = prize.img ? `<img src="${prize.img}">` : SVGS[prize.svgKey];
 
-            if (isDone) {
-                title.innerText = "🎉 ПОЗДРАВЛЯЕМ!";
-                let totalMoney = sessionPrizes.money.reduce((a, b) => a + b, 0);
-                let itemsListStr = sessionPrizes.items.length > 0 ? sessionPrizes.items.join(', ') : 'Нет';
-
-                body.innerHTML = `
-                    <div class="modal-desc">Вы успешно испробовали все попытки! Все Ваши выигрыши суммированы и зарезервированы:</div>
-                    <div class="prize-summary-box">
-                        <div class="prize-summary-row">
-                            <span class="prize-label">💵 Денежный баланс:</span>
-                            <span class="prize-val">${totalMoney} ₽</span>
-                        </div>
-                        <div class="prize-summary-row">
-                            <span class="prize-label">🎁 Ценные призы:</span>
-                            <span class="prize-val">${itemsListStr}</span>
-                        </div>
-                    </div>
-                    <div class="modal-desc" style="color: var(--neon-gold); font-weight: 700;">Нажмите кнопку ниже, чтобы зафиксировать выигрыш и перейти к выводу!</div>
-                `;
-
-                btn.innerText = "ЗАБРАТЬ ВЫИГРЫШ";
-                btn.onclick = () => finishGameAndSend();
+            if (prize.type === 'money') {
+                title.innerText = "ВЫИГРЫШ!";
+                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+            } else if (prize.type === 'item') {
+                title.innerText = "ЦЕННЫЙ ПРИЗ!";
+                body.innerHTML = `<div class="modal-desc">Вы выиграли:<br><strong style="color: #FFE259; font-size: 18px;">${prize.name}</strong></div>`;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            } else if (prize.type === 'bonus') {
+                title.innerText = "БОНУС!";
+                body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
             } else {
-                title.innerText = sector.type === 'loss' ? "НЕУДАЧА" : "ОТЛИЧНЫЙ ВЫИГРЫШ!";
-                if (sector.type === 'money') {
-                    body.innerHTML = `<div class="modal-desc">Вы выиграли <b>${sector.amount || 5000} ₽</b>! Приз добавлен в Вашу корзину.</div>`;
-                } else if (sector.type === 'item') {
-                    body.innerHTML = `<div class="modal-desc">Вы выиграли <b>${sector.name}</b>! Приз зарезервирован за Вашим аккаунтом.</div>`;
-                } else {
-                    body.innerHTML = `<div class="modal-desc">В этой коробке пусто. Попробуйте открыть следующую!</div>`;
-                }
-
-                btn.innerText = `ПРОДОЛЖИТЬ (ОСТАЛОСЬ ${attempts})`;
-                btn.onclick = () => {
-                    modal.classList.remove('active');
-                    document.getElementById('spinBtn').disabled = false;
-                };
+                title.innerText = "НЕ ПОВЕЗЛО";
+                body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
             }
 
+            if (attempts === 0) {
+                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ПОСМОТРЕТЬ ИТОГ`;
+            } else {
+                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
+            }
+
+            btn.onclick = handleModalAction;
             modal.classList.add('active');
         }
 
-        // ================= ФИНАЛИЗАЦИЯ И ОТПРАВКА ДАННЫХ В БОТ =================
-        function finishGameAndSend() {
-            const payload = {
-                money: sessionPrizes.money,
-                items: sessionPrizes.items,
-                alreadySpun: false
-            };
+        function handleModalAction() {
+            const modal = document.getElementById('resultModal');
+            modal.classList.remove('active');
 
-            const jsonStr = JSON.stringify(payload);
-
-            try {
-                if (tg.sendData) {
-                    tg.sendData(jsonStr);
-                }
-            } catch(e){}
-
-            // Резервный диплинк редирект для гарантированной фиксации
-            const encoded = btoa(unescapedBtoa(jsonStr));
-            if (botUsername) {
-                window.location.href = `https://t.me/${botUsername}?start=claim_${encoded}`;
+            if (attempts === 0) {
+                renderFinalSummaryModal(false);
             } else {
-                tg.close();
+                if (gameMode !== 'boxes') {
+                    const canvas = document.getElementById('wheelCanvas');
+                    const track = document.getElementById('ribbonTrack');
+                    
+                    canvas.style.transition = 'none';
+                    canvas.style.transform = 'rotate(0deg)';
+                    track.style.transition = 'none';
+                    track.style.transform = 'translateX(0)';
+
+                    setTimeout(() => {
+                        canvas.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
+                        track.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
+                        document.getElementById('spinBtn').disabled = false;
+                    }, 50);
+                }
             }
         }
 
-        function unescapedBtoa(str) {
-            return encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            });
+        function renderFinalSummaryModal(isAlreadyDone) {
+            document.getElementById('attNum').innerText = "0";
+            document.getElementById('spinBtn').disabled = true;
+
+            const modal = document.getElementById('resultModal');
+            const iconBox = document.getElementById('modalIconBox');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const btn = document.getElementById('modalBtn');
+
+            iconBox.innerHTML = SVGS.trophy;
+            title.innerText = "ВЫИГРЫШ ЗАФИКСИРОВАН!";
+
+            const totalMoney = (sessionPrizes && sessionPrizes.money) ? sessionPrizes.money.reduce((a, b) => a + b, 0) : 0;
+            const itemsList = (sessionPrizes && sessionPrizes.items && sessionPrizes.items.length > 0) ? sessionPrizes.items.join(', ') : 'Не выпадали';
+
+            body.innerHTML = `
+                <div class="modal-desc">Все попытки использованы! Ваши награды зарезервированы:</div>
+                <div class="prize-summary-box">
+                    <div class="prize-summary-row">
+                        <span class="prize-label">Баланс к выплате:</span>
+                        <span class="prize-val" style="color: #2ECC71;">${totalMoney > 0 ? totalMoney + ' ₽' : 'Зафиксирован'}</span>
+                    </div>
+                    <div class="prize-summary-row">
+                        <span class="prize-label">Физические призы:</span>
+                        <span class="prize-val" style="color: #FFE259;">${itemsList}</span>
+                    </div>
+                </div>
+                <div style="font-size: 11.5px; color: #94A3B8; margin-bottom: 16px; line-height: 1.4;">
+                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
+                </div>
+            `;
+
+            btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ЗАБРАТЬ В БОТЕ`;
+            
+            btn.onclick = (e) => {
+                if (e) e.stopPropagation();
+                
+                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
+
+                let payload = "";
+                if (sessionPrizes) {
+                    try {
+                        payload = btoa(unescape(encodeURIComponent(JSON.stringify(sessionPrizes)))).replace(/=/g, '');
+                    } catch(err) {}
+                }
+
+                try {
+                    tg.sendData(JSON.stringify(sessionPrizes));
+                } catch(err) {}
+
+                if (botUsername) {
+                    try {
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        tg.openTelegramLink(deepLink);
+                    } catch(err) {
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                    }
+                }
+
+                try {
+                    tg.close();
+                } catch(err) {}
+            };
+
+            modal.classList.add('active');
         }
     </script>
 </body>
