@@ -58,7 +58,7 @@
             justify-content: space-between;
         }
 
-        /* Кастомный фон */
+        /* Кастомный фон (из админки) */
         #customBg {
             position: fixed;
             top: 0; left: 0;
@@ -155,7 +155,7 @@
             align-items: center;
         }
 
-        #logoContainer {
+        .brand-logo-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -869,8 +869,10 @@
         </defs>
     </svg>
 
+    <!-- Кастомный фон (управляется из админки) -->
     <div id="customBg"></div>
 
+    <!-- Стандартный анимированный фон -->
     <div class="ambient-canvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -880,7 +882,7 @@
 
     <div class="app-container">
         <div class="header-block">
-            <div id="logoContainer">
+            <div class="brand-logo-container" id="logoContainer">
                 <div class="brand-logo-glow">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
@@ -964,6 +966,9 @@
     </div>
 
     <script>
+        // ============================================================
+        // ПОЛНАЯ РАБОЧАЯ JS-ЛОГИКА (100% Сохранность всех данных)
+        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -1036,6 +1041,7 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
+        // Кастомные изображения из админ-панели
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -1083,6 +1089,7 @@
         }
         applyCustomLogo();
 
+        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1119,14 +1126,21 @@
             }
         }
 
-        for (let i = 0; i < 75; i++) particles.push(new Particle());
+        for (let i = 0; i < 75; i++) {
+            particles.push(new Particle());
+        }
+
         function animateParticles() {
             pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-            particles.forEach(p => { p.update(); p.draw(pCtx); });
+            particles.forEach(p => {
+                p.update();
+                p.draw(pCtx);
+            });
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
 
+        // ===== ЭФФЕКТ ИСКР ПРИ ОТКРЫТИИ =====
         function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
@@ -1162,7 +1176,9 @@
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() { tg.close(); });
+                    tg.showAlert(alertTxt, function() {
+                        tg.close();
+                    });
                 } else {
                     alert(alertTxt);
                     tg.close();
@@ -1201,6 +1217,7 @@
             }
         });
 
+        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ ПРИЗОВ =====
         function updateBasketUI() {
             const container = document.getElementById('basketItems');
             container.innerHTML = '';
@@ -1294,6 +1311,7 @@
             }
         }
 
+        // ===== СЕТКА 3D КОРОБОК С ЛОГОТИПАМИ =====
         function getRandomLogos(count) {
             if (!boxLogos || boxLogos.length < count) return [];
             const shuffled = [...boxLogos].sort(() => 0.5 - Math.random());
@@ -1336,10 +1354,13 @@
             }
         }
 
+        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
-            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
 
             isSpinning = true;
             spinStep++;
@@ -1381,7 +1402,9 @@
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
                 
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
 
                 const contentDiv = boxElement.querySelector('.box-content');
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
@@ -1407,7 +1430,9 @@
         function executeSpin() {
             if (attempts <= 0 || isSpinning) return;
 
-            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
 
             isSpinning = true;
             spinStep++;
@@ -1432,7 +1457,13 @@
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                openedBoxesData: openedBoxesData,
+                isDone: attempts === 0
+            });
 
             if (gameMode === 'wheel') {
                 runWheelAnimation(targetSectorId, targetSector);
@@ -1466,14 +1497,23 @@
         function finishSpin(prize) {
             isSpinning = false;
 
-            if (prize.type === 'money') sessionPrizes.money.push(prize.cashAmount);
-            else if (prize.type === 'item') sessionPrizes.items.push(prize.name);
-            else if (prize.type === 'bonus') {
+            if (prize.type === 'money') {
+                sessionPrizes.money.push(prize.cashAmount);
+            } else if (prize.type === 'item') {
+                sessionPrizes.items.push(prize.name);
+            } else if (prize.type === 'bonus') {
                 attempts += 3;
                 document.getElementById('attNum').innerText = attempts;
             }
 
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
+            saveState({
+                attempts: attempts,
+                spinStep: spinStep,
+                sessionPrizes: sessionPrizes,
+                openedBoxesData: openedBoxesData,
+                isDone: attempts === 0
+            });
+
             updateBasketUI();
             displayModal(prize);
         }
