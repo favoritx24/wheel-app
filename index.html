@@ -113,6 +113,33 @@
             justify-content: space-between;
         }
 
+        /* Адаптивный Кастомный Фон */
+        .custom-bg-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            width: 100dvw; height: 100dvh;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .custom-bg-container img, 
+        .custom-bg-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .custom-bg-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(2, 5, 14, 0.45);
+            z-index: 1;
+        }
+
         /* Анимированный аэродизайн фона */
         .ambient-canvas {
             position: absolute;
@@ -1177,6 +1204,38 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Динамический кастомный фон (Фото / GIF / Видео)
+            const bgUrl = urlParams.get('bg');
+            const bgType = urlParams.get('bgtype');
+            if (bgUrl) {
+                const ambient = document.querySelector('.ambient-canvas');
+                if (ambient) ambient.style.display = 'none';
+
+                const bgContainer = document.createElement('div');
+                bgContainer.className = 'custom-bg-container';
+
+                const overlay = document.createElement('div');
+                overlay.className = 'custom-bg-overlay';
+                bgContainer.appendChild(overlay);
+
+                const isVideo = bgType === 'video' || bgUrl.match(/\.(mp4|webm|mov)($|\?)/i);
+                if (isVideo) {
+                    const vid = document.createElement('video');
+                    vid.src = bgUrl;
+                    vid.autoplay = true;
+                    vid.loop = true;
+                    vid.muted = true;
+                    vid.playsInline = true;
+                    vid.setAttribute('playsinline', '');
+                    bgContainer.appendChild(vid);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = bgUrl;
+                    bgContainer.appendChild(img);
+                }
+                document.body.prepend(bgContainer);
+            }
+
             // Загрузка кастомного логотипа из URL, если настроен в админке
             const customLogoParam = urlParams.get('logo');
             if (customLogoParam) {
