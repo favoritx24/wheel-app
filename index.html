@@ -170,6 +170,17 @@
             animation: logoGlow 2.5s ease-in-out infinite alternate;
         }
 
+        .brand-logo-custom {
+            max-height: 44px;
+            max-width: 220px;
+            object-fit: contain;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            filter: drop-shadow(0 0 10px rgba(255, 226, 89, 0.6));
+            animation: logoGlow 2.5s ease-in-out infinite alternate;
+        }
+
         @keyframes logoGlow {
             0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); transform: scale(1); }
             100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
@@ -875,7 +886,7 @@
     <div class="app-container">
         <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container">
+            <div class="brand-logo-container" id="logoContainer">
                 <div class="brand-logo-glow">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
@@ -1121,6 +1132,18 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Загрузка кастомного логотипа из URL, если настроен в админке
+            const customLogoParam = urlParams.get('logo');
+            if (customLogoParam) {
+                const logoContainer = document.getElementById('logoContainer');
+                if (logoContainer) {
+                    logoContainer.innerHTML = `
+                        <img src="${customLogoParam}" class="brand-logo-custom" alt="Logo">
+                        <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
+                    `;
+                }
+            }
+
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
 
