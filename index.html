@@ -60,7 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Кастомная обертка для фонового изображения или видео */
+        /* Кастомный фон (static image, GIF или video) */
         .custom-bg-wrapper {
             position: absolute;
             top: 0; left: 0;
@@ -179,15 +179,6 @@
             animation: logoGlow 2.5s ease-in-out infinite alternate;
         }
 
-        .brand-logo-img {
-            max-height: 44px;
-            max-width: 220px;
-            object-fit: contain;
-            background: transparent !important;
-            mix-blend-mode: normal;
-            filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.6));
-        }
-
         @keyframes logoGlow {
             0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); transform: scale(1); }
             100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
@@ -302,7 +293,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: масштабировано для избежания выхода за левый/правый края */
+        /* Игровое поле: расширенное без выхода за границы */
         .game-stage {
             position: relative;
             width: 100%;
@@ -320,7 +311,7 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 330px; /* Сужено с 360px для идеальной адаптации на узких экранах */
+            max-width: 330px; /* Уменьшено с 360px чтобы коробки не выходили за левые и правые края экрана */
             max-height: 330px;
             z-index: 10;
             display: flex;
@@ -333,7 +324,7 @@
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px; /* Оптимизировано расстояние между боксами */
+            gap: 6px; /* Оптимизированный отступ */
             width: 100%;
             height: 100%;
             align-content: center;
@@ -562,7 +553,7 @@
         }
 
         .box-content span {
-            font-size: clamp(7px, 2vw, 9px); /* Динамический размер шрифта для читаемости */
+            font-size: clamp(7px, 2vw, 9px); /* Динамический размер текста */
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
@@ -573,7 +564,7 @@
             word-wrap: break-word;
             display: block;
             width: 100%;
-            /* Кристальная четкость и тени для контраста на любом фоне */
+            /* CRYSTAL CLEAR TEXT */
             text-shadow: 0 1.5px 3px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.8);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -1047,7 +1038,7 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        // Замена AirPods Pro 2 на iPhone 17 Pro Max
+        // ВТОРОЙ СЕКТОР ЗАМЕНЕН НА iPhone 17 Pro Max
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1191,7 +1182,7 @@
                 saved = null;
             }
 
-            // Нативная обработка защиты повторного входа: Web App не открывается, сразу нативный попап TG
+            // Нативная обработка spent-пользователей: сразу нативный попап TG и плавное закрытие/транзит
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 document.querySelector('.app-container').style.display = 'none';
                 document.body.style.background = 'var(--bg-dark)';
@@ -1208,7 +1199,7 @@
                     if (tg.showPopup) {
                         tg.showPopup({
                             title: "ВЫИГРЫШ ЗАФИКСИРОВАН!",
-                            message: "Вы успешно использовали все доступные открытия! Все выигранные призы зарезервированы.\n\nПерейдите в Telegram-бота для моментальной выплаты и получения физических наград!",
+                            message: "Вы успешно использовали все доступные открытия! Все выигранные призы зарезервированы.\n\nПерейдите в Telegram-бота для моментальной выплаты и получения наград!",
                             buttons: [
                                 {id: "redirect", type: "default", text: "ЗАБРАТЬ В БОТЕ"}
                             ]
@@ -1221,13 +1212,17 @@
                             try { tg.close(); } catch(e){}
                         });
                     } else {
-                        alert("Вы успешно использовали все доступные открытия! Все ваши призы зарезервированы.");
-                        try {
-                            tg.openTelegramLink(deepLink);
-                        } catch(e) {
+                        const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\nВы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
+                        if (tg.showAlert) {
+                            tg.showAlert(alertTxt, function() {
+                                try { tg.openTelegramLink(deepLink); } catch(e){ window.location.href = deepLink; }
+                                tg.close();
+                            });
+                        } else {
+                            alert(alertTxt);
                             window.location.href = deepLink;
+                            tg.close();
                         }
-                        try { tg.close(); } catch(e){}
                     }
                 };
                 
@@ -1272,10 +1267,11 @@
             if (customLogo) {
                 const logoContainer = document.querySelector('.brand-logo-glow');
                 if (logoContainer) {
-                    logoContainer.innerHTML = `<img src="${customLogo}" class="brand-logo-img" alt="Logo">`;
+                    logoContainer.innerHTML = `<img src="${customLogo}" style="max-height: 40px; max-width: 200px; object-fit: contain; background: transparent !important; mix-blend-mode: normal; filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.6));">`;
                     logoContainer.style.background = 'none';
                     logoContainer.style.webkitTextFillColor = 'initial';
                     logoContainer.style.filter = 'none';
+                    logoContainer.style.animation = 'none';
                 }
             }
 
@@ -1420,7 +1416,7 @@
                     box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
                 } else {
                     box.onclick = () => selectBox(box, i);
-                    const logosHTML = getBoxLogosHTML(); // Генерируем уникальные 4 спонсорские плашки для каждого закрытого бокса
+                    const logosHTML = getBoxLogosHTML(); // Генерируем 4 спонсорские плашки для каждого закрытого бокса
                     box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div>${logosHTML}</div><div class="box-content"></div></div>`;
                 }
                 grid.appendChild(box);
@@ -1602,7 +1598,7 @@
 
             if (prize.type === 'money') {
                 title.innerText = "ВЫИГРЫШ!";
-                body.innerHTML = `<div class="modal-desc">Вам выпал денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
+                body.innerHTML = `<div class="modal-desc">Вам выпал Денежный приз:<br><strong style="color: #FFE259; font-size: 20px;">${prize.cashAmount} ₽</strong></div>`;
                 confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
             } else if (prize.type === 'item') {
                 title.innerText = "ЦЕННЫЙ ПРИЗ!";
@@ -1651,7 +1647,7 @@
             }
         }
 
-        // ОРИГИНАЛЬНАЯ ЛОГИКА ВЕРНУТА ОДИН В ОДИН (Гарантия автозапуска старта в боте)
+        // ОРИГИНАЛЬНЫЙ ТРАНЗИТ ОДИН В ОДИН (Гарантия автозапуска ТГ-старта при любом типе входа)
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
@@ -1703,7 +1699,6 @@
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
-                // ОРИГИНАЛЬНАЯ ЛОГИКА ТРАНЗИТА: строгое соответствие вашим исходным методам
                 if (botUsername) {
                     try {
                         const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
