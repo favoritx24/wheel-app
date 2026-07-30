@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
+           ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН И АДАПТИВНАЯ СЕТКА
            ============================================================ */
         :root {
             --bg-dark: #02050e;
@@ -25,8 +25,6 @@
             --text-muted: #94a3b8;
             --border-glass: rgba(255, 226, 89, 0.2);
             --border-subtle: rgba(255, 255, 255, 0.08);
-            --shadow-gold: 0 0 25px rgba(255, 226, 89, 0.5);
-            --shadow-blue: 0 0 20px rgba(0, 210, 255, 0.4);
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
@@ -57,7 +55,7 @@
             justify-content: space-between;
         }
 
-        /* Динамический кастомный и анимированный фон */
+        /* Анимированный / Кастомный фон */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -93,26 +91,9 @@
             animation: orbFloat 12s infinite alternate ease-in-out;
         }
 
-        .orb-1 {
-            width: 280px; height: 280px;
-            background: #1d4ed8;
-            top: -40px; left: -40px;
-        }
-
-        .orb-2 {
-            width: 320px; height: 320px;
-            background: #0284c7;
-            bottom: -60px; right: -60px;
-            animation-delay: -5s;
-        }
-
-        .orb-3 {
-            width: 220px; height: 220px;
-            background: #7e22ce;
-            top: 45%; left: 30%;
-            opacity: 0.25;
-            animation-delay: -8s;
-        }
+        .orb-1 { width: 280px; height: 280px; background: #1d4ed8; top: -40px; left: -40px; }
+        .orb-2 { width: 320px; height: 320px; background: #0284c7; bottom: -60px; right: -60px; animation-delay: -5s; }
+        .orb-3 { width: 220px; height: 220px; background: #7e22ce; top: 45%; left: 30%; opacity: 0.25; animation-delay: -8s; }
 
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
@@ -128,7 +109,7 @@
             max-width: 420px;
             height: 100vh;
             height: 100dvh;
-            display: none; /* Скрыто до проверки попыток */
+            display: none; /* Скрыто до проверки наличия попыток */
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
@@ -231,7 +212,7 @@
             gap: 4px;
         }
 
-        /* Виджет корзины призов */
+        /* Корзина призов */
         .basket-widget {
             width: 100%;
             background: rgba(6, 12, 28, 0.82);
@@ -293,7 +274,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле */
+        /* Игровое поле: Поправлены размеры сетки коробок (Пункт 1) */
         .game-stage {
             position: relative;
             width: 100%;
@@ -310,7 +291,6 @@
         .boxes-wrapper {
             display: none;
             width: 100%;
-            height: 100%;
             max-width: 335px;
             max-height: 335px;
             padding: 0 6px;
@@ -351,7 +331,7 @@
             transition: transform 0.4s ease;
         }
 
-        /* Корпус синей коробки */
+        /* Корпус коробки */
         .box-body-container {
             position: absolute;
             top: 22%; left: 0; right: 0; bottom: 0;
@@ -366,7 +346,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Логотипы на 4 квадрантах коробки */
+        /* Логотипы на 4 квадрантах коробки (Пункт 7) */
         .box-quadrant-logo {
             position: absolute;
             width: 30%; height: 30%;
@@ -374,8 +354,7 @@
             pointer-events: none;
             z-index: 3;
             background: transparent;
-            border: none;
-            outline: none;
+            border: none; outline: none;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
         }
 
@@ -500,7 +479,7 @@
             100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* Карточка выпавшего приза */
+        /* Выпавший приз: Четкий контрастный текст и прозрачные PNG (Пункт 1 и 3) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -536,12 +515,12 @@
             object-fit: contain;
             background: transparent;
             border: none; outline: none;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85));
         }
 
         .box-content svg {
             width: 34px; height: 34px;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85));
         }
 
         .box-content span {
@@ -568,7 +547,7 @@
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
         }
 
-        /* Частицы и вспышки */
+        /* Искры */
         .spark {
             position: absolute;
             width: 4px; height: 4px;
@@ -704,14 +683,9 @@
 
         .btn-glow svg { width: 16px; height: 16px; }
         .btn-glow:active { transform: scale(0.96); }
-        .btn-glow:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+        .btn-glow:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        /* Премиальная нижняя информационная плашка */
+        /* Нижний банер доверия */
         .trust-banner {
             width: 100%;
             background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
@@ -742,7 +716,7 @@
         .trust-header svg { width: 11px; height: 11px; color: var(--neon-gold); }
 
         .trust-desc {
-            font-size: 8px;
+            font-size: 8.5px;
             color: #94a3b8;
             line-height: 1.3;
             padding: 0 2px;
@@ -764,10 +738,7 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
+        .modal-overlay.active { display: flex; opacity: 1; }
 
         .modal-card {
             background: linear-gradient(160deg, #0f172a 0%, #050814 100%);
@@ -909,7 +880,7 @@
             </div>
         </div>
 
-        <!-- Виджет Корзины выигранных призов -->
+        <!-- Корзина призов -->
         <div class="basket-widget">
             <div class="basket-header">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -981,7 +952,7 @@
 
     <script>
         // ============================================================
-        // ПОЛНАЯ РАБОЧАЯ JS-ЛОГИКА
+        // ПОЛНАЯ JS-ЛОГИКА
         // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
@@ -1018,8 +989,7 @@
             try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
-        // --- ПРОВЕРКА ИСПОЛЬЗОВАННЫХ ПОПЫТОК (ПУНКТ 5) ---
-        // Мини-апп НЕ отображается вовсе, а сразу выдает Попап/Alert и закрывается!
+        // --- ПУНКТ 5: БЛОКИРОВКА ПОВТОРНОГО ОТКРЫТИЯ С ПОПАПОМ ---
         const isSpunURL = urlParams.get('spun') === '1';
         const isResetURL = urlParams.get('reset') === '1';
         let savedState = loadState();
@@ -1029,7 +999,7 @@
             savedState = null;
         }
 
-        if (isSpunURL || (savedState && (savedState.isDone || savedState.attempts <= 0))) {
+        if (isSpunURL || (savedState && savedState.isDone)) {
             const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
                              "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                              "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
@@ -1042,11 +1012,11 @@
                 alert(alertTxt);
                 try { tg.close(); } catch(e){}
             }
-            // Полностью прерываем дальнейшую инициализацию веб-приложения
+            // Полностью предотвращаем показ интерфейса
             throw new Error("Game already completed");
         }
 
-        // Если попытки есть — показываем интерфейс
+        // Если попытки еще есть — включаем отображение Mini App
         document.getElementById('appContainer').style.display = 'flex';
 
         const rawGameMode = urlParams.get('mode');
@@ -1078,7 +1048,7 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
-        // ПУНКТ 3: Кастомные изображения призов из админки
+        // ПУНКТ 3: Загрузка картинок призов из админки
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -1099,12 +1069,12 @@
             logoContainer.innerHTML = `<img src="${decodeURIComponent(customLogoParam)}" class="custom-brand-logo" alt="Logo">`;
         }
 
-        // ПУНКТ 6: Кастомный Фон (Картинка / GIF / Видео) из Админки
+        // ПУНКТ 6: Кастомный Фон из Админки
         const customBgParam = urlParams.get('bg');
         if (customBgParam) {
             const bgUrl = decodeURIComponent(customBgParam);
             const bgContainer = document.getElementById('ambientBg');
-            bgContainer.innerHTML = ''; // очищаем орбы
+            bgContainer.innerHTML = '';
             if (bgUrl.match(/\.(mp4|webm|ogg)$/i)) {
                 bgContainer.innerHTML = `<video class="custom-bg-element" autoplay loop muted playsinline src="${bgUrl}"></video>`;
             } else {
@@ -1112,7 +1082,7 @@
             }
         }
 
-        // ПУНКТ 7: Логотипы Споносоров на 4 углах Коробок из Админки
+        // ПУНКТ 7: Спонсорские логотипы коробок из Админки
         let sponsorLogos = [];
         const boxLogosParam = urlParams.get('box_logos');
         if (boxLogosParam) {
@@ -1125,7 +1095,7 @@
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
+        // Анимированный фон частиц
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1319,7 +1289,6 @@
             }
         }
 
-        // Рандомный выбор логотипов без повторений для одной коробки (Пункт 7)
         function getRandomQuadrantLogos(logoList) {
             if (!logoList || logoList.length === 0) return ['', '', '', ''];
             let shuffled = [...logoList].sort(() => 0.5 - Math.random());
@@ -1331,7 +1300,7 @@
             ];
         }
 
-        // ===== СЕТКА 3D КОРОБОК С ПОДДЕРЖКОЙ КВАДРАНТ-ЛОГОТИПОВ =====
+        // ===== СЕТКА КОРОБОК =====
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
@@ -1349,7 +1318,6 @@
                 } else {
                     box.onclick = () => selectBox(box, i);
 
-                    // Формируем 4 квадрант-логотипа, если они загружены в админке
                     const qLogos = getRandomQuadrantLogos(sponsorLogos);
                     const q1Html = qLogos[0] ? `<img src="${qLogos[0]}" class="box-quadrant-logo quad-1" alt="s1">` : '';
                     const q2Html = qLogos[1] ? `<img src="${qLogos[1]}" class="box-quadrant-logo quad-2" alt="s2">` : '';
@@ -1362,7 +1330,6 @@
             }
         }
 
-        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
@@ -1393,7 +1360,7 @@
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
             openedBoxesData[index] = targetSector;
 
-            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
+            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: false });
 
             boxElement.classList.add('opening');
 
@@ -1470,7 +1437,7 @@
                 spinStep: spinStep,
                 sessionPrizes: sessionPrizes,
                 openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
+                isDone: false
             });
 
             if (gameMode === 'wheel') {
@@ -1519,7 +1486,7 @@
                 spinStep: spinStep,
                 sessionPrizes: sessionPrizes,
                 openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
+                isDone: false
             });
 
             updateBasketUI();
@@ -1586,6 +1553,7 @@
             }
         }
 
+        // --- ФИНАЛЬНОЕ ОКНО И НАДЕДЖНАЯ ОТПРАВКА ДАННЫХ В БОТА ---
         function renderFinalSummaryModal(isAlreadyDone) {
             document.getElementById('attNum').innerText = "0";
             document.getElementById('spinBtn').disabled = true;
@@ -1624,6 +1592,7 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
+                // Сохраняем состояние как завершенное (isDone: true)
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
 
                 let payload = "";
@@ -1633,22 +1602,25 @@
                     } catch(err) {}
                 }
 
+                // 1. Пытаемся передать данные через tg.sendData (если открыто через клавиатуру)
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
+                // 2. Гарантированный глубокий переход (/start claim_...) для Inline / Menu кнопок
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        window.location.href = deepLink;
                     }
                 }
 
-                try {
-                    tg.close();
-                } catch(err) {}
+                // 3. Небольшая задержка перед закрытием, чтобы ссылка успела сработать
+                setTimeout(() => {
+                    try { tg.close(); } catch(err) {}
+                }, 400);
             };
 
             modal.classList.add('active');
