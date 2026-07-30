@@ -60,13 +60,13 @@
             justify-content: space-between;
         }
 
-        /* Принудительная прозрачность PNG и точный масштаб */
+        /* Защита от белого фона у PNG */
         img {
             background: transparent !important;
             object-fit: contain;
         }
 
-        /* Анимированный аэродизайн фона и поддержка кастомного фона */
+        /* Анимированный аэродизайн фона и кастомный медиафон */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -153,7 +153,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 30px;
+            min-height: 32px;
+        }
+
+        .custom-hdr-img {
+            max-height: 38px;
+            max-width: 220px;
+            object-fit: contain;
+            background: transparent !important;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
         }
 
         .brand-logo-glow {
@@ -284,7 +292,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: оптимизировано предотвращение выходов за экраны */
+        /* Игровое поле: оптимизировано предотвращение захода за края */
         .game-stage {
             position: relative;
             width: 100%;
@@ -302,8 +310,8 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 340px; /* Уменьшено с 360px чтобы крайние коробки не вылазили за экран */
-            max-height: 340px;
+            max-width: 335px; /* Защита боковых коробок от вылезания за экран */
+            max-height: 335px;
             z-index: 10;
             display: flex;
             align-items: center;
@@ -314,7 +322,7 @@
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px; /* Чуть уменьшен отступ между коробками */
+            gap: 5px; /* Уменьшен интервал для ровного вмещения */
             width: 100%;
             height: 100%;
             align-content: center;
@@ -332,7 +340,7 @@
 
         .prize-box:not(.disabled):not(.opened):not(.opening):hover,
         .prize-box:not(.disabled):not(.opened):not(.opening):active {
-            transform: scale(1.08) translateY(-4px);
+            transform: scale(1.06) translateY(-3px);
         }
 
         .gift-container {
@@ -394,10 +402,10 @@
             pointer-events: none;
         }
 
-        .quadrant-tl { top: 4%; left: 4%; }
-        .quadrant-tr { top: 4%; right: 4%; }
-        .quadrant-bl { bottom: 4%; left: 4%; }
-        .quadrant-br { bottom: 4%; right: 4%; }
+        .quadrant-tl { top: 3%; left: 3%; }
+        .quadrant-tr { top: 3%; right: 3%; }
+        .quadrant-bl { bottom: 3%; left: 3%; }
+        .quadrant-br { bottom: 3%; right: 3%; }
 
         .box-sponsor-quadrant img {
             max-width: 100%;
@@ -436,7 +444,7 @@
             position: absolute;
             top: -16%; left: 50%;
             transform: translateX(-50%);
-            width: 50px; height: 40px;
+            width: 48px; height: 38px;
             z-index: 6;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
@@ -546,13 +554,16 @@
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
-            line-height: 1.1;
+            line-height: 1.05;
             text-transform: uppercase;
             white-space: normal;
             word-wrap: break-word;
             display: block;
             width: 100%;
-            text-shadow: 0 1px 3px #000, 0 0 5px #000;
+            text-shadow: 0 1px 4px #000, 0 0 8px #000;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 2px 3px;
+            border-radius: 4px;
         }
 
         .box-content span b {
@@ -1018,7 +1029,7 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -1055,7 +1066,7 @@
             } catch(e){}
         }
 
-        // Загрузка кастомных логотипов спонсоров для коробок из админки
+        // Загрузка логотипов спонсоров для коробок из админки
         let sponsorLogosList = [];
         const boxLogosParam = urlParams.get('boxLogos');
         if (boxLogosParam) {
@@ -1151,7 +1162,7 @@
                 saved = null;
             }
 
-            // ПРОВЕРКА ПОПЫТОК: Если попытки истрачены, НЕ открываем интерфейс, а сразу инфо-попап и закрытие
+            // ПРОВЕРКА ПОПЫТОК: Если попытки истрачены, скрываем приложение, выводим ПОПАП и мгновенно закрываем
             if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
                 document.getElementById('appMainContainer').style.display = 'none';
                 const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
@@ -1174,7 +1185,7 @@
             if (hdrLogoParam) {
                 const logoContainer = document.getElementById('headerLogoContainer');
                 if (logoContainer) {
-                    logoContainer.innerHTML = `<img src="${hdrLogoParam}" style="max-height: 38px; max-width: 220px; object-fit: contain; background: transparent !important; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));">`;
+                    logoContainer.innerHTML = `<img src="${hdrLogoParam}" class="custom-hdr-img" alt="Logo">`;
                 }
             }
 
@@ -1317,7 +1328,7 @@
             }
         }
 
-        // Хелпер выборки 4 случайных спонсорских логотипов из загруженных в админке
+        // Хелпер выборки 4 случайных уникальных логотипов спонсоров из админки
         function getRandomBoxLogos() {
             if (!sponsorLogosList || sponsorLogosList.length === 0) return [];
             let shuffled = [...sponsorLogosList].sort(() => 0.5 - Math.random());
