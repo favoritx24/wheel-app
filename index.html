@@ -125,7 +125,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 10px;
+            padding: 8px 12px;
             padding-bottom: calc(8px + var(--safe-bottom));
             gap: 4px;
             overflow: hidden;
@@ -499,7 +499,7 @@
         }
 
         .box-content img, .box-content svg {
-            width: 30px; height: 30px;
+            width: 28px; height: 28px;
             object-fit: contain;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.9));
             flex-shrink: 0;
@@ -994,7 +994,7 @@
 
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
-            { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
+            { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
             { id: 2, type: 'bonus', name: '+3 Попытки', svgKey: 'bonus', color: '#0F2A1D', img: '' },
             { id: 3, type: 'money', name: 'Денежный приз', svgKey: 'cash', color: '#2A2115', img: '' },
             { id: 4, type: 'item', name: 'iPhone 15 Pro', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1171,7 +1171,7 @@
                 sessionPrizes.items.forEach(it => {
                     const badge = document.createElement('div');
                     badge.className = 'basket-badge';
-                    let iconHtml = SVGS.headphones;
+                    let iconHtml = SVGS.iphone;
                     if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
                     else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
