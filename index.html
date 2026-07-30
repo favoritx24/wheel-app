@@ -1,3 +1,6 @@
+Полный исправленный код Mini App (HTML/CSS/JS). Исправлены переносы текста в открытых коробках, улучшена логика кнопки «Забрать в боте» (теперь гарантированно открывается диплинк перед закрытием Mini App).
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -45,7 +48,7 @@
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             position: relative;
-            visibility: hidden; /* скрыто до проверки */
+            visibility: hidden;
         }
 
         body {
@@ -55,7 +58,6 @@
             justify-content: space-between;
         }
 
-        /* Анимированный фон (орбы и частицы) */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -91,7 +93,6 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* Кастомный фон (при наличии) */
         .custom-bg {
             position: absolute;
             top: 0; left: 0;
@@ -393,7 +394,6 @@
             transition: all 0.4s ease;
         }
 
-        /* Логотипы на коробке */
         .box-logo {
             position: absolute;
             width: 22%;
@@ -507,15 +507,16 @@
         }
 
         .box-content span {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
             margin-top: 4px;
-            line-height: 1.2;
+            line-height: 1.15;
             text-transform: uppercase;
-            white-space: normal;
-            word-wrap: break-word;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+            hyphens: auto;
             display: block;
             width: 100%;
         }
@@ -523,7 +524,7 @@
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .spark {
@@ -833,23 +834,18 @@
         </defs>
     </svg>
 
-    <!-- Фон по умолчанию (будет скрыт, если задан кастомный) -->
     <div class="ambient-canvas" id="ambientBg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
     <canvas id="particlesCanvas"></canvas>
-    <!-- Кастомный фон (если задан) -->
     <video class="custom-bg" id="customBgVideo" muted loop playsinline style="display:none;"></video>
     <img class="custom-bg" id="customBgImage" style="display:none;" alt="">
 
     <div class="app-container">
-        <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container" id="brandLogoContainer">
-                <!-- Динамически: текст или изображение -->
-            </div>
+            <div class="brand-logo-container" id="brandLogoContainer"></div>
             <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
@@ -860,7 +856,6 @@
             </div>
         </div>
 
-        <!-- Виджет Корзины выигранных призов -->
         <div class="basket-widget">
             <div class="basket-header">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -869,7 +864,6 @@
             <div class="basket-items" id="basketItems"></div>
         </div>
 
-        <!-- Игровая область -->
         <div class="game-stage">
             <div class="wheel-wrapper" id="wheelBox">
                 <div class="wheel-halo"></div>
@@ -895,13 +889,11 @@
             </div>
         </div>
 
-        <!-- Кнопка действия -->
         <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             ОТКРЫТЬ КОРОБКУ
         </button>
 
-        <!-- Нижний банер доверия -->
         <div class="trust-banner">
             <div class="trust-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -913,7 +905,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно выигрыша -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-card">
             <div class="modal-icon-badge" id="modalIconBox"></div>
@@ -931,9 +922,6 @@
     </div>
 
     <script>
-        // ============================================================
-        // ПОЛНАЯ РАБОЧАЯ JS-ЛОГИКА (100% Сохранность всех данных)
-        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -943,10 +931,9 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
-        // ----- новые параметры -----
         const logoUrl = urlParams.get('logo') || '';
         const bgUrl = urlParams.get('bg') || '';
-        const logosParam = urlParams.get('logos') || ''; // JSON массив URL
+        const logosParam = urlParams.get('logos') || '';
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
@@ -989,7 +976,6 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        // Обновлённый список секторов (AirPods заменены на iPhone 17 Pro Max)
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1003,7 +989,6 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
-        // Кастомные изображения из админ-панели
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -1017,12 +1002,9 @@
             } catch(e){}
         }
 
-        // Кастомные логотипы на коробках
         let logosArray = [];
         if (logosParam) {
-            try {
-                logosArray = JSON.parse(logosParam);
-            } catch(e){}
+            try { logosArray = JSON.parse(logosParam); } catch(e){}
         }
 
         let attempts = 3;
@@ -1031,7 +1013,6 @@
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // ===== ФОН =====
         function applyCustomBackground() {
             if (bgUrl) {
                 document.getElementById('ambientBg').style.display = 'none';
@@ -1049,7 +1030,6 @@
             }
         }
 
-        // ===== ЛОГОТИП БРЕНДА =====
         function renderBrandLogo() {
             const container = document.getElementById('brandLogoContainer');
             if (logoUrl) {
@@ -1062,7 +1042,6 @@
             }
         }
 
-        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1099,22 +1078,16 @@
             }
         }
 
-        for (let i = 0; i < 75; i++) {
-            particles.push(new Particle());
-        }
+        for (let i = 0; i < 75; i++) { particles.push(new Particle()); }
 
         function animateParticles() {
             if (bgUrl) return;
             pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw(pCtx);
-            });
+            particles.forEach(p => { p.update(); p.draw(pCtx); });
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
 
-        // ===== ЭФФЕКТ ИСКР ПРИ ОТКРЫТИИ =====
         function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
@@ -1134,7 +1107,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // сначала проверка на spun
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
 
@@ -1161,7 +1133,6 @@
                 return;
             }
 
-            // Если не заблокированы, показываем интерфейс
             document.body.style.visibility = 'visible';
             applyCustomBackground();
             renderBrandLogo();
@@ -1197,7 +1168,6 @@
             }
         });
 
-        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ ПРИЗОВ =====
         function updateBasketUI() {
             const container = document.getElementById('basketItems');
             container.innerHTML = '';
@@ -1215,7 +1185,7 @@
                 sessionPrizes.items.forEach(it => {
                     const badge = document.createElement('div');
                     badge.className = 'basket-badge';
-                    let iconHtml = SVGS.iphone; // default
+                    let iconHtml = SVGS.iphone;
                     if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
                     else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
@@ -1292,7 +1262,6 @@
             }
         }
 
-        // ===== СЕТКА 3D КОРОБОК С ЛОГОТИПАМИ И УЛУЧШЕННЫМ ТЕКСТОМ =====
         function getRandomLogos(count = 4) {
             if (!logosArray.length) return [];
             const shuffled = [...logosArray].sort(() => Math.random() - 0.5);
@@ -1330,13 +1299,10 @@
             }
         }
 
-        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
+            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
 
             isSpinning = true;
             spinStep++;
@@ -1350,12 +1316,8 @@
             else if (spinStep === 2) targetSectorId = 1;
             else if (spinStep === 3) targetSectorId = 2;
             else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
-                targetSectorId = 3;
-                calculatedCash = generateCashAmount();
-            } else {
-                targetSectorId = 9;
-            }
+            else if (spinStep === 5) { targetSectorId = 3; calculatedCash = generateCashAmount(); }
+            else { targetSectorId = 9; }
 
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
@@ -1378,9 +1340,7 @@
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
                 
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('success');
-                }
+                if (tg.HapticFeedback) { tg.HapticFeedback.notificationOccurred('success'); }
 
                 const contentDiv = boxElement.querySelector('.box-content');
                 const iconContent = targetSector.img ? `<img src="${targetSector.img}">` : SVGS[targetSector.svgKey];
@@ -1406,9 +1366,7 @@
         function executeSpin() {
             if (attempts <= 0 || isSpinning) return;
 
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
+            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
 
             isSpinning = true;
             spinStep++;
@@ -1423,29 +1381,16 @@
             else if (spinStep === 2) targetSectorId = 1;
             else if (spinStep === 3) targetSectorId = 2;
             else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
-                targetSectorId = 3;
-                calculatedCash = generateCashAmount();
-            } else {
-                targetSectorId = 9;
-            }
+            else if (spinStep === 5) { targetSectorId = 3; calculatedCash = generateCashAmount(); }
+            else { targetSectorId = 9; }
 
             const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
-            saveState({
-                attempts: attempts,
-                spinStep: spinStep,
-                sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
-            });
+            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
 
-            if (gameMode === 'wheel') {
-                runWheelAnimation(targetSectorId, targetSector);
-            } else {
-                runRibbonAnimation(targetSectorId, targetSector);
-            }
+            if (gameMode === 'wheel') { runWheelAnimation(targetSectorId, targetSector); }
+            else { runRibbonAnimation(targetSectorId, targetSector); }
         }
 
         function runWheelAnimation(sectorIndex, prizeObj) {
@@ -1473,23 +1418,11 @@
         function finishSpin(prize) {
             isSpinning = false;
 
-            if (prize.type === 'money') {
-                sessionPrizes.money.push(prize.cashAmount);
-            } else if (prize.type === 'item') {
-                sessionPrizes.items.push(prize.name);
-            } else if (prize.type === 'bonus') {
-                attempts += 3;
-                document.getElementById('attNum').innerText = attempts;
-            }
+            if (prize.type === 'money') { sessionPrizes.money.push(prize.cashAmount); }
+            else if (prize.type === 'item') { sessionPrizes.items.push(prize.name); }
+            else if (prize.type === 'bonus') { attempts += 3; document.getElementById('attNum').innerText = attempts; }
 
-            saveState({
-                attempts: attempts,
-                spinStep: spinStep,
-                sessionPrizes: sessionPrizes,
-                openedBoxesData: openedBoxesData,
-                isDone: attempts === 0
-            });
-
+            saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
             updateBasketUI();
             displayModal(prize);
         }
@@ -1539,12 +1472,10 @@
                 if (gameMode !== 'boxes') {
                     const canvas = document.getElementById('wheelCanvas');
                     const track = document.getElementById('ribbonTrack');
-                    
                     canvas.style.transition = 'none';
                     canvas.style.transform = 'rotate(0deg)';
                     track.style.transition = 'none';
                     track.style.transform = 'translateX(0)';
-
                     setTimeout(() => {
                         canvas.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
                         track.style.transition = 'transform 4.6s cubic-bezier(0.12, 0.8, 0.15, 1)';
@@ -1601,22 +1532,22 @@
                     } catch(err) {}
                 }
 
-                try {
-                    tg.sendData(JSON.stringify(sessionPrizes));
-                } catch(err) {}
+                try { tg.sendData(JSON.stringify(sessionPrizes)); } catch(err) {}
 
+                // Открываем диплинк ДО закрытия Mini App
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        window.location.href = deepLink;
                     }
                 }
 
-                try {
-                    tg.close();
-                } catch(err) {}
+                // Небольшая задержка перед закрытием, чтобы диплинк успел обработаться
+                setTimeout(() => {
+                    try { tg.close(); } catch(err) {}
+                }, 200);
             };
 
             modal.classList.add('active');
@@ -1624,3 +1555,4 @@
     </script>
 </body>
 </html>
+```
