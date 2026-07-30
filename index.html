@@ -60,13 +60,7 @@
             justify-content: space-between;
         }
 
-        /* Защита PNG изображений от белого фона */
-        img {
-            background: transparent !important;
-            object-fit: contain;
-        }
-
-        /* Анимированный аэродизайн фона и поддержка кастомного медиа фона */
+        /* Анимированный аэродизайн фона (стандартный) */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -74,8 +68,6 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
-            background-size: cover;
-            background-position: center;
         }
 
         #particlesCanvas {
@@ -121,6 +113,17 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
+        /* Кастомный фон (из админки) – накладывается поверх */
+        .custom-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            object-fit: cover;
+            display: none;
+        }
+
         /* Главный контейнер приложения со строгой адаптацией под высоту */
         .app-container {
             position: relative;
@@ -153,15 +156,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 32px;
-        }
-
-        .custom-hdr-logo {
-            max-height: 38px;
-            max-width: 220px;
-            object-fit: contain;
-            background: transparent !important;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
         }
 
         .brand-logo-glow {
@@ -187,6 +181,16 @@
         .brand-logo-glow svg {
             width: 22px; height: 22px;
             fill: url(#goldGrad);
+        }
+
+        .brand-logo-glow img {
+            height: 28px;
+            width: auto;
+            object-fit: contain;
+            background: transparent;
+            -webkit-text-fill-color: initial;
+            filter: drop-shadow(0 0 12px rgba(255, 226, 89, 0.7));
+            animation: logoGlow 2.5s ease-in-out infinite alternate;
         }
 
         .brand-subtitle {
@@ -281,10 +285,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .basket-badge svg, .basket-badge img {
+        .basket-badge svg {
             width: 12px; height: 12px;
-            object-fit: contain;
-            background: transparent !important;
         }
 
         @keyframes badgeIn {
@@ -292,7 +294,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: оптимизировано предотвращение выходов боковых коробок за экран */
+        /* Игровое поле: расширенное без выхода за границы */
         .game-stage {
             position: relative;
             width: 100%;
@@ -310,19 +312,18 @@
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 335px; /* Защита крайних коробок от залезания за границы экрана */
-            max-height: 335px;
+            max-width: 330px;  /* уменьшили для лучшего вписывания */
+            max-height: 330px;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 2px;
         }
 
         .boxes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 5px; /* Уменьшен интервал для полного вмещения на узких экранах */
+            gap: 6px;  /* уменьшили */
             width: 100%;
             height: 100%;
             align-content: center;
@@ -340,7 +341,7 @@
 
         .prize-box:not(.disabled):not(.opened):not(.opening):hover,
         .prize-box:not(.disabled):not(.opened):not(.opening):active {
-            transform: scale(1.06) translateY(-3px);
+            transform: scale(1.08) translateY(-4px);
         }
 
         .gift-container {
@@ -376,7 +377,6 @@
             border-left: 1px solid var(--neon-gold);
             border-right: 1px solid var(--neon-gold);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
-            z-index: 3;
         }
 
         .box-ribbon-h {
@@ -387,33 +387,24 @@
             border-top: 1px solid var(--neon-gold);
             border-bottom: 1px solid var(--neon-gold);
             box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4), 0 0 6px rgba(0,0,0,0.5);
-            z-index: 3;
         }
 
-        /* 4 КВАДРАНТА ДЛЯ ЛОГОТИПОВ СПОНСОРОВ НА КОРОБКЕ */
-        .box-sponsor-quadrant {
+        /* Логотипы на коробке (4 позиции) */
+        .box-logo {
             position: absolute;
-            width: 36%;
-            height: 36%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 4;
-            pointer-events: none;
-        }
-
-        .quadrant-tl { top: 3%; left: 3%; }
-        .quadrant-tr { top: 3%; right: 3%; }
-        .quadrant-bl { bottom: 3%; left: 3%; }
-        .quadrant-br { bottom: 3%; right: 3%; }
-
-        .box-sponsor-quadrant img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 22%;
+            height: 22%;
             object-fit: contain;
-            background: transparent !important;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+            background: transparent;
+            z-index: 3;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: all 0.3s ease;
         }
+        .box-logo-tl { top: 8%; left: 8%; }
+        .box-logo-tr { top: 8%; right: 8%; }
+        .box-logo-bl { bottom: 8%; left: 8%; }
+        .box-logo-br { bottom: 8%; right: 8%; }
 
         /* Крышка коробки */
         .box-lid-container {
@@ -424,7 +415,7 @@
             border-radius: 7px 7px 4px 4px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.5);
             border: 1.2px solid rgba(0, 210, 255, 0.5);
-            z-index: 5;
+            z-index: 4;
             transform-origin: bottom center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -445,7 +436,7 @@
             top: -16%; left: 50%;
             transform: translateX(-50%);
             width: 50px; height: 40px;
-            z-index: 6;
+            z-index: 5;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
             pointer-events: none;
             transition: all 0.4s ease;
@@ -510,22 +501,22 @@
             100% { opacity: 0.2; transform: scale(0.88); filter: blur(1.5px); }
         }
 
-        /* ЧЕТКАЯ ПОДЛОЖКА И КАРТОЧКА ВЫПАВШЕГО ПРИЗА ВНУТРИ КОРОБКИ */
+        /* Карточка выпавшего приза из коробки */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 40%, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 0.99) 100%);
+            background: radial-gradient(circle at 50% 40%, rgba(255, 226, 89, 0.35) 0%, rgba(8, 14, 30, 0.98) 100%);
             border: 2px solid var(--neon-gold);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 3px;
-            z-index: 10;
+            padding: 4px;
+            z-index: 8;
             opacity: 0;
             transform: scale(0.2);
-            box-shadow: 0 0 25px rgba(255, 226, 89, 0.8), inset 0 0 12px rgba(255, 226, 89, 0.3);
+            box-shadow: 0 0 30px rgba(255, 226, 89, 0.8);
         }
 
         .prize-box.opened .box-content {
@@ -541,37 +532,31 @@
         }
 
         .box-content img, .box-content svg {
-            width: 36px; height: 36px;
+            width: 40px; height: 40px;
             object-fit: contain;
-            background: transparent !important;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+            background: transparent;
         }
 
-        /* МАКСИМАЛЬНО ЧЕТКИЙ И ЧИТАЕМЫЙ ТЕКСТ ПОДАРКА В КОРОБКЕ */
         .box-content span {
-            font-size: 7.5px;
+            font-size: 9px;  /* увеличен */
             font-weight: 900;
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
-            line-height: 1.05;
+            line-height: 1.15;
             text-transform: uppercase;
             white-space: normal;
             word-wrap: break-word;
             display: block;
             width: 100%;
-            text-shadow: 0 1px 4px #000, 0 0 8px #000;
-            background: rgba(0, 0, 0, 0.65);
-            padding: 2px 3px;
-            border-radius: 4px;
+            padding: 0 2px;
         }
 
         .box-content span b {
             white-space: nowrap;
             display: inline-block;
-            font-size: 8.5px;
-            color: #2ECC71;
-            text-shadow: 0 1px 3px #000;
+            font-size: 9px;
         }
 
         /* Частицы и вспышки */
@@ -591,7 +576,7 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
-        /* Колесо и Лента */
+        /* Колесо и Лента (без изменений) */
         .wheel-wrapper {
             position: relative;
             width: 290px; height: 290px;
@@ -673,7 +658,6 @@
         .ribbon-card img, .ribbon-card svg {
             width: 32px; height: 32px;
             object-fit: contain;
-            background: transparent !important;
         }
 
         .ribbon-card span {
@@ -805,6 +789,7 @@
         .modal-icon-badge svg, .modal-icon-badge img {
             width: 38px; height: 38px;
             object-fit: contain;
+            background: transparent;
         }
 
         .modal-title {
@@ -872,6 +857,15 @@
             color: #64748b;
             margin-top: 10px;
         }
+
+        /* Адаптация для совсем маленьких экранов */
+        @media (max-width: 380px) {
+            .boxes-wrapper { max-width: 290px; max-height: 290px; }
+            .box-content span { font-size: 8px; }
+            .box-content img, .box-content svg { width: 32px; height: 32px; }
+            .brand-logo-glow { font-size: 18px; }
+            .attempts-pill { font-size: 8px; padding: 2px 8px; }
+        }
     </style>
 </head>
 <body>
@@ -885,26 +879,30 @@
         </defs>
     </svg>
 
-    <!-- Динамический анимированный фон / Кастомный медиа-фон -->
-    <div class="ambient-canvas" id="ambientBg">
+    <!-- Динамический анимированный фон с орбами и частицами -->
+    <div class="ambient-canvas" id="ambientCanvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
     <canvas id="particlesCanvas"></canvas>
 
-    <div class="app-container" id="appMainContainer">
+    <!-- Кастомный фон из админки (если задан) -->
+    <img class="custom-bg" id="customBgImg" style="display:none;" alt="">
+    <video class="custom-bg" id="customBgVideo" style="display:none;" autoplay loop muted playsinline></video>
+
+    <div class="app-container">
         <!-- Шапка -->
         <div class="header-block">
-            <div class="brand-logo-container" id="headerLogoContainer">
-                <div class="brand-logo-glow">
+            <div class="brand-logo-container">
+                <div class="brand-logo-glow" id="brandLogo">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
                     КЭШ-МАГНАТ
                 </div>
+                <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             </div>
-            <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
             <div class="attempts-pill">
                 <span class="attempts-label">Доступно открытий:</span>
                 <span class="attempts-count" id="attCounter">
@@ -997,6 +995,19 @@
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
+        // --- Параметры из админки (логотип, фон, логотипы коробок) ---
+        const customLogo = urlParams.get('logo') || null;
+        const customBg = urlParams.get('bg') || null;
+        let boxLogos = [];
+        const boxLogosParam = urlParams.get('box_logos');
+        if (boxLogosParam) {
+            try {
+                const decoded = decodeURIComponent(boxLogosParam);
+                boxLogos = JSON.parse(decoded);
+                if (!Array.isArray(boxLogos)) boxLogos = [];
+            } catch(e) { boxLogos = []; }
+        }
+
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
@@ -1038,6 +1049,7 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
+        // Сектора (исправлен AirPods Pro 2 → iPhone 17 Pro Max)
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'iPhone 17 Pro Max', svgKey: 'iphone', color: '#1C1537', img: '' },
@@ -1051,7 +1063,7 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
-        // Кастомные изображения из админ-панели
+        // Кастомные изображения из админ-панели (для секторов)
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -1062,15 +1074,6 @@
                         SECTORS[idx].img = customImgs[key];
                     }
                 }
-            } catch(e){}
-        }
-
-        // Загрузка кастомных логотипов спонсоров для коробок из админки
-        let sponsorLogosList = [];
-        const boxLogosParam = urlParams.get('boxLogos');
-        if (boxLogosParam) {
-            try {
-                sponsorLogosList = JSON.parse(boxLogosParam).filter(url => url && url.trim() !== '');
             } catch(e){}
         }
 
@@ -1150,7 +1153,112 @@
             }
         }
 
+        // ===== ОБРАБОТКА ЛОГОТИПА И ФОНА =====
+        function applyCustomLogo() {
+            const container = document.getElementById('brandLogo');
+            if (!customLogo) return;
+            // Заменяем содержимое на img
+            container.innerHTML = `<img src="${customLogo}" alt="Логотип" style="height: 32px; width: auto; object-fit: contain; background: transparent;">`;
+        }
+
+        function applyCustomBg() {
+            if (!customBg) return;
+            const img = document.getElementById('customBgImg');
+            const video = document.getElementById('customBgVideo');
+            // Определяем тип по расширению или предполагаем фото
+            const lower = customBg.toLowerCase();
+            if (lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.gif')) {
+                // Видео или гиф (гиф можно как видео)
+                video.src = customBg;
+                video.style.display = 'block';
+                video.style.objectFit = 'cover';
+                video.play().catch(()=>{});
+                // Скрываем орбы и частицы, чтобы не мешали
+                document.getElementById('ambientCanvas').style.display = 'none';
+                particlesCanvas.style.display = 'none';
+            } else {
+                // Статичная картинка
+                img.src = customBg;
+                img.style.display = 'block';
+                img.style.objectFit = 'cover';
+                document.getElementById('ambientCanvas').style.display = 'none';
+                particlesCanvas.style.display = 'none';
+            }
+        }
+
+        // ===== ПОСТРОЕНИЕ СЕТКИ КОРОБОК С ЛОГОТИПАМИ =====
+        function buildBoxesGrid() {
+            const grid = document.getElementById('boxesGrid');
+            grid.innerHTML = '';
+            // Подготовка списка логотипов для коробок (перемешиваем)
+            let logosForBoxes = [];
+            if (boxLogos && boxLogos.length > 0) {
+                // Если логотипов меньше 4, дублируем, чтобы было достаточно
+                let pool = [...boxLogos];
+                while (pool.length < 16 * 4) {
+                    pool = pool.concat(boxLogos);
+                }
+                // Для каждой коробки берём 4 случайных без повторов
+                for (let i = 0; i < 16; i++) {
+                    const shuffled = shuffleArray([...boxLogos]);
+                    const selected = shuffled.slice(0, Math.min(4, boxLogos.length));
+                    // Если меньше 4, дополняем пустыми строками
+                    while (selected.length < 4) selected.push(null);
+                    logosForBoxes.push(selected);
+                }
+            }
+
+            for (let i = 0; i < 16; i++) {
+                const box = document.createElement('div');
+                box.className = 'prize-box';
+                box.setAttribute('data-index', i);
+                const isOpenedBefore = openedBoxesData[i];
+                if (isOpenedBefore) {
+                    box.classList.add('opened');
+                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
+                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
+                    box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
+                } else {
+                    // Создаём коробку с логотипами (если есть)
+                    const logosForThisBox = logosForBoxes[i] || [];
+                    let logosHtml = '';
+                    const positions = ['box-logo-tl', 'box-logo-tr', 'box-logo-bl', 'box-logo-br'];
+                    logosForThisBox.forEach((logoUrl, idx) => {
+                        if (logoUrl) {
+                            logosHtml += `<img class="box-logo ${positions[idx]}" src="${logoUrl}" alt="лого">`;
+                        }
+                    });
+                    box.onclick = () => selectBox(box, i);
+                    box.innerHTML = `<div class="gift-container">
+                        <div class="box-lid-container"><div class="box-lid-ribbon"></div></div>
+                        ${SVGS.silkBow}
+                        <div class="box-body-container">
+                            <div class="box-ribbon-v"></div>
+                            <div class="box-ribbon-h"></div>
+                            ${logosHtml}
+                        </div>
+                        <div class="box-content"></div>
+                    </div>`;
+                }
+                grid.appendChild(box);
+            }
+        }
+
+        // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // ===== ЗАГРУЗКА СОСТОЯНИЯ =====
         window.addEventListener('DOMContentLoaded', () => {
+            // Применяем логотип и фон
+            applyCustomLogo();
+            applyCustomBg();
+
             const isSpunURL = urlParams.get('spun') === '1';
             const isResetURL = urlParams.get('reset') === '1';
 
@@ -1161,47 +1269,17 @@
                 saved = null;
             }
 
-            // ПРОВЕРКА ПОПЫТОК: Если попытки истрачены, НЕ открываем интерфейс, выводим ПОПАП и мгновенно закрываем
-            if (isSpunURL || (saved && (saved.isDone || saved.attempts <= 0))) {
-                const appContainer = document.getElementById('appMainContainer');
-                if (appContainer) appContainer.style.display = 'none';
-                const alertTxt = "🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\n" +
-                                 "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
-                                 "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
-                
+            // Если уже всё использовано (isDone), показываем попап и закрываем
+            if (isSpunURL || (saved && saved.isDone)) {
                 if (tg.showAlert) {
-                    tg.showAlert(alertTxt, function() {
-                        try { tg.close(); } catch(e){}
+                    tg.showAlert("🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\nВы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁", function() {
+                        tg.close();
                     });
                 } else {
-                    alert(alertTxt);
-                    try { tg.close(); } catch(e){}
+                    alert("🔥 ВАШ ВЫИГРЫШ УЖЕ ЗАФИКСИРОВАН И ЖДЕТ ВЫВОДА!\n\nВы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁");
+                    tg.close();
                 }
                 return;
-            }
-
-            // КАСТОМНЫЙ ЛОГОТИП ШАПКИ
-            const hdrLogoParam = urlParams.get('hdrLogo');
-            if (hdrLogoParam) {
-                const logoContainer = document.getElementById('headerLogoContainer');
-                if (logoContainer) {
-                    logoContainer.innerHTML = `<img src="${hdrLogoParam}" class="custom-hdr-logo" alt="Logo">`;
-                }
-            }
-
-            // КАСТОМНЫЙ ФОН МИНИ АПП (Картинка, GIF, Видео)
-            const bgMediaParam = urlParams.get('bgMedia');
-            if (bgMediaParam) {
-                const bgBox = document.getElementById('ambientBg');
-                if (bgBox) {
-                    if (bgMediaParam.match(/\.(mp4|webm|ogg)$/i)) {
-                        bgBox.innerHTML = `<video src="${bgMediaParam}" autoplay loop muted playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none;"></video>`;
-                    } else {
-                        bgBox.style.backgroundImage = `url('${bgMediaParam}')`;
-                        bgBox.style.backgroundSize = 'cover';
-                        bgBox.style.backgroundPosition = 'center';
-                    }
-                }
             }
 
             if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
@@ -1235,7 +1313,7 @@
             }
         });
 
-        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ ПРИЗОВ =====
+        // ===== ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений, кроме updateBasketUI) =====
         function updateBasketUI() {
             const container = document.getElementById('basketItems');
             container.innerHTML = '';
@@ -1329,48 +1407,7 @@
             }
         }
 
-        // Хелпер выборки 4 случайных спонсорских логотипов из загруженных в админке
-        function getRandomBoxLogos() {
-            if (!sponsorLogosList || sponsorLogosList.length === 0) return [];
-            let shuffled = [...sponsorLogosList].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, 4);
-        }
-
-        // ===== СЕТКА 3D КОРОБОК С СОХРАНЕНИЕМ СОСТОЯНИЯ И 4 КВАДРАНТАМИ ЛОГОТИПОВ =====
-        function buildBoxesGrid() {
-            const grid = document.getElementById('boxesGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 16; i++) {
-                const box = document.createElement('div');
-                box.className = 'prize-box';
-                box.setAttribute('data-index', i);
-                const isOpenedBefore = openedBoxesData[i];
-                if (isOpenedBefore) {
-                    box.classList.add('opened');
-                    const iconContent = isOpenedBefore.img ? `<img src="${isOpenedBefore.img}">` : SVGS[isOpenedBefore.svgKey];
-                    const cashValTxt = isOpenedBefore.cashAmount ? `<br><b style="color:#2ECC71; white-space: nowrap;">${isOpenedBefore.cashAmount} ₽</b>` : '';
-                    box.innerHTML = `<div class="gift-container"><div class="box-body-container" style="opacity:0.15; transform:scale(0.85);"></div><div class="box-content" style="opacity: 1; transform: scale(1);">${iconContent}<span>${isOpenedBefore.name}${cashValTxt}</span></div></div>`;
-                } else {
-                    box.onclick = () => selectBox(box, i);
-
-                    const boxLogos = getRandomBoxLogos();
-                    let logosHtml = '';
-                    if (boxLogos.length > 0) {
-                        const quadClasses = ['quadrant-tl', 'quadrant-tr', 'quadrant-bl', 'quadrant-br'];
-                        boxLogos.forEach((logoUrl, qIdx) => {
-                            if (logoUrl) {
-                                logosHtml += `<div class="box-sponsor-quadrant ${quadClasses[qIdx]}"><img src="${logoUrl}"></div>`;
-                            }
-                        });
-                    }
-
-                    box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container"><div class="box-ribbon-v"></div><div class="box-ribbon-h"></div>${logosHtml}</div><div class="box-content"></div></div>`;
-                }
-                grid.appendChild(box);
-            }
-        }
-
-        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
+        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ (без изменений) =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
