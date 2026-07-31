@@ -54,10 +54,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН УРОВНЯ GOOGLE / YANDEX
-           - Трехмерные синие коробки с шелковыми красными бантами
-           - Полное отсутствие скролла (100dvh, flex scaling)
-           - Плавные физичные анимации, неоновые свечения и эффекты
+           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН С ПОДДЕРЖКОЙ 10 КАСТОМНЫХ ТЕМ
            ============================================================ */
         :root {
             --bg-dark: #02050e;
@@ -78,6 +75,116 @@
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
+        /* 10 ПРЕМЕАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
+        body.theme-2 {
+            --bg-dark: #0a0314;
+            --card-glass: rgba(25, 10, 45, 0.85);
+            --gold-gradient: linear-gradient(135deg, #FF007F 0%, #00F0FF 100%);
+            --blue-box-gradient: linear-gradient(145deg, #3a005c 0%, #120024 100%);
+            --blue-box-lid: linear-gradient(145deg, #5c0091 0%, #20003b 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #00b3ff 0%, #00f0ff 50%, #00b3ff 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #00b3ff 0%, #00f0ff 50%, #00b3ff 100%);
+            --neon-gold: #00F0FF;
+            --neon-blue: #FF007F;
+            --border-glass: rgba(0, 240, 255, 0.3);
+        }
+        body.theme-3 {
+            --bg-dark: #02120a;
+            --card-glass: rgba(6, 32, 18, 0.85);
+            --gold-gradient: linear-gradient(135deg, #52E5E7 0%, #00E676 100%);
+            --blue-box-gradient: linear-gradient(145deg, #064022 0%, #021e10 100%);
+            --blue-box-lid: linear-gradient(145deg, #0a5c32 0%, #042b17 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #b8860b 0%, #ffd700 50%, #b8860b 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #b8860b 0%, #ffd700 50%, #b8860b 100%);
+            --neon-gold: #00E676;
+            --neon-blue: #FFD700;
+            --border-glass: rgba(0, 230, 118, 0.3);
+        }
+        body.theme-4 {
+            --bg-dark: #120204;
+            --card-glass: rgba(35, 8, 12, 0.85);
+            --gold-gradient: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            --blue-box-gradient: linear-gradient(145deg, #4a060e 0%, #1f0205 100%);
+            --blue-box-lid: linear-gradient(145deg, #6e0b16 0%, #2e0409 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #d4af37 0%, #fff8dc 50%, #d4af37 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #d4af37 0%, #fff8dc 50%, #d4af37 100%);
+            --neon-gold: #FF416C;
+            --neon-blue: #FFD700;
+            --border-glass: rgba(255, 65, 108, 0.3);
+        }
+        body.theme-5 {
+            --bg-dark: #080808;
+            --card-glass: rgba(20, 20, 20, 0.9);
+            --gold-gradient: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
+            --blue-box-gradient: linear-gradient(145deg, #222222 0%, #0d0d0d 100%);
+            --blue-box-lid: linear-gradient(145deg, #333333 0%, #141414 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #cc9900 0%, #ffcc00 50%, #cc9900 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #cc9900 0%, #ffcc00 50%, #cc9900 100%);
+            --neon-gold: #FFD700;
+            --neon-blue: #FFFFFF;
+            --border-glass: rgba(255, 215, 0, 0.3);
+        }
+        body.theme-6 {
+            --bg-dark: #050e14;
+            --card-glass: rgba(12, 30, 45, 0.85);
+            --gold-gradient: linear-gradient(135deg, #E0EAFC 0%, #CFDEF3 100%);
+            --blue-box-gradient: linear-gradient(145deg, #0e2a47 0%, #051324 100%);
+            --blue-box-lid: linear-gradient(145deg, #18426e 0%, #081f38 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #00c6ff 0%, #0072ff 50%, #00c6ff 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #00c6ff 0%, #0072ff 50%, #00c6ff 100%);
+            --neon-gold: #E0EAFC;
+            --neon-blue: #00c6ff;
+            --border-glass: rgba(224, 234, 252, 0.3);
+        }
+        body.theme-7 {
+            --bg-dark: #0a0518;
+            --card-glass: rgba(24, 12, 45, 0.85);
+            --gold-gradient: linear-gradient(135deg, #f77062 0%, #fe5196 100%);
+            --blue-box-gradient: linear-gradient(145deg, #31145a 0%, #130626 100%);
+            --blue-box-lid: linear-gradient(145deg, #481e85 0%, #1e093d 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #aa00ff 0%, #e040fb 50%, #aa00ff 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #aa00ff 0%, #e040fb 50%, #aa00ff 100%);
+            --neon-gold: #fe5196;
+            --neon-blue: #e040fb;
+            --border-glass: rgba(254, 81, 150, 0.3);
+        }
+        body.theme-8 {
+            --bg-dark: #120a02;
+            --card-glass: rgba(35, 20, 5, 0.85);
+            --gold-gradient: linear-gradient(135deg, #F3904F 0%, #3B4371 100%);
+            --blue-box-gradient: linear-gradient(145deg, #42210b 0%, #1c0c03 100%);
+            --blue-box-lid: linear-gradient(145deg, #633211 0%, #2b1304 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #ff8c00 0%, #ffa500 50%, #ff8c00 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #ff8c00 0%, #ffa500 50%, #ff8c00 100%);
+            --neon-gold: #FFA500;
+            --neon-blue: #F3904F;
+            --border-glass: rgba(255, 165, 0, 0.3);
+        }
+        body.theme-9 {
+            --bg-dark: #000c00;
+            --card-glass: rgba(0, 30, 8, 0.88);
+            --gold-gradient: linear-gradient(135deg, #00FF87 0%, #60EFFF 100%);
+            --blue-box-gradient: linear-gradient(145deg, #003b11 0%, #001706 100%);
+            --blue-box-lid: linear-gradient(145deg, #005e1b 0%, #002409 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #00b33c 0%, #00ff55 50%, #00b33c 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #00b33c 0%, #00ff55 50%, #00b33c 100%);
+            --neon-gold: #00FF87;
+            --neon-blue: #60EFFF;
+            --border-glass: rgba(0, 255, 135, 0.3);
+        }
+        body.theme-10 {
+            --bg-dark: #020212;
+            --card-glass: rgba(10, 10, 38, 0.88);
+            --gold-gradient: linear-gradient(135deg, #8A2387 0%, #E94057 50%, #F27121 100%);
+            --blue-box-gradient: linear-gradient(145deg, #180e3d 0%, #09041a 100%);
+            --blue-box-lid: linear-gradient(145deg, #271761 0%, #10082b 100%);
+            --red-ribbon-gradient: linear-gradient(90deg, #ff0055 0%, #ff5088 50%, #ff0055 100%);
+            --red-ribbon-h-gradient: linear-gradient(180deg, #ff0055 0%, #ff5088 50%, #ff0055 100%);
+            --neon-gold: #E94057;
+            --neon-blue: #F27121;
+            --border-glass: rgba(233, 64, 87, 0.3);
+        }
+
         * {
             box-sizing: border-box;
             user-select: none;
@@ -87,7 +194,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Гарантия прозрачности и адаптивности PNG картинок */
         img {
             background-color: transparent !important;
             background: transparent !important;
@@ -115,7 +221,6 @@
             justify-content: space-between;
         }
 
-        /* Адаптивный Кастомный Фон */
         .custom-bg-container {
             position: fixed;
             top: 0; left: 0;
@@ -142,7 +247,6 @@
             z-index: 1;
         }
 
-        /* Анимированный аэродизайн фона */
         .ambient-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -195,7 +299,6 @@
             100% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* Главный контейнер приложения со строгой адаптацией под высоту */
         .app-container {
             position: relative;
             z-index: 2;
@@ -244,7 +347,6 @@
             animation: logoGlow 2.5s ease-in-out infinite alternate;
         }
 
-        /* КРУПНЫЙ И ЧЕТКИЙ КАСТОМНЫЙ ЛОГОТИП */
         .brand-logo-custom {
             max-height: 75px;
             max-width: 280px;
@@ -257,11 +359,12 @@
             box-shadow: none !important;
             filter: drop-shadow(0 0 12px rgba(255, 226, 89, 0.7));
             animation: logoGlow 2.5s ease-in-out infinite alternate;
+            transition: transform 0.3s ease;
         }
 
         @keyframes logoGlow {
-            0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); transform: scale(1.02); }
+            0% { filter: drop-shadow(0 0 8px rgba(255, 226, 89, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 226, 89, 1)); }
         }
 
         .brand-logo-glow svg {
@@ -310,7 +413,6 @@
             gap: 4px;
         }
 
-        /* Виджет корзины призов */
         .basket-widget {
             width: 100%;
             background: rgba(6, 12, 28, 0.82);
@@ -372,7 +474,6 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Игровое поле: расширенное без выхода за границы */
         .game-stage {
             position: relative;
             width: 100%;
@@ -386,7 +487,6 @@
             z-index: 10;
         }
 
-        /* Адаптированный контейнер для коробок (устранен заезд за края) */
         .boxes-wrapper {
             display: none;
             width: 100%;
@@ -410,7 +510,6 @@
             align-content: center;
         }
 
-        /* 3D ПОДАРОЧНЫЕ КОРОБКИ */
         .prize-box {
             position: relative;
             width: 100%;
@@ -433,7 +532,6 @@
             transition: transform 0.4s ease;
         }
 
-        /* Корпус синей коробки */
         .box-body-container {
             position: absolute;
             top: 22%; left: 0; right: 0; bottom: 0;
@@ -448,15 +546,15 @@
             transition: all 0.3s ease;
         }
 
-        /* 4 Сектора Логотипов на Коробке */
+        /* 4 СЕКТОРА ЛОГОТИПОВ НА КОРОБКЕ (ОТСТУПЫ ОТ ЛЕНТ) */
         .box-logos-quad {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            padding: 3px;
-            gap: 2px;
+            padding: 5px;
+            gap: 4px;
             z-index: 1;
             pointer-events: none;
         }
@@ -472,15 +570,36 @@
         }
 
         .box-logo-item img {
-            max-width: 78%;
-            max-height: 78%;
+            max-width: 65%;
+            max-height: 65%;
             object-fit: contain;
             filter: drop-shadow(0 1px 3px rgba(0,0,0,0.7));
             background: transparent !important;
             border: none !important;
         }
 
-        /* Ленты на корпусе */
+        /* 1 ЛОГОТИП В ЦЕНТРЕ ПЕРЕСЕЧЕНИЯ ЛЕНТ */
+        .box-logo-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48%; height: 48%;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .box-logo-center img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9));
+            background: transparent !important;
+            border: none !important;
+        }
+
         .box-ribbon-v {
             position: absolute;
             top: 0; left: 50%;
@@ -504,7 +623,6 @@
             z-index: 3;
         }
 
-        /* Крышка коробки */
         .box-lid-container {
             position: absolute;
             top: 0; left: -2px; right: -2px;
@@ -528,7 +646,6 @@
             border-right: 1px solid var(--neon-gold);
         }
 
-        /* 3D Красный Бант */
         .mega-bow {
             position: absolute;
             top: -16%; left: 50%;
@@ -540,7 +657,6 @@
             transition: all 0.4s ease;
         }
 
-        /* Подсветка при наведении */
         .prize-box:not(.disabled):not(.opened):not(.opening):hover .box-lid-container {
             box-shadow: 0 8px 25px rgba(0, 210, 255, 0.8), inset 0 2px 4px rgba(255,255,255,0.7);
             border-color: rgba(255, 226, 89, 0.9);
@@ -551,7 +667,6 @@
             filter: drop-shadow(0 8px 16px rgba(255, 26, 26, 0.9));
         }
 
-        /* Состояние интригующей тряски предвкушения */
         .prize-box.opening .gift-container {
             animation: professionalShake 0.12s infinite alternate ease-in-out;
         }
@@ -570,7 +685,6 @@
             100% { transform: translate(1.5px, -2px) rotate(2deg) scale(1.05); }
         }
 
-        /* Эффект полета крышки и вылета приза */
         .prize-box.opened .box-lid-container {
             animation: lidFlyOff 1s cubic-bezier(0.25, 1, 0.50, 1) forwards;
         }
@@ -599,7 +713,6 @@
             100% { opacity: 0.15; transform: scale(0.85); filter: blur(1px); }
         }
 
-        /* Карточка выпавшего приза из коробки (Улучшен контраст и ЧЕТКОСТЬ + PNG Без Фона) */
         .box-content {
             position: absolute;
             width: 100%; height: 100%;
@@ -667,7 +780,6 @@
             text-shadow: 0 1px 4px #000000;
         }
 
-        /* Частицы и вспышки */
         .spark {
             position: absolute;
             width: 4px; height: 4px;
@@ -684,7 +796,6 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
-        /* Колесо и Лента */
         .wheel-wrapper {
             position: relative;
             width: 290px; height: 290px;
@@ -781,7 +892,6 @@
             line-height: 1.1;
         }
 
-        /* Неоновая главная кнопка */
         .btn-glow {
             width: 100%;
             padding: 14px 0;
@@ -814,7 +924,6 @@
             box-shadow: none;
         }
 
-        /* Премиальная нижняя информационная плашка */
         .trust-banner {
             width: 100%;
             background: linear-gradient(135deg, rgba(12, 18, 38, 0.95) 0%, rgba(5, 8, 20, 0.98) 100%);
@@ -851,7 +960,6 @@
             padding: 0 2px;
         }
 
-        /* Модальные окна */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -987,7 +1095,6 @@
         </defs>
     </svg>
 
-    <!-- Динамический анимированный фон с орбами и частями -->
     <div class="ambient-canvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -996,7 +1103,6 @@
     <canvas id="particlesCanvas"></canvas>
 
     <div class="app-container">
-        <!-- Шапка -->
         <div class="header-block">
             <div class="brand-logo-container" id="logoContainer">
                 <div class="brand-logo-glow">
@@ -1016,7 +1122,6 @@
             </div>
         </div>
 
-        <!-- Виджет Корзины выигранных призов -->
         <div class="basket-widget">
             <div class="basket-header">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -1025,7 +1130,6 @@
             <div class="basket-items" id="basketItems"></div>
         </div>
 
-        <!-- Игровая область -->
         <div class="game-stage">
             <div class="wheel-wrapper" id="wheelBox">
                 <div class="wheel-halo"></div>
@@ -1051,13 +1155,11 @@
             </div>
         </div>
 
-        <!-- Кнопка действия -->
         <button class="btn-glow" id="spinBtn" onclick="executeSpin()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             ОТКРЫТЬ КОРОБКУ
         </button>
 
-        <!-- Нижний банер доверия -->
         <div class="trust-banner">
             <div class="trust-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1069,7 +1171,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно выигрыша -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-card">
             <div class="modal-icon-badge" id="modalIconBox"></div>
@@ -1087,9 +1188,6 @@
     </div>
 
     <script>
-        // ============================================================
-        // ПОЛНАЯ РАБОЧАЯ JS-ЛОГИКА (100% Сохранность всех данных)
-        // ============================================================
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -1098,6 +1196,12 @@
         const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
+
+        /* ПРИМЕНЕНИЕ ДИЗАЙНЕРСКОЙ ТЕМЫ (1-10) */
+        const selectedTheme = urlParams.get('theme') || '1';
+        if (selectedTheme !== '1') {
+            document.body.classList.add('theme-' + selectedTheme);
+        }
 
         function saveState(stateObj) {
             stateObj.v = urlVersion;
@@ -1153,7 +1257,6 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
-        // Кастомные изображения из админ-панели
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
@@ -1167,7 +1270,6 @@
             } catch(e){}
         }
 
-        // Кастомные логотипы на поверхностях коробок
         let poolBoxLogos = [];
         const boxLogosParam = urlParams.get('boxlogos');
         if (boxLogosParam) {
@@ -1188,7 +1290,6 @@
         let sessionPrizes = { money: [], items: [] };
         let openedBoxesData = {};
 
-        // ===== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА =====
         const particlesCanvas = document.getElementById('particlesCanvas');
         const pCtx = particlesCanvas.getContext('2d');
         let particles = [];
@@ -1239,7 +1340,6 @@
         }
         animateParticles();
 
-        // ===== ЭФФЕКТ ИСКР ПРИ ОТКРЫТИИ =====
         function spawnSparks(x, y, count = 16) {
             const container = document.body;
             for (let i = 0; i < count; i++) {
@@ -1259,7 +1359,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Динамический кастомный фон (Фото / GIF / Видео)
             const bgUrl = urlParams.get('bg');
             const bgType = urlParams.get('bgtype');
             if (bgUrl) {
@@ -1291,13 +1390,14 @@
                 document.body.prepend(bgContainer);
             }
 
-            // Загрузка кастомного логотипа из URL, если настроен в админке
+            /* ЗАГРУЗКА И МАСШТАБИРОВАНИЕ ГЛАВНОГО ЛОГОТИПА */
             const customLogoParam = urlParams.get('logo');
+            const logoScale = parseFloat(urlParams.get('logoscale') || '1');
             if (customLogoParam) {
                 const logoContainer = document.getElementById('logoContainer');
                 if (logoContainer) {
                     logoContainer.innerHTML = `
-                        <img src="${customLogoParam}" class="brand-logo-custom" alt="Logo">
+                        <img src="${customLogoParam}" class="brand-logo-custom" style="transform: scale(${logoScale}); transform-origin: center;" alt="Logo">
                         <div class="brand-subtitle">VIP EXCLUSIVE CLUB</div>
                     `;
                 }
@@ -1360,7 +1460,6 @@
             }
         });
 
-        // ===== ОБНОВЛЕНИЕ КОРЗИНЫ ПРИЗОВ =====
         function updateBasketUI() {
             const container = document.getElementById('basketItems');
             container.innerHTML = '';
@@ -1457,10 +1556,12 @@
             }
         }
 
-        // ===== СЕТКА 3D КОРОБОК С СОХРАНЕНИЕМ СОСТОЯНИЯ И ЛОГОТИПАМИ =====
+        /* ПОСТРОЕНИЕ 3D КОРОБОК С ПОДДЕРЖКОЙ 4 ЛОГОТИПОВ ИЛИ 1 ПО ЦЕНТРУ ПЕРЕСЕЧЕНИЯ ЛЕНТ */
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
+            const boxLogoMode = urlParams.get('boxlogomode') || '4';
+
             for (let i = 0; i < 16; i++) {
                 const box = document.createElement('div');
                 box.className = 'prize-box';
@@ -1476,9 +1577,16 @@
 
                     let logosHtml = '';
                     if (poolBoxLogos.length > 0) {
-                        let chosen = getRandomBoxLogos(poolBoxLogos, 4);
-                        let items = chosen.map(url => `<div class="box-logo-item"><img src="${url}" alt=""></div>`).join('');
-                        logosHtml = `<div class="box-logos-quad">${items}</div>`;
+                        if (boxLogoMode === '1') {
+                            let chosen = getRandomBoxLogos(poolBoxLogos, 1);
+                            if (chosen.length > 0) {
+                                logosHtml = `<div class="box-logo-center"><img src="${chosen[0]}" alt=""></div>`;
+                            }
+                        } else {
+                            let chosen = getRandomBoxLogos(poolBoxLogos, 4);
+                            let items = chosen.map(url => `<div class="box-logo-item"><img src="${url}" alt=""></div>`).join('');
+                            logosHtml = `<div class="box-logos-quad">${items}</div>`;
+                        }
                     }
 
                     box.innerHTML = `<div class="gift-container"><div class="box-lid-container"><div class="box-lid-ribbon"></div></div>${SVGS.silkBow}<div class="box-body-container">${logosHtml}<div class="box-ribbon-v"></div><div class="box-ribbon-h"></div></div><div class="box-content"></div></div>`;
@@ -1487,7 +1595,6 @@
             }
         }
 
-        // ===== ВЫБОР И ОТКРЫТИЕ КОРОБКИ =====
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
@@ -1672,12 +1779,17 @@
                 title.innerText = "БОНУС!";
                 body.innerHTML = `<div class="modal-desc">Вам начислено <strong>+3 дополнительные попытки!</strong></div>`;
             } else {
-                title.innerText = "НЕ ПОВЕЗЛО";
-                body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
+                if (attempts === 0) {
+                    title.innerText = "ВСЕ ПОПЫТКИ ИСПОЛЬЗОВАНЫ!";
+                    body.innerHTML = `<div class="modal-desc">Ваши призы зафиксированы и зарезервированы! Перейдите к оформлению вывода выигрыша.</div>`;
+                } else {
+                    title.innerText = "НЕ ПОВЕЗЛО";
+                    body.innerHTML = `<div class="modal-desc">К сожалению, эта ячейка пустая. Попробуйте еще раз!</div>`;
+                }
             }
 
             if (attempts === 0) {
-                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ПОСМОТРЕТЬ ИТОГ`;
+                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ПЕРЕЙТИ К ВЫВОДУ ПРИЗОВ`;
             } else {
                 btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ПРОДОЛЖИТЬ`;
             }
@@ -1728,7 +1840,7 @@
             const itemsList = (sessionPrizes && sessionPrizes.items && sessionPrizes.items.length > 0) ? sessionPrizes.items.join(', ') : 'Не выпадали';
 
             body.innerHTML = `
-                <div class="modal-desc">Все попытки использованы! Ваши награды зарезервированы:</div>
+                <div class="modal-desc">Все попытки открытий завершены! Награды в вашей корзине готовятся к отправке:</div>
                 <div class="prize-summary-box">
                     <div class="prize-summary-row">
                         <span class="prize-label">Баланс к выплате:</span>
@@ -1740,7 +1852,7 @@
                     </div>
                 </div>
                 <div style="font-size: 11.5px; color: #94A3B8; margin-bottom: 16px; line-height: 1.4;">
-                    Перейдите в Telegram-бота и выполните 2 простых шага для подтверждения личности и получения призов!
+                    Перейдите в Telegram-бота для зачисления выигрыша на ваши реквизиты!
                 </div>
             `;
 
