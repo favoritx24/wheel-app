@@ -1278,10 +1278,16 @@
             } catch(e){}
         }
 
-        function getRandomBoxLogos(pool, count) {
+        /* ТРЕБОВАНИЕ 1: РАВНОМЕРНЫЙ ГАРАНТИРОВАННЫЙ ЦИКЛ ВСЕХ ДОСТУПНЫХ 6 ЛОГОТИПОВ БЕЗ ПОТЕРЬ И ПЕРЕЗАГРУЗОК */
+        let globalLogoCursor = 0;
+        function getBalancedBoxLogos(pool, count) {
             if (!pool || pool.length === 0) return [];
-            let shuffled = [...pool].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, Math.min(count, pool.length));
+            let result = [];
+            for (let i = 0; i < count; i++) {
+                result.push(pool[globalLogoCursor % pool.length]);
+                globalLogoCursor++;
+            }
+            return result;
         }
 
         let attempts = 3;
@@ -1556,11 +1562,12 @@
             }
         }
 
-        /* ПОСТРОЕНИЕ 3D КОРОБОК С ПОДДЕРЖКОЙ 4 ЛОГОТИПОВ ИЛИ 1 ПО ЦЕНТРУ ПЕРЕСЕЧЕНИЯ ЛЕНТ */
+        /* ПОСТРОЕНИЕ 3D КОРОБОК С РАВНОМЕРНЫМ ОТОБРАЖЕНИЕМ ВСЕХ 6 ЛОГОТИПОВ ПРИ ЛЮБОМ РЕЖИМЕ */
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
             const boxLogoMode = urlParams.get('boxlogomode') || '4';
+            globalLogoCursor = Math.floor(Math.random() * (poolBoxLogos.length || 1));
 
             for (let i = 0; i < 16; i++) {
                 const box = document.createElement('div');
@@ -1578,12 +1585,12 @@
                     let logosHtml = '';
                     if (poolBoxLogos.length > 0) {
                         if (boxLogoMode === '1') {
-                            let chosen = getRandomBoxLogos(poolBoxLogos, 1);
+                            let chosen = getBalancedBoxLogos(poolBoxLogos, 1);
                             if (chosen.length > 0) {
                                 logosHtml = `<div class="box-logo-center"><img src="${chosen[0]}" alt=""></div>`;
                             }
                         } else {
-                            let chosen = getRandomBoxLogos(poolBoxLogos, 4);
+                            let chosen = getBalancedBoxLogos(poolBoxLogos, 4);
                             let items = chosen.map(url => `<div class="box-logo-item"><img src="${url}" alt=""></div>`).join('');
                             logosHtml = `<div class="box-logos-quad">${items}</div>`;
                         }
