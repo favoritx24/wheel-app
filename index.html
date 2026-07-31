@@ -1244,6 +1244,20 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
+        /* ТРЕБОВАНИЕ 2: 10 ВАРИАНТОВ ЦЕННЫХ ПРИЗОВ ДЛЯ 2-ОЙ ПОПЫТКИ С КАСТОМНЫМИ КАРТИНКАМИ ИЗ АДМИНКИ */
+        const STEP2_PRIZES = [
+            { name: 'AirPods Pro 2', svgKey: 'headphones', imgIdx: 1 },
+            { name: 'iPhone 17 Pro Max', svgKey: 'iphone', imgIdx: 10 },
+            { name: 'Телевизор 4K Smart TV', svgKey: 'laptop', imgIdx: 11 },
+            { name: 'Холодильник LG VIP', svgKey: 'trophy', imgIdx: 12 },
+            { name: 'Чайник Bosch Gold', svgKey: 'bonus', imgIdx: 13 },
+            { name: 'PlayStation 5 Slim', svgKey: 'trophy', imgIdx: 14 },
+            { name: 'iPad Air M2', svgKey: 'laptop', imgIdx: 15 },
+            { name: 'Фен Dyson Supersonic', svgKey: 'headphones', imgIdx: 16 },
+            { name: 'Apple Watch Ultra 2', svgKey: 'watch', imgIdx: 17 },
+            { name: 'Кофемашина DeLonghi', svgKey: 'cash', imgIdx: 18 }
+        ];
+
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
@@ -1257,10 +1271,11 @@
             { id: 9, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' }
         ];
 
+        let customImgs = {};
         const imgsParam = urlParams.get('imgs');
         if (imgsParam) {
             try {
-                const customImgs = JSON.parse(imgsParam);
+                customImgs = JSON.parse(imgsParam);
                 for (let key in customImgs) {
                     const idx = parseInt(key);
                     if (SECTORS[idx]) {
@@ -1490,6 +1505,8 @@
                     } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
                     else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
+                    else if (it.toLowerCase().includes('тв') || it.toLowerCase().includes('телевизор')) iconHtml = SVGS.laptop;
+                    else if (it.toLowerCase().includes('playstation') || it.toLowerCase().includes('ps5')) iconHtml = SVGS.trophy;
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
                     container.appendChild(badge);
                     totalCount++;
@@ -1616,20 +1633,38 @@
 
             let targetSectorId = 0;
             let calculatedCash = 0;
+            let targetSector = null;
 
-            if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
-            else if (spinStep === 3) targetSectorId = 2;
-            else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
+            if (spinStep === 1) {
+                targetSectorId = 0;
+                targetSector = { ...SECTORS[targetSectorId] };
+            } else if (spinStep === 2) {
+                /* ТРЕБОВАНИЕ 2: РАНДОМНЫЙ ВЫБОР 1 ИЗ 10 ЦЕННЫХ ПРИЗОВ ДЛЯ 2-ОЙ ПОПЫТКИ */
+                let pickedP = STEP2_PRIZES[Math.floor(Math.random() * STEP2_PRIZES.length)];
+                targetSector = {
+                    id: 1,
+                    type: 'item',
+                    name: pickedP.name,
+                    svgKey: pickedP.svgKey,
+                    color: '#1C1537',
+                    img: (customImgs[pickedP.imgIdx] || customImgs[1] || '')
+                };
+            } else if (spinStep === 3) {
+                targetSectorId = 2;
+                targetSector = { ...SECTORS[targetSectorId] };
+            } else if (spinStep === 4) {
+                targetSectorId = 5;
+                targetSector = { ...SECTORS[targetSectorId] };
+            } else if (spinStep === 5) {
                 targetSectorId = 3;
                 calculatedCash = generateCashAmount();
+                targetSector = { ...SECTORS[targetSectorId] };
+                targetSector.cashAmount = calculatedCash;
             } else {
                 targetSectorId = 9;
+                targetSector = { ...SECTORS[targetSectorId] };
             }
 
-            const targetSector = { ...SECTORS[targetSectorId] };
-            if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
             openedBoxesData[index] = targetSector;
 
             saveState({ attempts, spinStep, sessionPrizes, openedBoxesData, isDone: attempts === 0 });
@@ -1689,20 +1724,37 @@
 
             let targetSectorId = 0;
             let calculatedCash = 0;
+            let targetSector = null;
 
-            if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
-            else if (spinStep === 3) targetSectorId = 2;
-            else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
+            if (spinStep === 1) {
+                targetSectorId = 0;
+                targetSector = { ...SECTORS[targetSectorId] };
+            } else if (spinStep === 2) {
+                /* ТРЕБОВАНИЕ 2: РАНДОМНЫЙ ВЫБОР 1 ИЗ 10 ЦЕННЫХ ПРИЗОВ ДЛЯ 2-ОЙ ПОПЫТКИ */
+                let pickedP = STEP2_PRIZES[Math.floor(Math.random() * STEP2_PRIZES.length)];
+                targetSector = {
+                    id: 1,
+                    type: 'item',
+                    name: pickedP.name,
+                    svgKey: pickedP.svgKey,
+                    color: '#1C1537',
+                    img: (customImgs[pickedP.imgIdx] || customImgs[1] || '')
+                };
+            } else if (spinStep === 3) {
+                targetSectorId = 2;
+                targetSector = { ...SECTORS[targetSectorId] };
+            } else if (spinStep === 4) {
+                targetSectorId = 5;
+                targetSector = { ...SECTORS[targetSectorId] };
+            } else if (spinStep === 5) {
                 targetSectorId = 3;
                 calculatedCash = generateCashAmount();
+                targetSector = { ...SECTORS[targetSectorId] };
+                targetSector.cashAmount = calculatedCash;
             } else {
                 targetSectorId = 9;
+                targetSector = { ...SECTORS[targetSectorId] };
             }
-
-            const targetSector = { ...SECTORS[targetSectorId] };
-            if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
             saveState({
                 attempts: attempts,
@@ -1713,9 +1765,9 @@
             });
 
             if (gameMode === 'wheel') {
-                runWheelAnimation(targetSectorId, targetSector);
+                runWheelAnimation(targetSectorId || 1, targetSector);
             } else {
-                runRibbonAnimation(targetSectorId, targetSector);
+                runRibbonAnimation(targetSectorId || 1, targetSector);
             }
         }
 
