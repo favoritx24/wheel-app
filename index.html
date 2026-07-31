@@ -9,37 +9,23 @@
         /* МГНОВЕННЫЙ ПЕРЕХВАТ: Если попытки истрачены, скрываем интерфейс и показываем только попап */
         (function() {
             try {
-                function getTempUid() {
-                    try {
-                        const tgObj = window.Telegram ? window.Telegram.WebApp : null;
-                        if (tgObj && tgObj.initDataUnsafe && tgObj.initDataUnsafe.user && tgObj.initDataUnsafe.user.id) {
-                            return String(tgObj.initDataUnsafe.user.id);
-                        }
-                    } catch(e) {}
-                    try {
-                        const uParams = new URLSearchParams(window.location.search);
-                        const u = uParams.get('uid');
-                        if (u && u !== 'guest') return String(u);
-                    } catch(e) {}
-                    try {
-                        for (let i = 0; i < localStorage.length; i++) {
-                            const k = localStorage.key(i);
-                            if (k && k.indexOf('km_state_') === 0 && k !== 'km_state_guest') {
-                                return k.replace('km_state_', '');
-                            }
-                        }
-                    } catch(e) {}
-                    return 'guest';
-                }
-
                 const tg = window.Telegram ? window.Telegram.WebApp : null;
                 const urlParams = new URLSearchParams(window.location.search);
                 const isSpunURL = urlParams.get('spun') === '1';
-                const uid = getTempUid();
+                
+                function getHeadUid() {
+                    if (tg?.initDataUnsafe?.user?.id) return String(tg.initDataUnsafe.user.id);
+                    const u = urlParams.get('uid');
+                    if (u && u !== 'null' && u !== 'undefined') return String(u);
+                    return 'guest';
+                }
+                const uid = getHeadUid();
                 
                 let isDoneSaved = false;
                 try {
-                    const local = localStorage.getItem('km_state_' + uid);
+                    let local = localStorage.getItem('km_state_' + uid);
+                    if (!local) local = localStorage.getItem('km_state_latest');
+                    if (!local && uid !== 'guest') local = localStorage.getItem('km_state_guest');
                     if (local) {
                         const parsed = JSON.parse(local);
                         if (parsed.isDone || parsed.attempts <= 0) isDoneSaved = true;
@@ -1216,26 +1202,19 @@
         tg.expand();
 
         const urlParams = new URLSearchParams(window.location.search);
-
-        /* УНИВЕРСАЛЬНОЕ И НАДЕЖНОЕ ОПРЕДЕЛЕНИЕ СИНХРОНИЗИРОВАННОГО USER_ID */
+        
         function getUserId() {
             try {
                 if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
                     return String(tg.initDataUnsafe.user.id);
                 }
-            } catch(e) {}
+            } catch(e){}
             try {
                 const u = urlParams.get('uid');
-                if (u && u !== 'guest') return String(u);
-            } catch(e) {}
-            try {
-                for (let i = 0; i < localStorage.length; i++) {
-                    const k = localStorage.key(i);
-                    if (k && k.indexOf('km_state_') === 0 && k !== 'km_state_guest') {
-                        return k.replace('km_state_', '');
-                    }
+                if (u && u !== 'null' && u !== 'undefined' && u !== 'guest') {
+                    return String(u);
                 }
-            } catch(e) {}
+            } catch(e){}
             return 'guest';
         }
 
@@ -1250,32 +1229,55 @@
         }
 
         function saveState(stateObj) {
-            const currentUid = getUserId();
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
+            const currentUid = getUserId();
             try { localStorage.setItem('km_state_' + currentUid, str); } catch(e){}
+            try { localStorage.setItem('km_state_latest', str); } catch(e){}
+            if (currentUid !== 'guest') {
+                try { localStorage.setItem('km_state_guest', str); } catch(e){}
+            }
             try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + currentUid, str); } catch(e){}
         }
 
         function loadState() {
-            const currentUid = getUserId();
             try {
-                const local = localStorage.getItem('km_state_' + currentUid);
+                const currentUid = getUserId();
+                let local = localStorage.getItem('km_state_' + currentUid);
+                if (!local && currentUid !== 'guest') {
+                    local = localStorage.getItem('km_state_guest');
+                }
+                if (!local) {
+                    local = localStorage.getItem('km_state_latest');
+                }
+                if (!local) {
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && key.startsWith('km_state_')) {
+                            local = localStorage.getItem(key);
+                            if (local) break;
+                        }
+                    }
+                }
                 if (local) return JSON.parse(local);
             } catch(e){}
             return null;
         }
 
         function clearState() {
-            const currentUid = getUserId();
             try {
                 for (let key in localStorage) {
                     if (key.startsWith('km_state_')) {
                         localStorage.removeItem(key);
                     }
                 }
+                localStorage.removeItem('km_state_latest');
+                localStorage.removeItem('km_state_guest');
             } catch(e){}
-            try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + currentUid); } catch(e){}
+            try { 
+                const currentUid = getUserId();
+                if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + currentUid); 
+            } catch(e){}
         }
 
         const rawGameMode = urlParams.get('mode');
@@ -1283,7 +1285,7 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 -2-2H3z"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
