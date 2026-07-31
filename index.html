@@ -9,10 +9,33 @@
         /* МГНОВЕННЫЙ ПЕРЕХВАТ: Если попытки истрачены, скрываем интерфейс и показываем только попап */
         (function() {
             try {
+                function getTempUid() {
+                    try {
+                        const tgObj = window.Telegram ? window.Telegram.WebApp : null;
+                        if (tgObj && tgObj.initDataUnsafe && tgObj.initDataUnsafe.user && tgObj.initDataUnsafe.user.id) {
+                            return String(tgObj.initDataUnsafe.user.id);
+                        }
+                    } catch(e) {}
+                    try {
+                        const uParams = new URLSearchParams(window.location.search);
+                        const u = uParams.get('uid');
+                        if (u && u !== 'guest') return String(u);
+                    } catch(e) {}
+                    try {
+                        for (let i = 0; i < localStorage.length; i++) {
+                            const k = localStorage.key(i);
+                            if (k && k.indexOf('km_state_') === 0 && k !== 'km_state_guest') {
+                                return k.replace('km_state_', '');
+                            }
+                        }
+                    } catch(e) {}
+                    return 'guest';
+                }
+
                 const tg = window.Telegram ? window.Telegram.WebApp : null;
                 const urlParams = new URLSearchParams(window.location.search);
                 const isSpunURL = urlParams.get('spun') === '1';
-                const uid = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
+                const uid = getTempUid();
                 
                 let isDoneSaved = false;
                 try {
@@ -1193,7 +1216,30 @@
         tg.expand();
 
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
+
+        /* УНИВЕРСАЛЬНОЕ И НАДЕЖНОЕ ОПРЕДЕЛЕНИЕ СИНХРОНИЗИРОВАННОГО USER_ID */
+        function getUserId() {
+            try {
+                if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+                    return String(tg.initDataUnsafe.user.id);
+                }
+            } catch(e) {}
+            try {
+                const u = urlParams.get('uid');
+                if (u && u !== 'guest') return String(u);
+            } catch(e) {}
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (k && k.indexOf('km_state_') === 0 && k !== 'km_state_guest') {
+                        return k.replace('km_state_', '');
+                    }
+                }
+            } catch(e) {}
+            return 'guest';
+        }
+
+        const userId = getUserId();
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
@@ -1204,21 +1250,24 @@
         }
 
         function saveState(stateObj) {
+            const currentUid = getUserId();
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
-            try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
-            try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
+            try { localStorage.setItem('km_state_' + currentUid, str); } catch(e){}
+            try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + currentUid, str); } catch(e){}
         }
 
         function loadState() {
+            const currentUid = getUserId();
             try {
-                const local = localStorage.getItem('km_state_' + userId);
+                const local = localStorage.getItem('km_state_' + currentUid);
                 if (local) return JSON.parse(local);
             } catch(e){}
             return null;
         }
 
         function clearState() {
+            const currentUid = getUserId();
             try {
                 for (let key in localStorage) {
                     if (key.startsWith('km_state_')) {
@@ -1226,7 +1275,7 @@
                     }
                 }
             } catch(e){}
-            try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
+            try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + currentUid); } catch(e){}
         }
 
         const rawGameMode = urlParams.get('mode');
