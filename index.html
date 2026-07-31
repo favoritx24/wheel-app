@@ -53,9 +53,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ============================================================
-           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН С ПОДДЕРЖКОЙ 10 КАСТОМНЫХ ТЕМ
-           ============================================================ */
         :root {
             --bg-dark: #02050e;
             --card-glass: rgba(10, 16, 35, 0.78);
@@ -75,7 +72,6 @@
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
-        /* 10 ПРЕМЕАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
         body.theme-2 {
             --bg-dark: #0a0314;
             --card-glass: rgba(25, 10, 45, 0.85);
@@ -546,7 +542,6 @@
             transition: all 0.3s ease;
         }
 
-        /* 4 СЕКТОРА ЛОГОТИПОВ НА КОРОБКЕ */
         .box-logos-quad {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -578,7 +573,6 @@
             border: none !important;
         }
 
-        /* 1 ЛОГОТИП В ЦЕНТРЕ ПЕРЕСЕЧЕНИЯ ЛЕНТ */
         .box-logo-center {
             position: absolute;
             top: 50%; left: 50%;
@@ -1416,7 +1410,6 @@
                 document.body.prepend(bgContainer);
             }
 
-            /* ЗАГРУЗКА И МАСШТАБИРОВАНИЕ ГЛАВНОГО ЛОГОТИПА */
             const customLogoParam = urlParams.get('logo');
             const logoScale = parseFloat(urlParams.get('logoscale') || '1');
             if (customLogoParam) {
@@ -1639,9 +1632,9 @@
             let customItemObj = null;
 
             if (spinStep === 1) {
-                targetSectorId = 0; // Проигрыш
+                targetSectorId = 0;
             } else if (spinStep === 2) {
-                targetSectorId = 1; // Рандомный физический приз из пула
+                targetSectorId = 1;
                 const randomPick = PHYSICAL_PRIZES_POOL[Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length)];
                 customItemObj = {
                     id: 1,
@@ -1652,11 +1645,11 @@
                     img: SECTORS[1].img || ''
                 };
             } else if (spinStep === 3) {
-                targetSectorId = 2; // +3 попытки
+                targetSectorId = 2;
             } else if (spinStep === 4) {
-                targetSectorId = 5; // Проигрыш
+                targetSectorId = 5;
             } else if (spinStep === 5) {
-                targetSectorId = 3; // Деньги
+                targetSectorId = 3;
                 calculatedCash = generateCashAmount();
             } else {
                 targetSectorId = 9;
@@ -1921,7 +1914,6 @@
                 let payload = "";
                 if (sessionPrizes) {
                     try {
-                        /* Безопасное кодирование любых кириллических призов без ошибок btoa */
                         payload = safeBtoa(JSON.stringify(sessionPrizes)).replace(/=/g, '');
                     } catch(err) {}
                 }
