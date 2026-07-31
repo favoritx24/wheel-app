@@ -842,7 +842,7 @@
             position: relative;
             width: 100%; height: 120px;
             background: var(--card-glass);
-            border: 2px solid var(--border-glass);
+            border: 1px solid var(--border-glass);
             border-radius: 20px;
             overflow: hidden;
             backdrop-filter: blur(20px);
@@ -1237,7 +1237,12 @@
             if (currentUid !== 'guest') {
                 try { localStorage.setItem('km_state_guest', str); } catch(e){}
             }
-            try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + currentUid, str); } catch(e){}
+            try {
+                if (tg && tg.CloudStorage) {
+                    tg.CloudStorage.setItem('km_state_' + currentUid, str);
+                    tg.CloudStorage.setItem('km_state_global', str);
+                }
+            } catch(e){}
         }
 
         function loadState() {
@@ -1276,7 +1281,10 @@
             } catch(e){}
             try { 
                 const currentUid = getUserId();
-                if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + currentUid); 
+                if (tg && tg.CloudStorage) {
+                    tg.CloudStorage.removeItem('km_state_' + currentUid); 
+                    tg.CloudStorage.removeItem('km_state_global'); 
+                }
             } catch(e){}
         }
 
@@ -1285,7 +1293,7 @@
 
         const SVGS = {
             cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 -2-2H3z"/></svg>`,
+            headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="#FFE259" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
             bonus: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
             cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>`,
             iphone: `<svg viewBox="0 0 24 24" fill="none" stroke="#9B51E0" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>`,
@@ -1409,6 +1417,26 @@
             }
         }
 
+        function applyParsedState(saved) {
+            if (!saved) return false;
+            if (saved.v && saved.v !== urlVersion) return false;
+            
+            if (saved.isDone || saved.attempts <= 0) {
+                attempts = 0;
+                document.getElementById('attNum').innerText = "0";
+                return true;
+            }
+            
+            if (typeof saved.attempts === 'number' && typeof saved.spinStep === 'number') {
+                attempts = saved.attempts;
+                spinStep = saved.spinStep || 0;
+                if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
+                if (saved.openedBoxesData) openedBoxesData = saved.openedBoxesData;
+                return true;
+            }
+            return false;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const bgUrl = urlParams.get('bg');
             const bgType = urlParams.get('bgtype');
@@ -1480,12 +1508,7 @@
                 return;
             }
 
-            if (saved && typeof saved.attempts === 'number' && typeof saved.spinStep === 'number' && saved.attempts > 0) {
-                attempts = saved.attempts;
-                spinStep = saved.spinStep || 0;
-                if (saved.sessionPrizes) sessionPrizes = saved.sessionPrizes;
-                if (saved.openedBoxesData) openedBoxesData = saved.openedBoxesData;
-            } else {
+            if (!applyParsedState(saved)) {
                 attempts = 3;
                 spinStep = 0;
                 sessionPrizes = { money: [], items: [] };
@@ -1508,6 +1531,26 @@
                 buildBoxesGrid();
             } else {
                 renderWheel();
+            }
+
+            /* АСИНХРОННАЯ СИНХРОНИЗАЦИЯ ЧЕРЕЗ TELEGRAM CLOUDSTORAGE ДЛЯ КЛАВИАТУРНОЙ КНОПКИ */
+            if (tg && tg.CloudStorage) {
+                const currentUid = getUserId();
+                tg.CloudStorage.getItems(['km_state_' + currentUid, 'km_state_global'], function(err, values) {
+                    if (!err && values) {
+                        const rawStr = values['km_state_' + currentUid] || values['km_state_global'];
+                        if (rawStr) {
+                            try {
+                                const cloudState = JSON.parse(rawStr);
+                                if (applyParsedState(cloudState)) {
+                                    document.getElementById('attNum').innerText = attempts;
+                                    updateBasketUI();
+                                    if (gameMode === 'boxes') buildBoxesGrid();
+                                }
+                            } catch(e){}
+                        }
+                    }
+                });
             }
         });
 
