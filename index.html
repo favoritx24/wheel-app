@@ -758,9 +758,9 @@
             flex-shrink: 0;
         }
 
-        /* ===== ИСПРАВЛЕНИЕ ОТОБРАЖЕНИЯ НАЗВАНИЙ ПРИЗОВ ===== */
+        /* ===== ИСПРАВЛЕНИЕ ОТОБРАЖЕНИЯ И ТЕКСТА НАЗВАНИЙ ПРИЗОВ ===== */
         .box-content span {
-            font-size: clamp(6px, 1.2vw, 8px);
+            font-size: clamp(5.5px, 1.5vw, 8px);
             font-weight: 800;
             color: #FFFFFF;
             text-align: center;
@@ -776,7 +776,7 @@
             letter-spacing: -0.2px;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: 0 2px;
+            padding: 0 1px;
         }
 
         .box-content span b {
@@ -893,7 +893,7 @@
 
         /* ===== ИСПРАВЛЕНИЕ ДЛЯ ЛЕНТЫ ===== */
         .ribbon-card span {
-            font-size: clamp(6px, 1vw, 8px);
+            font-size: clamp(6.5px, 1.2vw, 8.5px);
             font-weight: 700;
             color: var(--text-main);
             text-align: center;
@@ -1259,7 +1259,7 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ ДЛЯ ВТОРОЙ ПОПЫТКИ */
+        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ С КРАСИВЫМ ОТОБРАЖЕНИЕМ */
         const PHYSICAL_PRIZES_POOL = [
             'AirPods Pro 2',
             'iPhone 17 Pro Max',
@@ -1917,11 +1917,11 @@
             btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 
-                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
-
-                /* 🛠 СВЕРХКОМПАКТНОЕ ФОРМИРОВАНИЕ ПАРАМЕТРА (В ЛИМИТАХ TELEGRAM) */
+                /* СВЕРХКОМПАКТНОЕ ФОРМИРОВАНИЕ ПАРАМЕТРА (В ЛИМИТАХ TELEGRAM) */
                 let itemIndicesStr = (sessionPrizes && sessionPrizes.itemIds && sessionPrizes.itemIds.length > 0) ? sessionPrizes.itemIds.join('-') : '0';
                 let compactPayload = "m" + totalMoney + "_i" + itemIndicesStr;
+
+                saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
 
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
