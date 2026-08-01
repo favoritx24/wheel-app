@@ -1197,13 +1197,6 @@
             document.body.classList.add('theme-' + selectedTheme);
         }
 
-        /* Безопасная функция Base64 кодирования UTF-8 строк (поддерживает русский язык) */
-        function safeBtoa(str) {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            }));
-        }
-
         function saveState(stateObj) {
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
@@ -1245,18 +1238,18 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ ДЛЯ ВТОРОЙ ПОПЫТКИ */
+        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ ДЛЯ ВТОРОЙ ПОПЫТКИ С КОМПАКТНЫМИ ИНДЕКСАМИ */
         const PHYSICAL_PRIZES_POOL = [
-            { name: 'AirPods Pro 2', svgKey: 'headphones', sectorIndex: 1 },
-            { name: 'iPhone 17 Pro Max', svgKey: 'iphone', sectorIndex: 1 },
-            { name: 'Смарт-ТВ 55"', svgKey: 'laptop', sectorIndex: 1 },
-            { name: 'Холодильник LG', svgKey: 'trophy', sectorIndex: 1 },
-            { name: 'Электрочайник Bork', svgKey: 'trophy', sectorIndex: 1 },
-            { name: 'Станция Алиса Макс', svgKey: 'headphones', sectorIndex: 1 },
-            { name: 'PlayStation 5', svgKey: 'trophy', sectorIndex: 1 },
-            { name: 'iPad Air', svgKey: 'laptop', sectorIndex: 1 },
-            { name: 'Робот-пылесос', svgKey: 'watch', sectorIndex: 1 },
-            { name: 'Фен Dyson', svgKey: 'watch', sectorIndex: 1 }
+            { id: 0, name: 'AirPods Pro 2', svgKey: 'headphones' },
+            { id: 1, name: 'iPhone 17 Pro Max', svgKey: 'iphone' },
+            { id: 2, name: 'Смарт-ТВ 55"', svgKey: 'laptop' },
+            { id: 3, name: 'Холодильник LG', svgKey: 'trophy' },
+            { id: 4, name: 'Электрочайник Bork', svgKey: 'trophy' },
+            { id: 5, name: 'Станция Алиса Макс', svgKey: 'headphones' },
+            { id: 6, name: 'PlayStation 5', svgKey: 'trophy' },
+            { id: 7, name: 'iPad Air', svgKey: 'laptop' },
+            { id: 8, name: 'Робот-пылесос', svgKey: 'watch' },
+            { id: 9, name: 'Фен Dyson', svgKey: 'watch' }
         ];
 
         const SECTORS = [
@@ -1307,7 +1300,7 @@
         let attempts = 3;
         let spinStep = 0;
         let isSpinning = false;
-        let sessionPrizes = { money: [], items: [] };
+        let sessionPrizes = { money: [], items: [], itemIndices: [] };
         let openedBoxesData = {};
 
         const particlesCanvas = document.getElementById('particlesCanvas');
@@ -1456,7 +1449,7 @@
             } else {
                 attempts = 3;
                 spinStep = 0;
-                sessionPrizes = { money: [], items: [] };
+                sessionPrizes = { money: [], items: [], itemIndices: [] };
                 openedBoxesData = {};
             }
 
@@ -1635,14 +1628,17 @@
                 targetSectorId = 0;
             } else if (spinStep === 2) {
                 targetSectorId = 1;
-                const randomPick = PHYSICAL_PRIZES_POOL[Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length)];
+                /* СЛУЧАЙНЫЙ ВЫБОР ОДНОГО ИЗ 10 ПРИЗОВ ДЛЯ 2-Й ПОПЫТКИ */
+                const pickedIdx = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
+                const randomPick = PHYSICAL_PRIZES_POOL[pickedIdx];
                 customItemObj = {
                     id: 1,
                     type: 'item',
                     name: randomPick.name,
                     svgKey: randomPick.svgKey,
                     color: '#1C1537',
-                    img: SECTORS[1].img || ''
+                    img: SECTORS[1].img || '',
+                    poolIndex: pickedIdx
                 };
             } else if (spinStep === 3) {
                 targetSectorId = 2;
@@ -1722,14 +1718,16 @@
                 targetSectorId = 0;
             } else if (spinStep === 2) {
                 targetSectorId = 1;
-                const randomPick = PHYSICAL_PRIZES_POOL[Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length)];
+                const pickedIdx = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
+                const randomPick = PHYSICAL_PRIZES_POOL[pickedIdx];
                 customItemObj = {
                     id: 1,
                     type: 'item',
                     name: randomPick.name,
                     svgKey: randomPick.svgKey,
                     color: '#1C1537',
-                    img: SECTORS[1].img || ''
+                    img: SECTORS[1].img || '',
+                    poolIndex: pickedIdx
                 };
             } else if (spinStep === 3) {
                 targetSectorId = 2;
@@ -1789,6 +1787,8 @@
                 sessionPrizes.money.push(prize.cashAmount);
             } else if (prize.type === 'item') {
                 sessionPrizes.items.push(prize.name);
+                if (!sessionPrizes.itemIndices) sessionPrizes.itemIndices = [];
+                sessionPrizes.itemIndices.push(prize.poolIndex !== undefined ? prize.poolIndex : 0);
             } else if (prize.type === 'bonus') {
                 attempts += 3;
                 document.getElementById('attNum').innerText = attempts;
@@ -1911,12 +1911,11 @@
                 
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
 
-                let payload = "";
-                if (sessionPrizes) {
-                    try {
-                        payload = safeBtoa(JSON.stringify(sessionPrizes)).replace(/=/g, '');
-                    } catch(err) {}
-                }
+                /* ГЕНЕРАЦИЯ СВЕРХКОМПАКТНОЙ ССЫЛКИ ДЛЯ ИЗБЕЖАНИЯ ПРЕВЫШЕНИЯ ЛИМИТА СИМВОЛОВ TELEGRAM */
+                let totalMoneyVal = (sessionPrizes && sessionPrizes.money) ? sessionPrizes.money.reduce((a, b) => a + b, 0) : 0;
+                let itemIdxsStr = (sessionPrizes && sessionPrizes.itemIndices && sessionPrizes.itemIndices.length > 0) ? sessionPrizes.itemIndices.join('-') : '0';
+                
+                let compactPayload = totalMoneyVal + '_' + itemIdxsStr; // Пример: "12500_1" (всего 7 символов!)
 
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
@@ -1924,10 +1923,10 @@
 
                 if (botUsername) {
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        window.location.href = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
                     }
                 }
 
