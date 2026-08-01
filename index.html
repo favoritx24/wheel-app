@@ -75,7 +75,7 @@
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
-        /* 10 ПРЕМЕАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
+        /* 10 ПРЕМИАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
         body.theme-2 {
             --bg-dark: #0a0314;
             --card-glass: rgba(25, 10, 45, 0.85);
@@ -1186,12 +1186,14 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = tg.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
+        const userId = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : (urlParams.get('uid') || 'guest');
         const botUsername = urlParams.get('b') || '';
         const urlVersion = urlParams.get('v') || '0';
 
@@ -1205,7 +1207,7 @@
             stateObj.v = urlVersion;
             const str = JSON.stringify(stateObj);
             try { localStorage.setItem('km_state_' + userId, str); } catch(e){}
-            try { if (tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
+            try { if (tg && tg.CloudStorage) tg.CloudStorage.setItem('km_state_' + userId, str); } catch(e){}
         }
 
         function loadState() {
@@ -1224,7 +1226,7 @@
                     }
                 }
             } catch(e){}
-            try { if (tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
+            try { if (tg && tg.CloudStorage) tg.CloudStorage.removeItem('km_state_' + userId); } catch(e){}
         }
 
         const rawGameMode = urlParams.get('mode');
@@ -1434,13 +1436,13 @@
                                  "Вы успешно использовали все доступные прокрутки! Призы зарезервированы.\n\n" +
                                  "⚡️ Чтобы моментально разблокировать вывод призов, выполните простые условия в посте бота прямо сейчас! 🎁";
                 
-                if (tg.showAlert) {
+                if (tg && tg.showAlert) {
                     tg.showAlert(alertTxt, function() {
                         tg.close();
                     });
                 } else {
                     alert(alertTxt);
-                    tg.close();
+                    if (tg) tg.close();
                 }
                 return;
             }
@@ -1614,7 +1616,7 @@
         function selectBox(boxElement, index) {
             if (attempts <= 0 || isSpinning || boxElement.classList.contains('opened') || boxElement.classList.contains('opening')) return;
 
-            if (tg.HapticFeedback) {
+            if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('medium');
             }
 
@@ -1666,7 +1668,7 @@
                 boxElement.classList.remove('opening');
                 boxElement.classList.add('opened');
                 
-                if (tg.HapticFeedback) {
+                if (tg && tg.HapticFeedback) {
                     tg.HapticFeedback.notificationOccurred('success');
                 }
 
@@ -1694,7 +1696,7 @@
         function executeSpin() {
             if (attempts <= 0 || isSpinning) return;
 
-            if (tg.HapticFeedback) {
+            if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('medium');
             }
 
@@ -1902,26 +1904,28 @@
                 
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
 
-                /* 🛠 СВЕРХКОМПАКТНОЕ ФОРМИРОВАНИЕ ПАРАМЕТРА (ВСЕГО 10-15 СИМВОЛОВ, 100% В ЛИМИТАХ TELEGRAM) */
+                /* 🛠 СВЕРХКОМПАКТНОЕ ФОРМИРОВАНИЕ ПАРАМЕТРА (В ЛИМИТАХ TELEGRAM) */
                 let itemIndicesStr = (sessionPrizes && sessionPrizes.itemIds && sessionPrizes.itemIds.length > 0) ? sessionPrizes.itemIds.join('-') : '0';
                 let compactPayload = "m" + totalMoney + "_i" + itemIndicesStr;
 
-                try {
-                    tg.sendData(JSON.stringify(sessionPrizes));
-                } catch(err) {}
-
-                if (botUsername) {
-                    const deepLink = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
+                if (tg) {
                     try {
-                        tg.openTelegramLink(deepLink);
-                    } catch(err) {
-                        window.location.href = deepLink;
-                    }
-                }
+                        tg.sendData(JSON.stringify(sessionPrizes));
+                    } catch(err) {}
 
-                try {
-                    tg.close();
-                } catch(err) {}
+                    if (botUsername) {
+                        const deepLink = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
+                        try {
+                            tg.openTelegramLink(deepLink);
+                        } catch(err) {
+                            window.location.href = deepLink;
+                        }
+                    }
+
+                    try {
+                        tg.close();
+                    } catch(err) {}
+                }
             };
 
             modal.classList.add('active');
