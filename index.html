@@ -75,7 +75,7 @@
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
-        /* 10 ПРЕМЕАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
+        /* 10 ПРЕМИАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
         body.theme-2 {
             --bg-dark: #0a0314;
             --card-glass: rgba(25, 10, 45, 0.85);
@@ -463,6 +463,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
+        .basket-badge span {
+            white-space: nowrap;
+        }
+
         .basket-badge svg, .basket-badge img {
             width: 13px; height: 13px;
             object-fit: contain;
@@ -546,7 +550,6 @@
             transition: all 0.3s ease;
         }
 
-        /* 4 СЕКТОРА ЛОГОТИПОВ НА КОРОБКЕ (ОТСТУПЫ ОТ ЛЕНТ) */
         .box-logos-quad {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -578,7 +581,6 @@
             border: none !important;
         }
 
-        /* 1 ЛОГОТИП В ЦЕНТРЕ ПЕРЕСЕЧЕНИЯ ЛЕНТ */
         .box-logo-center {
             position: absolute;
             top: 50%; left: 50%;
@@ -756,20 +758,22 @@
             flex-shrink: 0;
         }
 
+        /* Исправление отображения названий призов — без переносов */
         .box-content span {
-            font-size: 8.5px;
+            font-size: 7px;
             font-weight: 800;
             color: #FFFFFF;
             text-align: center;
             margin-top: 2px;
             line-height: 1.1;
             text-transform: uppercase;
-            white-space: normal;
-            word-wrap: break-word;
+            white-space: nowrap;
             display: block;
             width: 100%;
             text-shadow: 0 1px 3px #000000, 0 0 5px #000000;
             letter-spacing: -0.2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .box-content span b {
@@ -1244,6 +1248,20 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
+        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ ДЛЯ ВТОРОЙ ПОПЫТКИ */
+        const PHYSICAL_PRIZES_POOL = [
+            'AirPods Pro 2',
+            'iPhone 17 Pro Max',
+            'Холодильник LG',
+            'Смарт-ТВ 55"',
+            'Чайник Bosch',
+            'Яндекс Станция Max',
+            'PlayStation 5',
+            'iPad Air 2024',
+            'Робот-пылесос Xiaomi',
+            'Кофемашина DeLonghi'
+        ];
+
         const SECTORS = [
             { id: 0, type: 'loss', name: 'Проигрыш', svgKey: 'cross', color: '#13182E', img: '' },
             { id: 1, type: 'item', name: 'AirPods Pro 2', svgKey: 'headphones', color: '#1C1537', img: '' },
@@ -1278,7 +1296,6 @@
             } catch(e){}
         }
 
-        /* ТРЕБОВАНИЕ 1: РАВНОМЕРНЫЙ ГАРАНТИРОВАННЫЙ ЦИКЛ ВСЕХ ДОСТУПНЫХ 6 ЛОГОТИПОВ БЕЗ ПОТЕРЬ И ПЕРЕЗАГРУЗОК */
         let globalLogoCursor = 0;
         function getBalancedBoxLogos(pool, count) {
             if (!pool || pool.length === 0) return [];
@@ -1293,7 +1310,7 @@
         let attempts = 3;
         let spinStep = 0;
         let isSpinning = false;
-        let sessionPrizes = { money: [], items: [] };
+        let sessionPrizes = { money: [], items: [], itemIds: [] };
         let openedBoxesData = {};
 
         const particlesCanvas = document.getElementById('particlesCanvas');
@@ -1396,7 +1413,6 @@
                 document.body.prepend(bgContainer);
             }
 
-            /* ЗАГРУЗКА И МАСШТАБИРОВАНИЕ ГЛАВНОГО ЛОГОТИПА */
             const customLogoParam = urlParams.get('logo');
             const logoScale = parseFloat(urlParams.get('logoscale') || '1');
             if (customLogoParam) {
@@ -1443,7 +1459,7 @@
             } else {
                 attempts = 3;
                 spinStep = 0;
-                sessionPrizes = { money: [], items: [] };
+                sessionPrizes = { money: [], items: [], itemIds: [] };
                 openedBoxesData = {};
             }
 
@@ -1489,7 +1505,7 @@
                         iconHtml = `<img src="${matchingSec.img}" alt="">`;
                     } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                    else if (it.toLowerCase().includes('mac')) iconHtml = SVGS.laptop;
+                    else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('ipad') || it.toLowerCase().includes('тв')) iconHtml = SVGS.laptop;
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
                     container.appendChild(badge);
                     totalCount++;
@@ -1562,7 +1578,6 @@
             }
         }
 
-        /* ПОСТРОЕНИЕ 3D КОРОБОК С РАВНОМЕРНЫМ ОТОБРАЖЕНИЕМ ВСЕХ 6 ЛОГОТИПОВ ПРИ ЛЮБОМ РЕЖИМЕ */
         function buildBoxesGrid() {
             const grid = document.getElementById('boxesGrid');
             grid.innerHTML = '';
@@ -1617,11 +1632,19 @@
             let targetSectorId = 0;
             let calculatedCash = 0;
 
-            if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
-            else if (spinStep === 3) targetSectorId = 2;
-            else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
+            if (spinStep === 1) {
+                targetSectorId = 0;
+            } else if (spinStep === 2) {
+                targetSectorId = 1;
+                /* РАНДОМИЗАЦИЯ ВТОРОЙ ПОПЫТКИ ИЗ ПУЛА 10 ПРИЗОВ */
+                const randomPrizeIndex = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
+                SECTORS[1].name = PHYSICAL_PRIZES_POOL[randomPrizeIndex];
+                SECTORS[1].itemPoolIdx = randomPrizeIndex;
+            } else if (spinStep === 3) {
+                targetSectorId = 2;
+            } else if (spinStep === 4) {
+                targetSectorId = 5;
+            } else if (spinStep === 5) {
                 targetSectorId = 3;
                 calculatedCash = generateCashAmount();
             } else {
@@ -1690,11 +1713,19 @@
             let targetSectorId = 0;
             let calculatedCash = 0;
 
-            if (spinStep === 1) targetSectorId = 0;
-            else if (spinStep === 2) targetSectorId = 1;
-            else if (spinStep === 3) targetSectorId = 2;
-            else if (spinStep === 4) targetSectorId = 5;
-            else if (spinStep === 5) {
+            if (spinStep === 1) {
+                targetSectorId = 0;
+            } else if (spinStep === 2) {
+                targetSectorId = 1;
+                /* РАНДОМИЗАЦИЯ ВТОРОЙ ПОПЫТКИ ИЗ ПУЛА 10 ПРИЗОВ */
+                const randomPrizeIndex = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
+                SECTORS[1].name = PHYSICAL_PRIZES_POOL[randomPrizeIndex];
+                SECTORS[1].itemPoolIdx = randomPrizeIndex;
+            } else if (spinStep === 3) {
+                targetSectorId = 2;
+            } else if (spinStep === 4) {
+                targetSectorId = 5;
+            } else if (spinStep === 5) {
                 targetSectorId = 3;
                 calculatedCash = generateCashAmount();
             } else {
@@ -1748,6 +1779,13 @@
                 sessionPrizes.money.push(prize.cashAmount);
             } else if (prize.type === 'item') {
                 sessionPrizes.items.push(prize.name);
+                if (typeof prize.itemPoolIdx !== 'undefined') {
+                    if (!sessionPrizes.itemIds) sessionPrizes.itemIds = [];
+                    sessionPrizes.itemIds.push(prize.itemPoolIdx);
+                } else {
+                    if (!sessionPrizes.itemIds) sessionPrizes.itemIds = [];
+                    sessionPrizes.itemIds.push(0);
+                }
             } else if (prize.type === 'bonus') {
                 attempts += 3;
                 document.getElementById('attNum').innerText = attempts;
@@ -1870,23 +1908,20 @@
                 
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
 
-                let payload = "";
-                if (sessionPrizes) {
-                    try {
-                        payload = btoa(unescape(encodeURIComponent(JSON.stringify(sessionPrizes)))).replace(/=/g, '');
-                    } catch(err) {}
-                }
+                /* 🛠 СВЕРХКОМПАКТНОЕ ФОРМИРОВАНИЕ ПАРАМЕТРА (В ЛИМИТАХ TELEGRAM) */
+                let itemIndicesStr = (sessionPrizes && sessionPrizes.itemIds && sessionPrizes.itemIds.length > 0) ? sessionPrizes.itemIds.join('-') : '0';
+                let compactPayload = "m" + totalMoney + "_i" + itemIndicesStr;
 
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim" + (payload ? "_" + payload : "");
+                        window.location.href = deepLink;
                     }
                 }
 
