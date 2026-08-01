@@ -1294,6 +1294,15 @@
             } catch(e){}
         }
 
+        /* ИНДИВИДУАЛЬНЫЕ КАРТИНКИ ДЛЯ ПУЛА 10 ВЕЩЕЙ */
+        let poolImgsMap = {};
+        const poolImgsParam = urlParams.get('poolimgs');
+        if (poolImgsParam) {
+            try {
+                poolImgsMap = JSON.parse(poolImgsParam);
+            } catch(e){}
+        }
+
         let poolBoxLogos = [];
         const boxLogosParam = urlParams.get('boxlogos');
         if (boxLogosParam) {
@@ -1502,16 +1511,22 @@
                 });
             }
             if (sessionPrizes.items && sessionPrizes.items.length > 0) {
-                sessionPrizes.items.forEach(it => {
+                sessionPrizes.items.forEach((it, idx) => {
                     const badge = document.createElement('div');
                     badge.className = 'basket-badge';
-                    const matchingSec = SECTORS.find(s => s.name === it);
                     let iconHtml = SVGS.headphones;
-                    if (matchingSec && matchingSec.img) {
-                        iconHtml = `<img src="${matchingSec.img}" alt="">`;
-                    } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
-                    else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                    else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('ipad') || it.toLowerCase().includes('тв')) iconHtml = SVGS.laptop;
+                    
+                    const poolIdx = (sessionPrizes.itemIds && sessionPrizes.itemIds[idx] !== undefined) ? sessionPrizes.itemIds[idx] : null;
+                    if (poolIdx !== null && poolImgsMap[poolIdx]) {
+                        iconHtml = `<img src="${poolImgsMap[poolIdx]}" alt="">`;
+                    } else {
+                        const matchingSec = SECTORS.find(s => s.name === it);
+                        if (matchingSec && matchingSec.img) {
+                            iconHtml = `<img src="${matchingSec.img}" alt="">`;
+                        } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
+                        else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
+                        else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('ipad') || it.toLowerCase().includes('тв')) iconHtml = SVGS.laptop;
+                    }
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
                     container.appendChild(badge);
                     totalCount++;
@@ -1646,6 +1661,9 @@
                 const randomPrizeIndex = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
                 SECTORS[1].name = PHYSICAL_PRIZES_POOL[randomPrizeIndex];
                 SECTORS[1].itemPoolIdx = randomPrizeIndex;
+                if (poolImgsMap[randomPrizeIndex]) {
+                    SECTORS[1].img = poolImgsMap[randomPrizeIndex];
+                }
             } else if (spinStep === 3) {
                 targetSectorId = 2;
             } else if (spinStep === 4) {
@@ -1727,6 +1745,9 @@
                 const randomPrizeIndex = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
                 SECTORS[1].name = PHYSICAL_PRIZES_POOL[randomPrizeIndex];
                 SECTORS[1].itemPoolIdx = randomPrizeIndex;
+                if (poolImgsMap[randomPrizeIndex]) {
+                    SECTORS[1].img = poolImgsMap[randomPrizeIndex];
+                }
             } else if (spinStep === 3) {
                 targetSectorId = 2;
             } else if (spinStep === 4) {
