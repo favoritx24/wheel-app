@@ -53,6 +53,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* ============================================================
+           УЛУЧШЕННЫЙ ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙН С ПОДДЕРЖКОЙ 10 КАСТОМНЫХ ТЕМ
+           ============================================================ */
         :root {
             --bg-dark: #02050e;
             --card-glass: rgba(10, 16, 35, 0.78);
@@ -72,6 +75,7 @@
             --safe-bottom: env(safe-area-inset-bottom, 8px);
         }
 
+        /* 10 ПРЕМЕАЛЬНЫХ ДИЗАЙНЕРСКИХ ТЕМ */
         body.theme-2 {
             --bg-dark: #0a0314;
             --card-glass: rgba(25, 10, 45, 0.85);
@@ -1238,18 +1242,18 @@
             silkBow: `<svg class="mega-bow" viewBox="0 0 100 80" fill="none"><defs><radialGradient id="bowGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="70%" stop-color="#b30000"/><stop offset="100%" stop-color="#660000"/></radialGradient><linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1a1a"/><stop offset="100%" stop-color="#800000"/></linearGradient></defs><path d="M50 40 Q25 70 15 75 Q35 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 Q75 70 85 75 Q65 65 50 45" fill="url(#ribbonGrad)"/><path d="M50 40 C20 15 10 35 35 45 C45 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><path d="M50 40 C80 15 90 35 65 45 C55 49 50 40 50 40 Z" fill="url(#bowGrad)" stroke="#4a0000" stroke-width="0.5"/><circle cx="50" cy="41" r="7" fill="url(#bowGrad)" stroke="#330000" stroke-width="0.5"/></svg>`
         };
 
-        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ ДЛЯ ВТОРОЙ ПОПЫТКИ С КОМПАКТНЫМИ ИНДЕКСАМИ */
+        /* ПУЛ ИЗ 10 РАЗНЫХ ФИЗИЧЕСКИХ ПРИЗОВ ДЛЯ ВТОРОЙ ПОПЫТКИ */
         const PHYSICAL_PRIZES_POOL = [
-            { id: 0, name: 'AirPods Pro 2', svgKey: 'headphones' },
-            { id: 1, name: 'iPhone 17 Pro Max', svgKey: 'iphone' },
-            { id: 2, name: 'Смарт-ТВ 55"', svgKey: 'laptop' },
-            { id: 3, name: 'Холодильник LG', svgKey: 'trophy' },
-            { id: 4, name: 'Электрочайник Bork', svgKey: 'trophy' },
-            { id: 5, name: 'Станция Алиса Макс', svgKey: 'headphones' },
-            { id: 6, name: 'PlayStation 5', svgKey: 'trophy' },
-            { id: 7, name: 'iPad Air', svgKey: 'laptop' },
-            { id: 8, name: 'Робот-пылесос', svgKey: 'watch' },
-            { id: 9, name: 'Фен Dyson', svgKey: 'watch' }
+            'AirPods Pro 2',
+            'iPhone 17 Pro Max',
+            'Холодильник LG',
+            'Смарт-ТВ 55"',
+            'Чайник Bosch',
+            'Яндекс Станция Max',
+            'PlayStation 5',
+            'iPad Air 2024',
+            'Робот-пылесос Xiaomi',
+            'Кофемашина DeLonghi'
         ];
 
         const SECTORS = [
@@ -1300,7 +1304,7 @@
         let attempts = 3;
         let spinStep = 0;
         let isSpinning = false;
-        let sessionPrizes = { money: [], items: [], itemIndices: [] };
+        let sessionPrizes = { money: [], items: [], itemIds: [] };
         let openedBoxesData = {};
 
         const particlesCanvas = document.getElementById('particlesCanvas');
@@ -1449,7 +1453,7 @@
             } else {
                 attempts = 3;
                 spinStep = 0;
-                sessionPrizes = { money: [], items: [], itemIndices: [] };
+                sessionPrizes = { money: [], items: [], itemIds: [] };
                 openedBoxesData = {};
             }
 
@@ -1495,8 +1499,7 @@
                         iconHtml = `<img src="${matchingSec.img}" alt="">`;
                     } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                     else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                    else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('тв') || it.toLowerCase().includes('ipad')) iconHtml = SVGS.laptop;
-                    else iconHtml = SVGS.trophy;
+                    else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('ipad') || it.toLowerCase().includes('тв')) iconHtml = SVGS.laptop;
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
                     container.appendChild(badge);
                     totalCount++;
@@ -1622,24 +1625,15 @@
 
             let targetSectorId = 0;
             let calculatedCash = 0;
-            let customItemObj = null;
 
             if (spinStep === 1) {
                 targetSectorId = 0;
             } else if (spinStep === 2) {
                 targetSectorId = 1;
-                /* СЛУЧАЙНЫЙ ВЫБОР ОДНОГО ИЗ 10 ПРИЗОВ ДЛЯ 2-Й ПОПЫТКИ */
-                const pickedIdx = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
-                const randomPick = PHYSICAL_PRIZES_POOL[pickedIdx];
-                customItemObj = {
-                    id: 1,
-                    type: 'item',
-                    name: randomPick.name,
-                    svgKey: randomPick.svgKey,
-                    color: '#1C1537',
-                    img: SECTORS[1].img || '',
-                    poolIndex: pickedIdx
-                };
+                /* РАНДОМИЗАЦИЯ ВТОРОЙ ПОПЫТКИ ИЗ ПУЛА 10 ПРИЗОВ */
+                const randomPrizeIndex = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
+                SECTORS[1].name = PHYSICAL_PRIZES_POOL[randomPrizeIndex];
+                SECTORS[1].itemPoolIdx = randomPrizeIndex;
             } else if (spinStep === 3) {
                 targetSectorId = 2;
             } else if (spinStep === 4) {
@@ -1651,7 +1645,7 @@
                 targetSectorId = 9;
             }
 
-            const targetSector = customItemObj ? customItemObj : { ...SECTORS[targetSectorId] };
+            const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
             openedBoxesData[index] = targetSector;
 
@@ -1712,23 +1706,15 @@
 
             let targetSectorId = 0;
             let calculatedCash = 0;
-            let customItemObj = null;
 
             if (spinStep === 1) {
                 targetSectorId = 0;
             } else if (spinStep === 2) {
                 targetSectorId = 1;
-                const pickedIdx = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
-                const randomPick = PHYSICAL_PRIZES_POOL[pickedIdx];
-                customItemObj = {
-                    id: 1,
-                    type: 'item',
-                    name: randomPick.name,
-                    svgKey: randomPick.svgKey,
-                    color: '#1C1537',
-                    img: SECTORS[1].img || '',
-                    poolIndex: pickedIdx
-                };
+                /* РАНДОМИЗАЦИЯ ВТОРОЙ ПОПЫТКИ ИЗ ПУЛА 10 ПРИЗОВ */
+                const randomPrizeIndex = Math.floor(Math.random() * PHYSICAL_PRIZES_POOL.length);
+                SECTORS[1].name = PHYSICAL_PRIZES_POOL[randomPrizeIndex];
+                SECTORS[1].itemPoolIdx = randomPrizeIndex;
             } else if (spinStep === 3) {
                 targetSectorId = 2;
             } else if (spinStep === 4) {
@@ -1740,7 +1726,7 @@
                 targetSectorId = 9;
             }
 
-            const targetSector = customItemObj ? customItemObj : { ...SECTORS[targetSectorId] };
+            const targetSector = { ...SECTORS[targetSectorId] };
             if (calculatedCash > 0) targetSector.cashAmount = calculatedCash;
 
             saveState({
@@ -1787,8 +1773,13 @@
                 sessionPrizes.money.push(prize.cashAmount);
             } else if (prize.type === 'item') {
                 sessionPrizes.items.push(prize.name);
-                if (!sessionPrizes.itemIndices) sessionPrizes.itemIndices = [];
-                sessionPrizes.itemIndices.push(prize.poolIndex !== undefined ? prize.poolIndex : 0);
+                if (typeof prize.itemPoolIdx !== 'undefined') {
+                    if (!sessionPrizes.itemIds) sessionPrizes.itemIds = [];
+                    sessionPrizes.itemIds.push(prize.itemPoolIdx);
+                } else {
+                    if (!sessionPrizes.itemIds) sessionPrizes.itemIds = [];
+                    sessionPrizes.itemIds.push(0);
+                }
             } else if (prize.type === 'bonus') {
                 attempts += 3;
                 document.getElementById('attNum').innerText = attempts;
@@ -1911,22 +1902,20 @@
                 
                 saveState({ attempts: 0, spinStep: spinStep, sessionPrizes: sessionPrizes, openedBoxesData: openedBoxesData, isDone: true });
 
-                /* ГЕНЕРАЦИЯ СВЕРХКОМПАКТНОЙ ССЫЛКИ ДЛЯ ИЗБЕЖАНИЯ ПРЕВЫШЕНИЯ ЛИМИТА СИМВОЛОВ TELEGRAM */
-                let totalMoneyVal = (sessionPrizes && sessionPrizes.money) ? sessionPrizes.money.reduce((a, b) => a + b, 0) : 0;
-                let itemIdxsStr = (sessionPrizes && sessionPrizes.itemIndices && sessionPrizes.itemIndices.length > 0) ? sessionPrizes.itemIndices.join('-') : '0';
-                
-                let compactPayload = totalMoneyVal + '_' + itemIdxsStr; // Пример: "12500_1" (всего 7 символов!)
+                /* 🛠 СВЕРХКОМПАКТНОЕ ФОРМИРОВАНИЕ ПАРАМЕТРА (ВСЕГО 10-15 СИМВОЛОВ, 100% В ЛИМИТАХ TELEGRAM) */
+                let itemIndicesStr = (sessionPrizes && sessionPrizes.itemIds && sessionPrizes.itemIds.length > 0) ? sessionPrizes.itemIds.join('-') : '0';
+                let compactPayload = "m" + totalMoney + "_i" + itemIndicesStr;
 
                 try {
                     tg.sendData(JSON.stringify(sessionPrizes));
                 } catch(err) {}
 
                 if (botUsername) {
+                    const deepLink = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
                     try {
-                        const deepLink = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
                         tg.openTelegramLink(deepLink);
                     } catch(err) {
-                        window.location.href = "https://t.me/" + botUsername + "?start=claim_" + compactPayload;
+                        window.location.href = deepLink;
                     }
                 }
 
