@@ -758,23 +758,26 @@
             flex-shrink: 0;
         }
 
-        /* ===== ИСПРАВЛЕННЫЙ КРУПНЫЙ ШРИФТ И ЦЕЛЬНЫЙ ПЕРЕНОС СЛОВ ===== */
+        /* ===== ИСПРАВЛЕННЫЙ КРУПНЫЙ ШРИФТ И ИДЕАЛЬНЫЙ ПЕРЕНОС ДЛИННЫХ СЛОВ ===== */
         .box-content span {
-            font-size: clamp(8.5px, 2.2vw, 11px);
+            font-size: clamp(7.5px, 2vw, 10px);
             font-weight: 800;
             color: #FFFFFF;
             text-align: center;
-            margin-top: 3px;
-            line-height: 1.15;
+            margin-top: 2px;
+            line-height: 1.1;
             text-transform: uppercase;
             white-space: normal;
-            word-break: normal;
+            word-break: keep-all;
+            word-wrap: break-word;
             overflow-wrap: break-word;
+            hyphens: none;
+            text-wrap: balance;
             display: block;
             width: 100%;
             text-shadow: 0 1px 3px #000000, 0 0 5px #000000;
-            letter-spacing: -0.1px;
-            padding: 0 2px;
+            letter-spacing: -0.2px;
+            padding: 0 1px;
         }
 
         .box-content span b {
@@ -896,8 +899,10 @@
             text-align: center;
             line-height: 1.15;
             white-space: normal;
-            word-break: normal;
+            word-break: keep-all;
+            word-wrap: break-word;
             overflow-wrap: break-word;
+            text-wrap: balance;
             max-width: 100%;
             padding: 0 2px;
         }
@@ -1525,7 +1530,7 @@
                             iconHtml = `<img src="${matchingSec.img}" alt="">`;
                         } else if (it.toLowerCase().includes('iphone')) iconHtml = SVGS.iphone;
                         else if (it.toLowerCase().includes('watch')) iconHtml = SVGS.watch;
-                        else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('ipad') || it.toLowerCase().includes('тв')) iconHtml = SVGS.laptop;
+                        else if (it.toLowerCase().includes('mac') || it.toLowerCase().includes('ipad') || it.toLowerCase().includes('тв') || it.toLowerCase().includes('холодильник')) iconHtml = SVGS.laptop;
                     }
                     badge.innerHTML = `${iconHtml} <span>${it}</span>`;
                     container.appendChild(badge);
